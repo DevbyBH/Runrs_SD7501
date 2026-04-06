@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runrs_SD7501", "Runrs_SD7501\Runrs_SD7501.csproj", "{7B3AAC64-DAD0-4FB2-A86C-F5EC8DB92256}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B3AAC64-DAD0-4FB2-A86C-F5EC8DB92256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B3AAC64-DAD0-4FB2-A86C-F5EC8DB92256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B3AAC64-DAD0-4FB2-A86C-F5EC8DB92256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B3AAC64-DAD0-4FB2-A86C-F5EC8DB92256}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B69E70A1-9F19-45EE-927A-74B368440520}
+	EndGlobalSection
+EndGlobal
