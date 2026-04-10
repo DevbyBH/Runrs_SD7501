@@ -20,3 +20,29 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Byron (10/04/2026) - Modified the Nav Bar styling & font to match our colour palette */
+.navbar {
+    min-height: 100px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 300;
+    font-size: 25px;
+    background-color: #000 !important;
+}
+
+.navbar .nav-link {
+    color: #fff !important;
+    transition: color 0.3s ease !important;
+}
+
+.navbar .nav-link:hover {
+    color: darkorange !important;
+}
+
+
+h1, h2, h3 {
+    font-family: 'Bebas Neue', sans-serif;
+}
+/* ----------------------------------------------------------------------------------- */
