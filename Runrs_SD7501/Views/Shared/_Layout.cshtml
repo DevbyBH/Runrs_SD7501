@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Runrs_SD7501.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"> <!-- Byron (10/04/2026) - Added Bootstrap Icons CDN for use across the site -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lugrasimo&display=swap" rel="stylesheet">
@@ -32,7 +33,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Search</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">My Clubs</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Club" asp-action="MyClubs">My Clubs</a> <!-- Byron (10/04/2026) - Change asp-action so nav item directs user to MyClubs page on Click -->
                         </li>
                     </ul>
 

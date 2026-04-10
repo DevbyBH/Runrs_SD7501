@@ -7,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddSession(); // <------ Byron 10/04/2026 - Registered session services for Mo's LoginController
+builder.Services.AddHttpContextAccessor(); // <------ Byron 10/04/2026 - Registered HttpContextAccessor services for Mo's LoginController
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -17,6 +20,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSession(); // <------ Byron 10/04/2026 - Added session "middleware" for Mo's LoginController
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

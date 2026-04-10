@@ -12,8 +12,8 @@ using Runrs_SD7501.Data;
 namespace Runrs_SD7501.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260410102754_FreshMigrationAndReAddTables")]
-    partial class FreshMigrationAndReAddTables
+    [Migration("20260410120720_FreshResetWithUserAndClubSeedData")]
+    partial class FreshResetWithUserAndClubSeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,9 @@ namespace Runrs_SD7501.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("bit");
 
@@ -62,6 +65,19 @@ namespace Runrs_SD7501.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Clubs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClubDescription = "Join us every Wednesday & Saturday for a 10km run along Petone Esplanade/Beach",
+                            ClubLocation = "Petone, Wellington",
+                            ClubName = "Hutt Valley Run Club",
+                            CreatedAt = new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "",
+                            IsPrivate = false,
+                            OwnerId = 1
+                        });
                 });
 
             modelBuilder.Entity("Runrs_SD7501.Models.Membership", b =>
@@ -139,6 +155,19 @@ namespace Runrs_SD7501.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateOfBirth = new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "Test@gmail.com",
+                            FirstName = "Test",
+                            JoinedAt = new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastName = "User",
+                            PasswordHash = "Test123",
+                            Username = "testuser"
+                        });
                 });
 
             modelBuilder.Entity("Runrs_SD7501.Models.Club", b =>

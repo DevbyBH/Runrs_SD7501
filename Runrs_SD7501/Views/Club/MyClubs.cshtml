@@ -1,0 +1,68 @@
+﻿@model List<Runrs_SD7501.Models.Club>
+
+@{
+    ViewData["Title"] = "My Clubs";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div>
+    <div class="page-header">
+        <h1 class="text-black py-2 mb-0 position-absolute start-50 translate-middle-x fw-bold letter-spacing-lg">My Clubs</h1>
+        <a asp-controller="Club" asp-action="Create" class="btn btn-custom">
+            <i class="bi bi-plus-circle"></i> Create New Club
+        </a>
+    </div>
+    <div class="card-body p-4">
+        <div class="row pb-3">
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p class="text-muted text-center fw-bold">You have not joined or created any clubs yet.</p>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped text-primary">
+                <thead>
+                    <tr>
+                        <th>Club Name</th>
+                        <th>Location</th>
+                        <th>Description</th>
+                        <th>Private</th>
+                        <th>Created On</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var club in Model.OrderBy(u => u.ClubName))
+                    {
+                        <tr>
+                            <td>@club.ClubName</td>
+                            <td>@club.ClubLocation</td>
+                            <td>@club.ClubDescription</td>
+                            <td>@(club.IsPrivate ? "Yes" : "No")</td>
+                            <td>@club.CreatedAt.ToString("dd MMM yyyy")</td>
+                            <td>
+                                <div class="w-75 btn-group" role="group">
+                                    <a asp-controller="Club" asp-action="Edit" asp-route-id="@club.Id" class="btn btn-primary mx-2">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                    <a asp-controller="Club" asp-action="Delete" asp-route-id="@club.Id" class="btn btn-danger mx-2">
+                                        <i class="bi bi-trash3-fill"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

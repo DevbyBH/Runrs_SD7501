@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Runrs_SD7501.Migrations
 {
     /// <inheritdoc />
-    public partial class FreshMigrationAndReAddTables : Migration
+    public partial class FreshResetWithUserAndClubSeedData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,7 +41,8 @@ namespace Runrs_SD7501.Migrations
                     ClubLocation = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsPrivate = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false)
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -80,6 +81,16 @@ namespace Runrs_SD7501.Migrations
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "DateOfBirth", "Email", "FirstName", "JoinedAt", "LastName", "PasswordHash", "Username" },
+                values: new object[] { 1, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test@gmail.com", "Test", new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", "Test123", "testuser" });
+
+            migrationBuilder.InsertData(
+                table: "Clubs",
+                columns: new[] { "Id", "ClubDescription", "ClubLocation", "ClubName", "CreatedAt", "ImageUrl", "IsPrivate", "OwnerId" },
+                values: new object[] { 1, "Join us every Wednesday & Saturday for a 10km run along Petone Esplanade/Beach", "Petone, Wellington", "Hutt Valley Run Club", new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clubs_OwnerId",

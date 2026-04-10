@@ -35,6 +35,8 @@ namespace Runrs_SD7501.Models
 
         [ForeignKey("OwnerId")]
         public User? Owner { get; set; }
+
+        public string? ImageUrl { get; set; }
         public ICollection<Membership>? Memberships { get; set; }
     }
 }
