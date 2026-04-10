@@ -12,8 +12,8 @@ using Runrs_SD7501.Data;
 namespace Runrs_SD7501.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260406091646_Add_User_Club_Membership_TablesToDb")]
-    partial class Add_User_Club_Membership_TablesToDb
+    [Migration("20260410102754_FreshMigrationAndReAddTables")]
+    partial class FreshMigrationAndReAddTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,8 @@ namespace Runrs_SD7501.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OwnerId");
+
                     b.ToTable("Clubs");
                 });
 
@@ -87,6 +89,10 @@ namespace Runrs_SD7501.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Memberships");
                 });
@@ -125,9 +131,56 @@ namespace Runrs_SD7501.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Runrs_SD7501.Models.Club", b =>
+                {
+                    b.HasOne("Runrs_SD7501.Models.User", "Owner")
+                        .WithMany("OwnedClubs")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Runrs_SD7501.Models.Membership", b =>
+                {
+                    b.HasOne("Runrs_SD7501.Models.Club", "Club")
+                        .WithMany("Memberships")
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Runrs_SD7501.Models.User", "User")
+                        .WithMany("Memberships")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Club");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Runrs_SD7501.Models.Club", b =>
+                {
+                    b.Navigation("Memberships");
+                });
+
+            modelBuilder.Entity("Runrs_SD7501.Models.User", b =>
+                {
+                    b.Navigation("Memberships");
+
+                    b.Navigation("OwnedClubs");
                 });
 #pragma warning restore 612, 618
         }

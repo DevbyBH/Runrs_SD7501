@@ -37,9 +37,14 @@ namespace Runrs_SD7501.Models
 
         [Required(ErrorMessage = "Date of Birth is Required")]
         [DataType(DataType.Date)]
+        [DisplayName("Date of Birth")]
         public DateTime DateOfBirth { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime JoinedAt { get; set; }
+        [DisplayName("Joined At")]
+        public DateTime JoinedAt { get; set; } = DateTime.Now;
+
+        public ICollection<Membership>? Memberships { get; set; }
+        public ICollection<Club>? OwnedClubs { get; set; }
     }
 }

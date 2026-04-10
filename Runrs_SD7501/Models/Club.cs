@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Runrs_SD7501.Models
 {
@@ -24,12 +25,16 @@ namespace Runrs_SD7501.Models
         public string ClubLocation { get; set; }
 
         [Display(Name = "Private Club")]
-        public bool IsPrivate { get; set; }
+        public bool IsPrivate { get; set; } = false;
 
         [Display(Name = "Created On")]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [Required]
         public int OwnerId { get; set; }
+
+        [ForeignKey("OwnerId")]
+        public User? Owner { get; set; }
+        public ICollection<Membership>? Memberships { get; set; }
     }
 }
