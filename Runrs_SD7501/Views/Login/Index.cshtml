@@ -1,0 +1,55 @@
+﻿@model Runrs_SD7501.Models.User
+
+@{
+    ViewBag.Title = "Login";
+}
+@{
+    Layout = "_Layout";
+} 
+
+<style>
+    footer {
+        display: none !important;
+    }</style>
+
+<style>
+    nav {
+    display: none !important;
+}</style>
+@using (Html.BeginForm("Login", "Home", FormMethod.Post))
+@using (Html.BeginForm("Login", "Login", FormMethod.Post))
+{
+    <center>
+        <fieldset>
+            <br />
+            <br />
+            <img src="Images/PMS_Logo.png" width="500px"/>
+            <br />
+            <br />
+
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @if (@ViewBag.Message != null)
+            {
+                <div style="border: 1px solid red">
+                    @ViewBag.Message
+                </div>
+            }
+            @Html.LabelFor(a => a.Username)
+            <br />
+            @Html.TextBoxFor(a => a.Username)
+            <br />
+            @Html.ValidationMessageFor(a => a.Username)
+            @Html.LabelFor(a => a.PasswordHash)
+            <br />
+            @Html.PasswordFor(a => a.PasswordHash)
+            <br />
+            @Html.ValidationMessageFor(a => a.PasswordHash)
+            <br />
+            <input type="submit" value="Login" class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Login" />
+            <br />
+            <input type="submit" value="Registration" class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Registration">
+
+        </fieldset>
+    </center>
+} 

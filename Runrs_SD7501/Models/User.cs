@@ -8,6 +8,11 @@ namespace Runrs_SD7501.Models
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Username is Required")]
+        [MaxLength(100)]
+        [DisplayName("User Name")]
+        public string Username { get; set; }
+
         [Required(ErrorMessage = "First Name is Required")]
         [MaxLength(100)]
         [DisplayName("First Name")]
