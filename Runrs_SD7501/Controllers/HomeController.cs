@@ -4,10 +4,11 @@ using Runrs_SD7501.Models;
 
 namespace Runrs_SD7501.Controllers;
 
-public class HomeController : Controller
+public class HomeController : BaseController
 {
     public IActionResult Index()
     {
+
         return View();
     }
 

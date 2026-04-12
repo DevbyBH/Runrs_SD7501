@@ -60,7 +60,11 @@ namespace Runrs_SD7501.Controllers
             {
                 _db.Users.Add(user);
                 _db.SaveChanges();
-                return RedirectToAction("Index", "Login");
+
+                // auto login
+                HttpContext.Session.SetString("Id", user.Username);
+                return RedirectToAction("Index", "Home");
+                TempData["Success"] = "Welcome! Registration successful.";
             }
 
             return View();

@@ -4,7 +4,7 @@ using Runrs_SD7501.Models;
 
 namespace Runrs_SD7501.Controllers
 {
-    public class ClubController : Controller
+    public class ClubController : BaseController
     {
         private readonly ApplicationDbContext _context;
         public ClubController(ApplicationDbContext context)
