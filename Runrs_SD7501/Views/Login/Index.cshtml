@@ -2,54 +2,142 @@
 
 @{
     ViewBag.Title = "Login";
+    Layout = null;
 }
-@{
-    Layout = "_Layout";
-} 
 
-<style>
-    footer {
-        display: none !important;
-    }</style>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
 
-<style>
-    nav {
-    display: none !important;
-}</style>
-@using (Html.BeginForm("Login", "Home", FormMethod.Post))
-@using (Html.BeginForm("Login", "Login", FormMethod.Post))
-{
-    <center>
-        <fieldset>
-            <br />
-            <br />
-            <img src="Images/PMS_Logo.png" width="500px"/>
-            <br />
-            <br />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            /* Gradient background */
+            background: linear-gradient(135deg, #000000 30%, #ff770c 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
+        .login-card {
+            background: #D2D1D1;
+            padding: 40px;
+            width: 350px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+            .login-card img {
+                width: 180px;
+                margin-bottom: 15px;
+            }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-login {
+            background-color: #ff770c;
+            color: white;
+        }
+
+            .btn-login:hover {
+                background-color: #e0660b;
+            }
+
+        .btn-register {
+            background-color: #444;
+            color: white;
+        }
+
+            .btn-register:hover {
+                background-color: #222;
+            }
+
+        .error-box {
+            border: 1px solid red;
+            padding: 10px;
+            margin-bottom: 15px;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+
+        <!-- Running image (make sure path + casing is correct) -->
+        <img src="@Url.Content("~/images/RunningMan.png")" />
+
+        <!-- Logo -->
+        <img src="@Url.Content("~/images/PMS_Logo.png")" />
+
+        <h2>Login</h2>
+
+        @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+        {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
-            @if (@ViewBag.Message != null)
+
+            if (ViewBag.Message != null)
             {
-                <div style="border: 1px solid red">
+                <div class="error-box">
                     @ViewBag.Message
                 </div>
             }
-            @Html.LabelFor(a => a.Username)
-            <br />
-            @Html.TextBoxFor(a => a.Username)
-            <br />
-            @Html.ValidationMessageFor(a => a.Username)
-            @Html.LabelFor(a => a.PasswordHash)
-            <br />
-            @Html.PasswordFor(a => a.PasswordHash)
-            <br />
-            @Html.ValidationMessageFor(a => a.PasswordHash)
-            <br />
-            <input type="submit" value="Login" class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Login" />
-            <br />
-            <input type="submit" value="Registration" class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Registration">
 
-        </fieldset>
-    </center>
-} 
+            <div class="form-group">
+                @Html.LabelFor(a => a.Username)
+                @Html.TextBoxFor(a => a.Username)
+                @Html.ValidationMessageFor(a => a.Username)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(a => a.PasswordHash)
+                @Html.PasswordFor(a => a.PasswordHash)
+                @Html.ValidationMessageFor(a => a.PasswordHash)
+            </div>
+
+            <input type="submit" value="Login" class="btn btn-login" />
+        }
+
+        <!-- Register button -->
+        <form action="/Login/Registration" method="get">
+            <button type="submit" class="btn btn-register">Create Account</button>
+        </form>
+
+    </div>
+
+</body>
+</html>
