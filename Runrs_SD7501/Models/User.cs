@@ -10,7 +10,7 @@ namespace Runrs_SD7501.Models
 
         [Required(ErrorMessage = "Username is Required")]
         [MaxLength(100)]
-        [DisplayName("User Name")]
+        [DisplayName("Username")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "First Name is Required")]

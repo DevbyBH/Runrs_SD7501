@@ -9,6 +9,9 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lugrasimo&display=swap" rel="stylesheet">
     <title>Login</title>
 
     <style>
@@ -33,10 +36,10 @@
             text-align: center;
         }
 
-            .login-card img {
-                width: 180px;
-                margin-bottom: 15px;
-            }
+        .login-card img {
+            width: 180px;
+            margin-bottom: 15px;
+        }
 
         h2 {
             margin-bottom: 20px;
@@ -45,6 +48,7 @@
         .form-group {
             margin-bottom: 15px;
             text-align: left;
+            font-weight: bold;
         }
 
         input[type="text"],
@@ -71,18 +75,18 @@
             color: white;
         }
 
-            .btn-login:hover {
-                background-color: #e0660b;
-            }
+        .btn-login:hover {
+            background-color: #e0660b;
+        }
 
         .btn-register {
             background-color: #444;
             color: white;
         }
 
-            .btn-register:hover {
-                background-color: #222;
-            }
+        .btn-register:hover {
+            background-color: #222;
+        }
 
         .error-box {
             border: 1px solid red;
@@ -100,9 +104,6 @@
         <!-- Running image (make sure path + casing is correct) -->
         <img src="@Url.Content("~/images/RunningMan.png")" />
 
-        <!-- Logo -->
-        <img src="@Url.Content("~/images/PMS_Logo.png")" />
-
         <h2>Login</h2>
 
         @using (Html.BeginForm("Login", "Login", FormMethod.Post))
@@ -118,13 +119,13 @@
             }
 
             <div class="form-group">
-                @Html.LabelFor(a => a.Username)
+                @Html.LabelFor(a => a.Username):
                 @Html.TextBoxFor(a => a.Username)
                 @Html.ValidationMessageFor(a => a.Username)
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(a => a.PasswordHash)
+                @Html.LabelFor(a => a.PasswordHash):
                 @Html.PasswordFor(a => a.PasswordHash)
                 @Html.ValidationMessageFor(a => a.PasswordHash)
             </div>
