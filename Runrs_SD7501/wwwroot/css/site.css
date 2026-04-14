@@ -18,9 +18,11 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #0000;
 }
 
+/* ------------------------------------------------------------------------------------------------- */
 /* Byron (10/04/2026) - Modified different classes for custom styled components (Subject to change) */
 
 .navbar {
@@ -28,6 +30,7 @@ body {
     padding-top: 1rem;
     padding-bottom: 1rem;
     font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.1rem;
     font-weight: 300;
     font-size: 25px;
     background-color: #000 !important;
@@ -44,7 +47,8 @@ body {
 
 
 h1, h2, h3 {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bebas Neue',sans-serif;
+    letter-spacing: 0.1rem;
 }
 
 .letter-spacing-lg {
@@ -77,5 +81,83 @@ h1, h2, h3 {
 .btn-custom:hover {
     color: darkorange;
 }
+/* ------------------------------------------------------------------------------------------------- */
 
+
+
+/* ------------------------------------------------------------------------------------------------- */
+/* Byron (14/04/2026) - Modified different classes for custom styled components (Subject to change) */
+
+.home-page { /* Create a gradient for each page to reuse */
+    background: linear-gradient(180deg, #272726 10%, #5E2D12 100%);
+    min-height: 100vh;
+}
+
+#icon-image { /* Homepage "RunningMan" image --> Designed in Figma and modified in Adobe Illustrator */
+    width: 250px;
+    margin-bottom: 160px;
+    margin-top: 30px;
+}
+
+.container { /* Page Container */
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+#homepage-header { /* Homepage header --> "RUNRS" */
+    color: #ffffff;
+    font-size: 400px;
+    text-shadow: 0 8px 32px #00000071;
+    font-style: italic;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 3rem;
+    margin-right: 60px;
+    margin-top: -190px;
+}
+
+.app-description { /* App description --> Explains what our application is */
+    font-family: 'Rajdhani', sans-serif;
+    color: #ffffff;
+    font-size: 15px;
+    letter-spacing: 0.1rem;
+    border-radius: 20px;
+    padding: 20px 30px;
+    margin-top: -70px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.about-section { /* "About" section container --> increase margin to sepearate icons from description */
+    margin-top: 50px;
+}
+
+.about-image { /* Icons used to explain the main features of our application --> Icons designed and modified in Adobe Illustrator */
+    width: 100%;
+    max-width: 300px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: -25px;
+}
+
+.about-header { /* Headers under the icon images */
+    color: #ffffff;
+    letter-spacing: 0.2rem;
+    border-radius: 20px;
+    padding: 10px 5px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.about-text { /* Feature Explanations */
+    font-family: 'Rajdhani', sans-serif;
+    color: #ffffff;
+    letter-spacing: 0.1rem;
+    font-size: 18px;
+    margin-top: 20px;
+}
 /* ------------------------------------------------------------------------------------------------- */

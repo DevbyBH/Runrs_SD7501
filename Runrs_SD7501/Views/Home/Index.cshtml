@@ -1,8 +1,47 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    ViewData["BodyClass"] = "home-page";
 }
 
+<!-- Byron (14/04/2026) -->
+<!-- Designed the Homepage - Added images/headers/body text - Page will have no functionality (Completely Static) -->
+<!-- The Search and MyClubs pages will be where the functionality will be implemented - HP used for app explanation -->
 <div class="text-center">
-    <h1 class="display-4"></h1>
-    
+    <img id="icon-image" src="~/images/RunningMan.png"/>
+    <h1 id="homepage-header"><span style="color:#FF7614">RUN</span>RS</h1>
+    <h2 class="app-description">RUNRS IS A WEB-BASED RUN CLUB MANAGEMENT APPLICATION THAT 
+        ALLOWS USERS TO CREATE RUN CLUBS AIMED TOWARDS CREATING A SAFE SPACE
+        FOR MEETING NEW PEOPLE IN THEIR AREAS THAT ARE INTERESTED IN LEVELLING UP
+        THEIR FITNESS. THE APPLICATION ALLOWS FOR USERS TO SEARCH FOR AND FIND RUN CLUBS
+        IN THEIR LOCAL AND SURRONDING AREAS, WITH PEOPLE OF ALL FITNESS LEVELS.</h2>
+</div>
+
+<div class="about-section">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <img src="~/images/CreateIcon.png" class="about-image"/>
+            <h3 class="about-header">Create Run Clubs</h3>
+            <p class="about-text">Create local run clubs that others can 
+                become members of. Run clubs are a great way to keep fit
+                while meeting and engaging with new people
+            </p>
+        </div>
+        <div class="col-md-4 text-center">
+            <img src="~/images/JoinIcon.png" class="about-image"/>
+            <h3 class="about-header">Manage Clubs & Members</h3>
+            <p class="about-text">Manage your clubs details such as run locations,
+                distance of runs, start-to-end points and announcements. Club owners
+                can also manage the club members
+            </p>
+        </div>
+        <div class="col-md-4 text-center">
+            <img src="~/images/SearchIcon.png" class="about-image"/>
+            <h3 class="about-header">Find & Join Other Run Clubs</h3>
+            <p class="about-text">Search for clubs in your area and attend runs
+                with other people in your community. This is a great chance to
+                mingle and mix with people with the same goal of increasing their
+                fitness levels
+            </p>
+        </div>
+    </div>
 </div>

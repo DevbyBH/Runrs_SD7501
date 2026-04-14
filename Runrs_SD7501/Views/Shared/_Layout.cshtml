@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"> <!-- Byron (10/04/2026) - Added Bootstrap Icons CDN for use across the site -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lugrasimo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="@ViewData["BodyClass"]">
     <!-- Byron (10/04/2026) - Modified the Navbar to ensure better styling & colour pallete moving forward -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand ms-3" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/images/RunningMan.png" width="50px"/>
@@ -53,7 +53,7 @@
     </div>
 
     <footer class="border-top footer text-muted">
-    </footer>
+</footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
