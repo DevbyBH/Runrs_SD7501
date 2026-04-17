@@ -14,10 +14,10 @@ namespace Runrs_SD7501.Controllers
 
         public IActionResult MyClubs()
         {
-            List<Club> clubs = _context.Clubs.ToList();
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            List<Club> clubs = _context.Clubs.Where(c => c.OwnerId == userId).ToList();
             return View(clubs);
         }
-
         // ----------------------- Create Club Actions ----------------------- // // <------ Byron 10/04/2026
         public IActionResult Create()
         {
@@ -32,7 +32,7 @@ namespace Runrs_SD7501.Controllers
                 _context.Clubs.Add(club);
                 _context.SaveChanges();
                 TempData["Success"] = "Club created successfully!";
-                return RedirectToAction("Index");
+                return RedirectToAction("MyClubs");
             }
             return View();
         }
@@ -60,7 +60,7 @@ namespace Runrs_SD7501.Controllers
                 _context.Clubs.Update(club);
                 _context.SaveChanges();
                 TempData["Success"] = "Club updated successfully!";
-                return RedirectToAction("Index");
+                return RedirectToAction("MyClubs");
             }
             return View();
         }
@@ -91,8 +91,26 @@ namespace Runrs_SD7501.Controllers
             _context.Clubs.Remove(club);
             _context.SaveChanges();
             TempData["Success"] = "Club deleted successfully";
-            return RedirectToAction("index");
+            return RedirectToAction("MyClubs");
         }
         // ------------------------------------------------------------------- //
+
+        // ----------------------- Search Club Page Actions ----------------------- // // <------ Byron 17/04/2026
+        public IActionResult Search(string query)
+        {
+            List<Club> clubs;
+
+            if (string.IsNullOrEmpty(query))
+            {
+                clubs = _context.Clubs.ToList(); // ← all clubs
+            }
+            else
+            {
+                clubs = _context.Clubs
+                    .Where(c => c.ClubName.Contains(query) || c.ClubLocation.Contains(query) ||c.ClubDescription.Contains(query)).ToList();
+            }
+
+            return View(clubs);
+        }
     }
 }

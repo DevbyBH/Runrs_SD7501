@@ -1,0 +1,58 @@
+﻿@model List<Runrs_SD7501.Models.Club>
+
+@{
+    ViewData["Title"] = "Search";
+    ViewData["BodyClass"] = "home-page";
+}
+
+<div class="search-container">
+    <h1 class="search-header">Search Run Clubs</h1>
+
+    <form method="get" asp-controller="Club" asp-action="Search" class="d-flex gap-2 mb-4">
+        <input type="text" name="query" placeholder="Search clubs..."
+               class="search-bar"
+               value="@Context.Request.Query["query"]" />
+        <button type="submit" class="btn search-btn">
+            <i class="bi bi-search"></i> Search
+        </button>
+    </form>
+
+    @if (Model == null || !Model.Any())
+    {
+        <p class="text-white text-center fw-bold">No clubs found.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var club in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="club-card">
+                        @if (!string.IsNullOrEmpty(club.ImageUrl))
+                        {
+                            <img src="@club.ImageUrl" class="club-card-img" alt="@club.ClubName" />
+                        }
+                        else
+                        {
+                            <div class="club-card-img-placeholder">
+                                <i class="bi bi-person-running"></i>
+                            </div>
+                        }
+                        <div class="club-card-body">
+                            <h3 class="club-card-title">@club.ClubName</h3>
+                            <p class="club-card-location">
+                                <i class="bi bi-geo-alt-fill"></i> @club.ClubLocation
+                            </p>
+                            <p class="club-card-description">@club.ClubDescription</p>
+                            <div class="club-card-footer">
+                                <span class="club-badge">
+                                    @(club.IsPrivate ? "Private" : "Public")
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

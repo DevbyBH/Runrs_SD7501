@@ -44,6 +44,29 @@ namespace Runrs_SD7501.Data
                     PasswordHash = "Test123", // <-- Password for logging in with Test User
                     DateOfBirth = new DateTime(1999, 3, 7),
                     JoinedAt = new DateTime(2026, 10, 4)
+                },
+            // Byron 17/04/2026 - NEW Seed Data for Test Users
+                new User
+                {
+                    Id = 2,
+                    Username = "testuser2", // <-- Username for logging in with Test User
+                    FirstName = "Test2",
+                    LastName = "User2",
+                    Email = "Test2@gmail.com",
+                    PasswordHash = "Test123", // <-- Password for logging in with Test User
+                    DateOfBirth = new DateTime(1999, 3, 7),
+                    JoinedAt = new DateTime(2026, 4, 17)
+                },
+                new User
+                {
+                    Id = 3,
+                    Username = "testuser3", // <-- Username for logging in with Test User
+                    FirstName = "Test3",
+                    LastName = "User3",
+                    Email = "Test@gmail.com",
+                    PasswordHash = "Test123", // <-- Password for logging in with Test User
+                    DateOfBirth = new DateTime(1999, 3, 7),
+                    JoinedAt = new DateTime(2026, 4, 17),
                 }
             );
             // ------------------------------------------
@@ -59,6 +82,29 @@ namespace Runrs_SD7501.Data
                     IsPrivate = false,
                     CreatedAt = new DateTime(2026, 10, 4),
                     OwnerId = 1,
+                    ImageUrl = ""
+                },
+            // Byron 17/04/2026 - NEW Seed Data for Test Clubs
+                new Club
+                {
+                    Id = 2,
+                    ClubName = "Bay Runners",
+                    ClubDescription = "Wanting a challenge? Join our run club that regularly does the famous 'Bays Route', a 30km scenic route along some of the most beautiful bays Wellington has to offer.",
+                    ClubLocation = "Wellington CBD, Wellington",
+                    IsPrivate = false,
+                    CreatedAt = new DateTime(2026, 4, 17),
+                    OwnerId = 2,
+                    ImageUrl = ""
+                },
+                new Club
+                {
+                    Id = 3,
+                    ClubName = "Social Runners WLG",
+                    ClubDescription = "Join our social run club based in Porirua which is open to all levels of fitness. We meet every Saturday at the Porirua pools to complete a 5km run and socialise over coffee after. ",
+                    ClubLocation = "Porirua, Wellington",
+                    IsPrivate = false,
+                    CreatedAt = new DateTime(2026, 4, 17),
+                    OwnerId = 3,
                     ImageUrl = ""
                 }
             );
