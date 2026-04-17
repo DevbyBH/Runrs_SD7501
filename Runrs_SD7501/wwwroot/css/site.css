@@ -42,7 +42,7 @@ body {
 }
 
 .navbar .nav-link:hover {
-    color: darkorange !important;
+    color: #fe9144 !important;
 }
 
 
@@ -72,14 +72,14 @@ h1, h2, h3 {
 }
 
 .btn-custom {
-    background-color: #000;
+    background-color: #000000;
     color: white;
     border: none;
-    font-weight:600
+    font-weight: 600;
 }
 
 .btn-custom:hover {
-    color: darkorange;
+    color: #fe9144;
 }
 /* ------------------------------------------------------------------------------------------------- */
 
@@ -194,7 +194,7 @@ h1, h2, h3 {
 }
 
 .search-btn {
-    background-color: #FF7614;
+    background-color: #000000;
     color: #ffffff;
     border: none;
     border-radius: 25px;
@@ -208,7 +208,6 @@ h1, h2, h3 {
     color: #ffffff;
 }
 
-/* Club Cards */
 .club-card {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(12px);
@@ -229,8 +228,20 @@ h1, h2, h3 {
     object-fit: cover;
 }
 
+.club-card-img-placeholder {
+    width: 100%;
+    height: 180px;
+    background: rgba(255, 118, 20, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    color: #FF7614;
+}
+
 .club-card-body {
     padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .club-card-title {
@@ -240,7 +251,7 @@ h1, h2, h3 {
 }
 
 .club-card-location {
-    color: #FF7614;
+    color: #fe9144;
     font-family: 'Rajdhani', sans-serif;
     font-size: 14px;
     margin-bottom: 10px;
@@ -255,6 +266,81 @@ h1, h2, h3 {
 
 .club-card-footer {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px; 
     align-items: center;
 }
+
+.club-badge {
+    color: #e2e2e2ff;
+    background-color: #1f1f1f4e;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 12px;
+}
+/* ------------------------------------------------------------------------------------------------- */
+
+
+/* ------------------------------------------------------------------------------------------------- */
+/* Byron (17/04/2026) - CSS styling for the My Clubs "CREATE" View (Creating club form) */
+
+.crud-card-header-box {
+    padding: 0.5rem 1rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    background: linear-gradient(360deg, #272726 10%, #000000 100%);
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+    text-align: center
+}
+
+.crud-form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background: #27272681;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 35px;
+}
+
+.crud-form-label {
+    color: #ffffff;
+    font-weight: 600;
+    margin-bottom: 0.8vh
+}
+
+.crud-header-text {
+    color: #fff;
+    font-size: 3rem
+}
+
+.crud-input-border {
+    border-width: 3px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.25);
+    background-color: #e2e2e2ff;
+    border-radius: 15px;
+}
+
+.crud-input-border:focus {
+    border-color: #fe9144;
+    outline: none;
+    box-shadow: 0 0 0.2rem orange;
+}
+
+.form-check-input:checked {
+    background-color: #FF7614;
+    border-color: #fe9144;
+}
+
+.form-check-input:checked {
+    background-color: #FF7614;
+    border-color: #FF7614;
+}
+/* ------------------------------------------------------------------------------------------------- */

@@ -7,7 +7,7 @@ namespace Runrs_SD7501.Controllers
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (HttpContext.Session.GetString("Id") == null)
+            if (HttpContext.Session.GetInt32("UserId") == null) //<-- Byron 17/04/2026 - Edited to allow for proper session login (So clubs can be created with correct user id)
             {
                 context.Result = RedirectToAction("Index", "Login");
             }

@@ -22,11 +22,11 @@ namespace Runrs_SD7501.Controllers
         {
             if (user != null)
             {
-                var obj = _db.Users.Where(a => a.Username.Equals(user.Username) && a.PasswordHash.Equals(user.PasswordHash));
+                var obj = _db.Users.FirstOrDefault(a => a.Username == user.Username && a.PasswordHash == user.PasswordHash); //<-- Byron 17/04/2026 - Edited to allow for proper session login (So clubs can be created with correct user id)
 
-                if (obj.Count<User>() == 1)
+                if (obj != null) //<-- Byron 17/04/2026 - Edited to allow for proper session login (So clubs can be created with correct user id)
                 {
-                    HttpContext.Session.SetString("Id", user.Username);
+                    HttpContext.Session.SetInt32("UserId", obj.Id);
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -62,9 +62,9 @@ namespace Runrs_SD7501.Controllers
                 _db.SaveChanges();
 
                 // auto login
-                HttpContext.Session.SetString("Id", user.Username);
-                return RedirectToAction("Index", "Home");
+                HttpContext.Session.SetInt32("UserId", user.Id); //<-- Byron 17/04/2026 - Edited to allow for proper session login (So clubs can be created with correct user id)
                 TempData["Success"] = "Welcome! Registration successful.";
+                return RedirectToAction("Index", "Home"); ;
             }
 
             return View();

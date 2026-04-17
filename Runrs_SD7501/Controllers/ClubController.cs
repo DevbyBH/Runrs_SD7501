@@ -12,7 +12,7 @@ namespace Runrs_SD7501.Controllers
             _context = context;
         }
 
-        public IActionResult MyClubs()
+        public IActionResult Index() // <------ Byron 17/04/2026 - Had to change due to reconfiguration of the SearchController & Search Views
         {
             int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
             List<Club> clubs = _context.Clubs.Where(c => c.OwnerId == userId).ToList();
@@ -27,12 +27,15 @@ namespace Runrs_SD7501.Controllers
         [HttpPost]
         public IActionResult Create(Club club)
         {
+            club.OwnerId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            club.CreatedAt = DateTime.Now;
+
             if (ModelState.IsValid)
             {
                 _context.Clubs.Add(club);
                 _context.SaveChanges();
                 TempData["Success"] = "Club created successfully!";
-                return RedirectToAction("MyClubs");
+                return RedirectToAction("Index"); // <------ Byron 17/04/2026 - Had to change due to reconfiguration of the SearchController & Search Views
             }
             return View();
         }
@@ -60,7 +63,7 @@ namespace Runrs_SD7501.Controllers
                 _context.Clubs.Update(club);
                 _context.SaveChanges();
                 TempData["Success"] = "Club updated successfully!";
-                return RedirectToAction("MyClubs");
+                return RedirectToAction("Index"); // <------ Byron 17/04/2026 - Had to change due to reconfiguration of the SearchController & Search Views
             }
             return View();
         }
@@ -91,26 +94,8 @@ namespace Runrs_SD7501.Controllers
             _context.Clubs.Remove(club);
             _context.SaveChanges();
             TempData["Success"] = "Club deleted successfully";
-            return RedirectToAction("MyClubs");
+            return RedirectToAction("Index"); // <------ Byron 17/04/2026 - Had to change due to reconfiguration of the SearchController & Search Views
         }
         // ------------------------------------------------------------------- //
-
-        // ----------------------- Search Club Page Actions ----------------------- // // <------ Byron 17/04/2026
-        public IActionResult Search(string query)
-        {
-            List<Club> clubs;
-
-            if (string.IsNullOrEmpty(query))
-            {
-                clubs = _context.Clubs.ToList(); // ← all clubs
-            }
-            else
-            {
-                clubs = _context.Clubs
-                    .Where(c => c.ClubName.Contains(query) || c.ClubLocation.Contains(query) ||c.ClubDescription.Contains(query)).ToList();
-            }
-
-            return View(clubs);
-        }
     }
 }

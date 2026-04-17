@@ -6,9 +6,9 @@
 }
 
 <div class="search-container">
-    <h1 class="search-header">Search Run Clubs</h1>
+    <h1 class="search-header">Find Run Clubs</h1>
 
-    <form method="get" asp-controller="Club" asp-action="Search" class="d-flex gap-2 mb-4">
+    <form method="get" asp-controller="Search" asp-action="Index" class="d-flex gap-2 mb-4">
         <input type="text" name="query" placeholder="Search clubs..."
                class="search-bar"
                value="@Context.Request.Query["query"]" />
@@ -47,6 +47,18 @@
                             <div class="club-card-footer">
                                 <span class="club-badge">
                                     @(club.IsPrivate ? "Private" : "Public")
+                                </span>
+
+                                <span class="club-badge">
+                                    @club.Difficulty
+                                </span>
+
+                                <span class="club-badge">
+                                    @Html.DisplayFor(modelItem => club.Distance)
+                                </span>
+
+                                <span class="club-badge">
+                                    @club.Type
                                 </span>
                             </div>
                         </div>

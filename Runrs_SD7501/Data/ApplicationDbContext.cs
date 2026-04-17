@@ -1,5 +1,6 @@
 ﻿using Runrs_SD7501.Models;
 using Microsoft.EntityFrameworkCore;
+using static Runrs_SD7501.Models.Club;
 
 namespace Runrs_SD7501.Data
 {
@@ -81,6 +82,9 @@ namespace Runrs_SD7501.Data
                     ClubLocation = "Petone, Wellington",
                     IsPrivate = false,
                     CreatedAt = new DateTime(2026, 10, 4),
+                    Difficulty = DifficultyLevel.Intermediate, // <- - Byron 17/04/2026 - Edited to match new DifficultyLevel enum
+                    Distance = DistanceRange.FiveToTen, // <- - Byron 17/04/2026 - Edited to match new DistanceRange enum
+                    Type = ClubType.Casual, // <- - Byron 17/04/2026 - Edited to match new ClubType enum
                     OwnerId = 1,
                     ImageUrl = ""
                 },
@@ -93,6 +97,9 @@ namespace Runrs_SD7501.Data
                     ClubLocation = "Wellington CBD, Wellington",
                     IsPrivate = false,
                     CreatedAt = new DateTime(2026, 4, 17),
+                    Difficulty = DifficultyLevel.Advanced, // <- - Byron 17/04/2026 - Edited to match new DifficultyLevel enum
+                    Distance = DistanceRange.TenPlus, // <- - Byron 17/04/2026 - Edited to match new DistanceRange enum
+                    Type = ClubType.Training, // <- - Byron 17/04/2026 - Edited to match new ClubType enum
                     OwnerId = 2,
                     ImageUrl = ""
                 },
@@ -104,6 +111,9 @@ namespace Runrs_SD7501.Data
                     ClubLocation = "Porirua, Wellington",
                     IsPrivate = false,
                     CreatedAt = new DateTime(2026, 4, 17),
+                    Difficulty = DifficultyLevel.Beginner, // <- - Byron 17/04/2026 - Edited to match new DifficultyLevel enum
+                    Distance = DistanceRange.FiveToTen, // <- - Byron 17/04/2026 - Edited to match new DistanceRange enum
+                    Type = ClubType.Social, // <- - Byron 17/04/2026 - Edited to match new ClubType enum
                     OwnerId = 3,
                     ImageUrl = ""
                 }
