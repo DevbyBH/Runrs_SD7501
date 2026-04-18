@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Runrs.DataAccess.Repository.IRepository;
+using Runrs.DataAccess.Repository;
 using Runrs_SD7501.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IClubRepository, ClubRepository>(); // <------ Byron 18/04/2026 - Registered the IClubRepository and ClubRepository services for dependency injection in the ClubController
+builder.Services.AddScoped<IUserRepository, UserRepository>(); // <------ Byron 18/04/2026 - Registered the IUserRepository and UserRepository services for dependency injection in the LoginController
+builder.Services.AddScoped<IMembershipRepository, MembershipRepository>(); // <------ Byron 18/04/2026 - Registered the IMembership and MembershipRepository services for dependency injection in the ClubController (for future use)
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); // <------ Byron 18/04/2026 - Registered the IUnitOfWork and UnitOfWork services for dependency injection in the Club & Login Controllers  
+
 
 builder.Services.AddSession(); // <------ Byron 10/04/2026 - Registered session services for Mo's LoginController
 builder.Services.AddHttpContextAccessor(); // <------ Byron 10/04/2026 - Registered HttpContextAccessor services for Mo's LoginController

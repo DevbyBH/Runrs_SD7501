@@ -8,7 +8,7 @@ using Runrs_SD7501.Data;
 
 #nullable disable
 
-namespace Runrs_SD7501.Migrations
+namespace Runrs.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot

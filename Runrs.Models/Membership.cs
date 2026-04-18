@@ -16,7 +16,8 @@ namespace Runrs_SD7501.Models
         public int ClubId { get; set; }
 
         [Required(ErrorMessage = "Role Required")]
-        [RegularExpression("Owner|Member", ErrorMessage = "Role must be Owner or Member")]
+        [RegularExpression("Admin|Member", ErrorMessage = "Role must be Admin or Member")]
+        [DisplayName("Role in Club")]
         public string Role { get; set; } = "Member";
 
         [Display(Name = "Joined On")]
@@ -25,6 +26,7 @@ namespace Runrs_SD7501.Models
 
         [Required]
         [EnumDataType(typeof(MembershipStatus), ErrorMessage = "Invalid membership status")]
+        [DisplayName("Membership Status")]
         public MembershipStatus Status { get; set; } = MembershipStatus.Pending;
 
         [ForeignKey("UserId")]

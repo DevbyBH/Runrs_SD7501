@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Runrs_SD7501.Migrations
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace Runrs.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class FreshResetWithUserAndClubSeedData : Migration
+    public partial class AddUpdatedDbForNTierArch : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,6 +41,9 @@ namespace Runrs_SD7501.Migrations
                     ClubName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ClubDescription = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     ClubLocation = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Difficulty = table.Column<int>(type: "int", nullable: false),
+                    Distance = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     IsPrivate = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OwnerId = table.Column<int>(type: "int", nullable: false),
@@ -85,12 +90,22 @@ namespace Runrs_SD7501.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "DateOfBirth", "Email", "FirstName", "JoinedAt", "LastName", "PasswordHash", "Username" },
-                values: new object[] { 1, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test@gmail.com", "Test", new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", "Test123", "testuser" });
+                values: new object[,]
+                {
+                    { 1, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test@gmail.com", "Test", new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", "Test123", "testuser" },
+                    { 2, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test2@gmail.com", "Test2", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "User2", "Test123", "testuser2" },
+                    { 3, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test@gmail.com", "Test3", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "User3", "Test123", "testuser3" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Clubs",
-                columns: new[] { "Id", "ClubDescription", "ClubLocation", "ClubName", "CreatedAt", "ImageUrl", "IsPrivate", "OwnerId" },
-                values: new object[] { 1, "Join us every Wednesday & Saturday for a 10km run along Petone Esplanade/Beach", "Petone, Wellington", "Hutt Valley Run Club", new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, 1 });
+                columns: new[] { "Id", "ClubDescription", "ClubLocation", "ClubName", "CreatedAt", "Difficulty", "Distance", "ImageUrl", "IsPrivate", "OwnerId", "Type" },
+                values: new object[,]
+                {
+                    { 1, "Join us every Wednesday & Saturday for a 10km run along Petone Esplanade/Beach", "Petone, Wellington", "Hutt Valley Run Club", new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 1, "", false, 1, 0 },
+                    { 2, "Wanting a challenge? Join our run club that regularly does the famous 'Bays Route', a 30km scenic route along some of the most beautiful bays Wellington has to offer.", "Wellington CBD, Wellington", "Bay Runners", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 2, "", false, 2, 3 },
+                    { 3, "Join our social run club based in Porirua which is open to all levels of fitness. We meet every Saturday at the Porirua pools to complete a 5km run and socialise over coffee after. ", "Porirua, Wellington", "Social Runners WLG", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 1, "", false, 3, 2 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clubs_OwnerId",

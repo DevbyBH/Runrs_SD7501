@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Runrs.DataAccess.Repository.IRepository;
 using Runrs_SD7501.Data;
 using Runrs_SD7501.Models;
 
@@ -6,10 +7,10 @@ namespace Runrs_SD7501.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public LoginController(ApplicationDbContext db)
+        private readonly IUserRepository _userRepository;
+        public LoginController(IUserRepository db)
         {
-            _db = db;
+            _userRepository = db;
         }
 
         public IActionResult Index()
@@ -22,9 +23,9 @@ namespace Runrs_SD7501.Controllers
         {
             if (user != null)
             {
-                var obj = _db.Users.FirstOrDefault(a => a.Username == user.Username && a.PasswordHash == user.PasswordHash); //<-- Byron 17/04/2026 - Edited to allow for proper session login (So clubs can be created with correct user id)
+                var obj = _userRepository.GetByUsername(user.Username); 
 
-                if (obj != null) //<-- Byron 17/04/2026 - Edited to allow for proper session login (So clubs can be created with correct user id)
+                if (obj != null && obj.PasswordHash == user.PasswordHash) 
                 {
                     HttpContext.Session.SetInt32("UserId", obj.Id);
                     return RedirectToAction("Index", "Home");
@@ -32,15 +33,13 @@ namespace Runrs_SD7501.Controllers
 
                 else
                 {
+                    TempData["Error"] = "Invalid username or password.";
                     return RedirectToAction("Index", "Login");
                 }
             }
-
-            else
-            {
-                return RedirectToAction("Index", "Login");
-            }
+            return RedirectToAction("Index", "Login");
         }
+
 
         public ActionResult Logout()
         {
@@ -58,11 +57,11 @@ namespace Runrs_SD7501.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Users.Add(user);
-                _db.SaveChanges();
+                _userRepository.Add(user);
+                _userRepository.Save();
 
                 // auto login
-                HttpContext.Session.SetInt32("UserId", user.Id); //<-- Byron 17/04/2026 - Edited to allow for proper session login (So clubs can be created with correct user id)
+                HttpContext.Session.SetInt32("UserId", user.Id);
                 TempData["Success"] = "Welcome! Registration successful.";
                 return RedirectToAction("Index", "Home"); ;
             }

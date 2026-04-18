@@ -9,11 +9,11 @@ using Runrs_SD7501.Data;
 
 #nullable disable
 
-namespace Runrs_SD7501.Migrations
+namespace Runrs.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260412072215_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260418112010_AddUpdatedDbForNTierArch")]
+    partial class AddUpdatedDbForNTierArch
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,12 @@ namespace Runrs_SD7501.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Difficulty")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Distance")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -58,6 +64,9 @@ namespace Runrs_SD7501.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("OwnerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -74,9 +83,40 @@ namespace Runrs_SD7501.Migrations
                             ClubLocation = "Petone, Wellington",
                             ClubName = "Hutt Valley Run Club",
                             CreatedAt = new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Difficulty = 1,
+                            Distance = 1,
                             ImageUrl = "",
                             IsPrivate = false,
-                            OwnerId = 1
+                            OwnerId = 1,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClubDescription = "Wanting a challenge? Join our run club that regularly does the famous 'Bays Route', a 30km scenic route along some of the most beautiful bays Wellington has to offer.",
+                            ClubLocation = "Wellington CBD, Wellington",
+                            ClubName = "Bay Runners",
+                            CreatedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Difficulty = 2,
+                            Distance = 2,
+                            ImageUrl = "",
+                            IsPrivate = false,
+                            OwnerId = 2,
+                            Type = 3
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ClubDescription = "Join our social run club based in Porirua which is open to all levels of fitness. We meet every Saturday at the Porirua pools to complete a 5km run and socialise over coffee after. ",
+                            ClubLocation = "Porirua, Wellington",
+                            ClubName = "Social Runners WLG",
+                            CreatedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Difficulty = 0,
+                            Distance = 1,
+                            ImageUrl = "",
+                            IsPrivate = false,
+                            OwnerId = 3,
+                            Type = 2
                         });
                 });
 
@@ -167,6 +207,28 @@ namespace Runrs_SD7501.Migrations
                             LastName = "User",
                             PasswordHash = "Test123",
                             Username = "testuser"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateOfBirth = new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "Test2@gmail.com",
+                            FirstName = "Test2",
+                            JoinedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastName = "User2",
+                            PasswordHash = "Test123",
+                            Username = "testuser2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DateOfBirth = new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "Test@gmail.com",
+                            FirstName = "Test3",
+                            JoinedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastName = "User3",
+                            PasswordHash = "Test123",
+                            Username = "testuser3"
                         });
                 });
 
