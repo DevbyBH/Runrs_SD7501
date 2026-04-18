@@ -72,7 +72,9 @@ h1, h2, h3 {
 }
 
 .btn-custom {
-    background-color: #000000;
+    background-color: #ffffff5e;
+    height: 40px;
+    width: 14rem;
     color: white;
     border: none;
     font-weight: 600;
@@ -80,6 +82,7 @@ h1, h2, h3 {
 
 .btn-custom:hover {
     color: #fe9144;
+    background-color: rgba(0, 0, 0, 0.3)
 }
 /* ------------------------------------------------------------------------------------------------- */
 
@@ -342,5 +345,85 @@ h1, h2, h3 {
 .form-check-input:checked {
     background-color: #FF7614;
     border-color: #FF7614;
+}
+/* ------------------------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------------------------- */
+/* Byron (18/04/2026) - CSS styling for the My Clubs TABLE View (Tracking created clubs) */
+.club-table-container {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.club-table {
+    min-width: 1200px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.club-table th {
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 0.5px;
+    color: #fff;
+    background-color: #0000006a;
+    font-size: 20px;
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #ffffff5e;
+}
+
+.club-table td {
+    font-family: 'Rajdhani', sans-serif;
+    color: #ddd;
+    background: #27272681;
+    border: 1px solid #ffffff5e;
+    padding: 15px
+}
+
+.club-table th:last-child,
+.club-table td:last-child {
+    position: sticky;
+    right: 0;
+    background: #272726;
+    z-index: 2;
+    border-left: 1px solid #ffffff5e;
+}
+
+.club-table th:last-child {
+    z-index: 3;
+}
+
+.crud-btn {
+    background-color: #ffffff5e;
+    color: white;
+    border: none;
+    font-weight: 600;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.crud-btn:hover {
+    color: orange;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.crud-input-border:disabled,
+.crud-input-border[disabled] {
+    background-color: #1a1a1a;
+    color: #888;
+    border-color: #444;
+}
+
+textarea.crud-input-border:disabled,
+select.crud-input-border:disabled {
+    background-color: #1a1a1a;
+    color: #888;
+    border-color: #444;
 }
 /* ------------------------------------------------------------------------------------------------- */

@@ -1,0 +1,74 @@
+﻿@model Runrs_SD7501.Models.Club
+
+@{
+    ViewData["Title"] = "Create Club";
+    ViewData["BodyClass"] = "home-page";
+}
+
+<!-- Byron 18/04/2026 - NEW Delete Form for creating new Clubs (Have implemented all properties and is now functional) + CSS & Bootstrap Styling -->
+<div class="crud-form shadow border-0 mt-4">
+    <div class="crud-card-header-box ml-0 py-3">
+        <div class="crud-card-header">
+            <h2 class="crud-header-text py-2">Delete Club</h2>
+            <p class="text-white">No longer wanting to host this club? Delete here:</p>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" class="row">
+            <div class="p-3">
+                <div class="mb-3 row p-1">
+                    <label asp-for="ClubName" class="crud-form-label"></label>
+                    <input asp-for="ClubName" disabled class="form-control crud-input-border" />
+                    <span asp-validation-for="ClubName" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="ClubDescription" class="crud-form-label"></label>
+                    <textarea asp-for="ClubDescription" disabled class="form-control crud-input-border" rows="3"></textarea>
+                    <span asp-validation-for="ClubDescription" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="ClubLocation" class="crud-form-label"></label>
+                    <input asp-for="ClubLocation" disabled class="form-control crud-input-border" />
+                    <span asp-validation-for="ClubLocation" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="IsPrivate" class="crud-form-label"></label>
+                    <div class="form-check form-switch ms-4">
+                        <input asp-for="IsPrivate" disabled class="form-check-input" type="checkbox" />
+                    </div>
+                    <span asp-validation-for="IsPrivate" disabled class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="ImageUrl" class="crud-form-label"></label>
+                    <input asp-for="ImageUrl" type="url" placeholder="https://example.com" disabled class="form-control crud-input-border" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="Difficulty" class="crud-form-label"></label>
+                    <select asp-for="Difficulty" asp-items="Html.GetEnumSelectList<Club.DifficultyLevel>()" disabled class="form-control crud-input-border"></select>
+                    <span asp-validation-for="Difficulty" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="Distance" class="crud-form-label"></label>
+                    <select asp-for="Distance" asp-items="Html.GetEnumSelectList<Club.DistanceRange>()" disabled class="form-control crud-input-border"></select>
+                    <span asp-validation-for="Distance" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="Type" class="crud-form-label"></label>
+                    <select asp-for="Type" asp-items="Html.GetEnumSelectList<Club.ClubType>()" disabled class="form-control crud-input-border"></select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-custom form-control">Delete</button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Club" asp-action="Index" class="btn btn-secondary border form-control">
+                            Back to My Clubs
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
