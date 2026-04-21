@@ -12,8 +12,8 @@ using Runrs_SD7501.Data;
 namespace Runrs.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260418112010_AddUpdatedDbForNTierArch")]
-    partial class AddUpdatedDbForNTierArch
+    [Migration("20260421092101_reset")]
+    partial class reset
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

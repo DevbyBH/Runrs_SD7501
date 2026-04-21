@@ -10,7 +10,7 @@ namespace Runrs.DataAccess.Repository.IRepository
     {
         IClubRepository Club { get; }
         IUserRepository User { get; }
-        // IMembershipRepository { get; }   
+        IMembershipRepository Membership { get; }
         void Save();
     }
 }

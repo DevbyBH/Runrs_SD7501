@@ -9,18 +9,38 @@ namespace Runrs_SD7501.Controllers
 {
     public class ClubController : BaseController
     {
-        private readonly IClubRepository _clubRepository;
-        public ClubController(IClubRepository db)
+        private readonly IUnitOfWork _unitOfWork;
+        public ClubController(IUnitOfWork unitOfWork)
         {
-            _clubRepository = db;
+            _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string query)
         {
             int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
-            var clubs = _clubRepository.GetAll(includeProperties: "Owner")
-                .Where(c => c.OwnerId == userId)
+
+            List<Club> clubs;
+
+            if (string.IsNullOrEmpty(query))
+            {
+                clubs = _unitOfWork.Club.GetAll().ToList();
+            }
+            else
+            {
+                clubs = _unitOfWork.Club.GetAll()
+                    .Where(c => c.ClubName.Contains(query)
+                             || c.ClubLocation.Contains(query)
+                             || c.ClubDescription.Contains(query))
+                    .ToList();
+            }
+
+            // get memberships for current user
+            var memberships = _unitOfWork.Membership.GetAll()
+                .Where(m => m.UserId == userId)
                 .ToList();
+
+            ViewBag.Memberships = memberships;
+
             return View(clubs);
         }
         // ----------------------- Create Club Actions ----------------------- // // 
@@ -37,8 +57,8 @@ namespace Runrs_SD7501.Controllers
 
             if (ModelState.IsValid)
             {
-                _clubRepository.Add(club);
-                _clubRepository.Save();
+                _unitOfWork.Club.Add(club);
+                _unitOfWork.Save();
                 TempData["Success"] = "Club created successfully!";
                 return RedirectToAction("Index");
             }
@@ -55,7 +75,7 @@ namespace Runrs_SD7501.Controllers
                 return NotFound();
 
             int userId = HttpContext.Session.GetInt32("UserId") ?? 0; 
-            var club = _clubRepository.Get(c => c.Id == id); 
+            var club = _unitOfWork.Club.Get(c => c.Id == id); 
 
             if (club == null)
                 return NotFound();
@@ -68,7 +88,7 @@ namespace Runrs_SD7501.Controllers
         [HttpPost]
         public IActionResult Edit(Club club) 
         {
-            var existingClub = _clubRepository.Get(c => c.Id == club.Id); 
+            var existingClub = _unitOfWork.Club.Get(c => c.Id == club.Id); 
 
             if (existingClub == null)
                 return NotFound();
@@ -88,8 +108,8 @@ namespace Runrs_SD7501.Controllers
                 existingClub.Distance = club.Distance;
                 existingClub.Type = club.Type;
 
-                _clubRepository.Update(existingClub);
-                _clubRepository.Save();
+                _unitOfWork.Club.Update(existingClub);
+                _unitOfWork.Save();
                 TempData["Success"] = "Club updated successfully!";
                 return RedirectToAction("Index");
             }
@@ -104,7 +124,7 @@ namespace Runrs_SD7501.Controllers
                 return NotFound();
 
             int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
-            var club = _clubRepository.Get(c => c.Id == id);
+            var club = _unitOfWork.Club.Get(c => c.Id == id);
 
             if (club == null)
                 return NotFound();
@@ -118,15 +138,77 @@ namespace Runrs_SD7501.Controllers
         public IActionResult DeletePOST(int? id)
         {
             int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
-            var club = _clubRepository.Get(c => c.Id == id);
+            var club = _unitOfWork.Club.Get(c => c.Id == id);
 
             if (club == null)
                 return NotFound();
-            _clubRepository.Remove(club);
-            _clubRepository.Save();
+            _unitOfWork.Club.Remove(club);
+            _unitOfWork.Save();
             TempData["Success"] = "Club deleted successfully";
             return RedirectToAction("Index"); 
         }
         // ------------------------------------------------------------------- //
+
+        // -----------------------  Join Club Action ----------------------- //
+
+        [HttpPost]
+        public IActionResult Join(int id)
+        {
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            if (userId == 0)
+                return Unauthorized();
+
+            // check if already joined
+            var existing = _unitOfWork.Membership.Get(m =>
+                m.UserId == userId && m.ClubId == id);
+
+            
+
+            if (existing == null)
+            {
+                var membership = new Membership
+                {
+                    UserId = userId,
+                    ClubId = id,
+                    Role = "Member",
+                    JoinedAt = DateTime.Now,
+                    Status = MembershipStatus.Pending
+                };
+
+                _unitOfWork.Membership.Add(membership);
+                _unitOfWork.Save();
+            }
+
+
+
+            return RedirectToAction("Details", new { id });
+        }
+
+        // -----------------------------------------------------------------//
+
+        // -----------------------  details Club Action ----------------------- //
+
+        public IActionResult Details(int id)
+        {
+            if (id == 0)
+                return NotFound();
+
+            var club = _unitOfWork.Club.Get(c => c.Id == id);
+
+            if (club == null)
+                return NotFound();
+
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            var membership = _unitOfWork.Membership.Get(m =>
+                m.UserId == userId && m.ClubId == id);
+
+            ViewBag.Membership = membership;
+
+            return View(club);
+        }
+
+        // -------------------------------------------------------------------- //
     }
 }

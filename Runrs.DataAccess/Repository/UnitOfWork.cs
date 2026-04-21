@@ -13,14 +13,14 @@ namespace Runrs.DataAccess.Repository
         private ApplicationDbContext _db;
         public IClubRepository Club { get; private set; }
         public IUserRepository User { get; private set; }
-        // public IMembershipRepository Membership { get; private set; }
+        public IMembershipRepository Membership { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
             Club = new ClubRepository(_db);
             User = new UserRepository(_db);
-            // Membership = new MembershipRepository(_db);
+            Membership = new MembershipRepository(_db);
         }
 
         public void Save()

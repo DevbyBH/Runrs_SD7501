@@ -1,0 +1,76 @@
+﻿@model Runrs_SD7501.Models.Club
+
+@{
+    var membership = ViewBag.Membership as Runrs_SD7501.Models.Membership;
+    var userId = Context.Session.GetInt32("UserId") ?? 0;
+    ViewData["BodyClass"] = "home-page";
+}
+
+<div class="container mt-4 text-white">
+
+    <!-- Title -->
+    <h1>
+        <span style="color:white">@Model.ClubName</span>
+    </h1>
+
+    <hr style="border-color:white;" />
+
+    <p><strong>Location:</strong> @Model.ClubLocation</p>
+    <p><strong>Description:</strong> @Model.ClubDescription</p>
+
+    <p>
+        <strong>Type:</strong>
+        <span style="color:#fe9144">@Model.Type</span>
+    </p>
+
+    <p>
+        <strong>Difficulty:</strong>
+        <span style="color:#fe9144">@Model.Difficulty</span>
+    </p>
+
+    <p><strong>Distance:</strong> @Model.Distance</p>
+
+    <hr style="border-color:white;" />
+
+    <!-- Join Logic -->
+    @if (Model.OwnerId == userId)
+    {
+        <span class="badge bg-secondary">You are the owner</span>
+    }
+    else if (membership == null)
+    {
+        <form asp-action="Join" asp-route-id="@Model.Id" method="post">
+            <button type="submit" class="btn"
+                    style="background-color:#fe9144; color:white;">
+                Join Club
+            </button>
+        </form>
+    }
+    else if (membership.Status == Runrs_SD7501.Models.MembershipStatus.Pending)
+    {
+        <span class="badge" style="background-color:#ffc107; color:black;">
+            Pending Approval
+        </span>
+    }
+    else if (membership.Status == Runrs_SD7501.Models.MembershipStatus.Approved)
+    {
+        <span class="badge" style="background-color:#28a745; color:white;">
+            Member
+        </span>
+    }
+    else
+    {
+        <span class="badge" style="background-color:#dc3545; color:white;">
+            Rejected
+        </span>
+    }
+
+    <br /><br />
+
+    <a asp-action="Index"
+       asp-controller="Search"
+       class="btn btn-secondary">
+        Back to Search
+    </a>
+
+</div>
