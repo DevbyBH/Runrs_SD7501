@@ -54,7 +54,15 @@
     <!-- Join Logic -->
     @if (Model.OwnerId == userId)
     {
-        <span class="badge bg-secondary">You are the owner</span>
+        <div class="d-flex gap-2 align-items-center">
+            <span class="badge bg-secondary">You are the owner</span>
+
+            <a asp-action="ManageRequests"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning btn-sm">
+                Manage Join Requests
+            </a>
+        </div>
     }
     else if (membership == null)
     {

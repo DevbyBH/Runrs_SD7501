@@ -12,7 +12,7 @@ using Runrs_SD7501.Data;
 namespace Runrs.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260422023141_NewImageUrlSeedData")]
+    [Migration("20260422045334_NewImageUrlSeedData")]
     partial class NewImageUrlSeedData
     {
         /// <inheritdoc />

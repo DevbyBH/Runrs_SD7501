@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace Runrs_SD7501.Models
 {
     public class Membership
@@ -39,4 +40,6 @@ namespace Runrs_SD7501.Models
     {
         Pending, Approved, Rejected
     }
+
+
 }

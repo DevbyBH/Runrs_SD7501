@@ -54,34 +54,34 @@ namespace Runrs_SD7501.Controllers
         public IActionResult Edit(int? id)
         {
 
-            if (id == null || id == 0) 
+            if (id == null || id == 0)
                 return NotFound();
 
-            int userId = HttpContext.Session.GetInt32("UserId") ?? 0; 
-            var club = _unitOfWork.Club.Get(c => c.Id == id); 
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            var club = _unitOfWork.Club.Get(c => c.Id == id);
 
             if (club == null)
                 return NotFound();
-            if (club.OwnerId != userId) 
+            if (club.OwnerId != userId)
                 return Unauthorized();
 
             return View(club);
         }
 
         [HttpPost]
-        public IActionResult Edit(Club club) 
+        public IActionResult Edit(Club club)
         {
-            var existingClub = _unitOfWork.Club.Get(c => c.Id == club.Id); 
+            var existingClub = _unitOfWork.Club.Get(c => c.Id == club.Id);
 
             if (existingClub == null)
                 return NotFound();
 
             int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
-            if (existingClub.OwnerId != userId) 
+            if (existingClub.OwnerId != userId)
                 return Unauthorized();
 
             if (ModelState.IsValid)
-            { 
+            {
                 existingClub.ClubName = club.ClubName;
                 existingClub.ClubDescription = club.ClubDescription;
                 existingClub.ClubLocation = club.ClubLocation;
@@ -128,7 +128,7 @@ namespace Runrs_SD7501.Controllers
             _unitOfWork.Club.Remove(club);
             _unitOfWork.Save();
             TempData["Success"] = "Club deleted successfully";
-            return RedirectToAction("Index"); 
+            return RedirectToAction("Index");
         }
         // ------------------------------------------------------------------- //
 
@@ -146,7 +146,7 @@ namespace Runrs_SD7501.Controllers
             var existing = _unitOfWork.Membership.Get(m =>
                 m.UserId == userId && m.ClubId == id);
 
-            
+
 
             if (existing == null)
             {
@@ -197,6 +197,7 @@ namespace Runrs_SD7501.Controllers
         }
 
         // -------------------------------------------------------------------- //
+
         // -----------------------  Leave Club Action ----------------------- //
         [HttpPost]
         public IActionResult Leave(int id)
@@ -210,5 +211,84 @@ namespace Runrs_SD7501.Controllers
             TempData["Success"] = "You have left this club!";
             return RedirectToAction("Details", new { id });
         }
+        // ----------------------------------------------------------------- //
+
+        // ----------------------- Manage Membership Requests ----------------------- //
+
+        public IActionResult ManageRequests(int id)
+        {
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            var club = _unitOfWork.Club.Get(c => c.Id == id);
+
+            if (club == null)
+                return NotFound();
+
+            if (club.OwnerId != userId)
+                return Unauthorized();
+
+            var pendingRequests = _unitOfWork.Membership
+                .GetAll(includeProperties: "User")
+                .Where(m => m.ClubId == id && m.Status == MembershipStatus.Pending)
+                .ToList();
+
+            ViewBag.Club = club;
+
+            return View(pendingRequests);
+        }
+
+        [HttpPost]
+        public IActionResult ApproveRequest(int membershipId)
+        {
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            var membership = _unitOfWork.Membership.Get(
+                m => m.Id == membershipId,
+                includeProperties: "Club"
+            );
+
+            if (membership == null)
+                return NotFound();
+
+            if (membership.Club.OwnerId != userId)
+                return Unauthorized();
+
+            membership.Status = MembershipStatus.Approved;
+
+            _unitOfWork.Membership.Update(membership);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "Membership request approved!";
+
+            return RedirectToAction("ManageRequests", new { id = membership.ClubId });
+        }
+
+        [HttpPost]
+        public IActionResult RejectRequest(int membershipId)
+        {
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            var membership = _unitOfWork.Membership.Get(
+                m => m.Id == membershipId,
+                includeProperties: "Club"
+            );
+
+            if (membership == null)
+                return NotFound();
+
+            if (membership.Club.OwnerId != userId)
+                return Unauthorized();
+
+            membership.Status = MembershipStatus.Rejected;
+
+            _unitOfWork.Membership.Update(membership);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "Membership request rejected!";
+
+            return RedirectToAction("ManageRequests", new { id = membership.ClubId });
+        }
+
+
     }
 }

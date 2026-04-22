@@ -1,0 +1,82 @@
+﻿@model List<Runrs_SD7501.Models.Membership>
+
+@{
+    var club = ViewBag.Club as Runrs_SD7501.Models.Club;
+    ViewData["Title"] = "Manage Requests";
+    ViewData["BodyClass"] = "home-page";
+}
+
+<div class="search-container">
+
+    <h1 class="search-header">Pending Join Requests</h1>
+    <p class="text-white text-center fw-bold">
+        @club?.ClubName • Total Requests: @Model.Count
+    </p>
+
+    @if (!Model.Any())
+    {
+        <p class="text-white text-center fw-bold">No pending requests.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var request in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="club-card">
+
+                        <!-- Placeholder (same style as search cards) -->
+                        <div class="club-card-img-placeholder">
+                            <i class="bi bi-person"></i>
+                        </div>
+
+                        <div class="club-card-body">
+
+                            <!-- Username -->
+                            <h3 class="club-card-title">
+                                @request.User?.Username
+                            </h3>
+
+                            <!-- Full Name -->
+                            <p class="club-card-description">
+                                @request.User?.FirstName @request.User?.LastName
+                            </p>
+
+                            <!-- Request Info -->
+                            <p class="club-card-location">
+                                <i class="bi bi-calendar-event"></i>
+                                Requested: @request.JoinedAt.ToString("dd/MM/yyyy")
+                            </p>
+
+                            <div class="club-card-footer mb-2">
+                                <span class="club-badge bg-warning text-dark">
+                                    Pending
+                                </span>
+                            </div>
+
+                            <!-- ACTION BUTTONS -->
+                            <div class="d-flex justify-content-between mt-3">
+
+                                <form asp-action="ApproveRequest" method="post">
+                                    <input type="hidden" name="membershipId" value="@request.Id" />
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        Approve
+                                    </button>
+                                </form>
+
+                                <form asp-action="RejectRequest" method="post">
+                                    <input type="hidden" name="membershipId" value="@request.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Reject
+                                    </button>
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

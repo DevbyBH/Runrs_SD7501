@@ -4,6 +4,7 @@ using Runrs_SD7501.Models;
 
 namespace Runrs.DataAccess.Repository
 {
+
     public class MembershipRepository : Repository<Membership>, IMembershipRepository
     {
         private ApplicationDbContext _db;
@@ -41,6 +42,14 @@ namespace Runrs.DataAccess.Repository
         {
             return _db.Memberships
                 .Any(m => m.UserId == userId && m.ClubId == clubId);
+        }
+
+        
+    
+
+    public void Update(Membership obj)
+        {
+            _db.Memberships.Update(obj);
         }
     }
 }
