@@ -5,6 +5,7 @@
     ViewData["BodyClass"] = "home-page";
 
     var memberships = ViewBag.Memberships as List<Runrs_SD7501.Models.Membership>;
+    var memberCounts = ViewBag.MemberCounts as Dictionary<int, int>;
     var userId = Context.Session.GetInt32("UserId") ?? 0;
 }
 
@@ -45,33 +46,43 @@
                             </div>
                         }
 
-                        <div class="club-card-body">
-                            <h3 class="club-card-title">@club.ClubName</h3>
+                    <div class="club-card-body">
+                        <h3 class="club-card-title">@club.ClubName</h3>
 
-                            <p class="club-card-location">
-                                <i class="bi bi-geo-alt-fill"></i> @club.ClubLocation
-                            </p>
+                        <p class="club-card-location">
+                            <i class="bi bi-geo-alt-fill"></i> @club.ClubLocation
+                        </p>
 
-                            <p class="club-card-description">
-                                @club.ClubDescription
-                            </p>
+                        <p class="club-card-description">
+                            @club.ClubDescription
+                        </p>
 
-                            <div class="club-card-footer mb-2">
-                                <span class="club-badge">
-                                    @(club.IsPrivate ? "Private" : "Public")
-                                </span>
+                        <div class="club-card-footer mb-2">
 
-                                <span class="club-badge">
-                                    @club.Difficulty
-                                </span>
+                            <span class="club-badge">
+                                @(club.IsPrivate ? "Private" : "Public")
+                            </span>
 
-                                <span class="club-badge">
-                                    @Html.DisplayFor(modelItem => club.Distance)
-                                </span>
+                            <span class="club-badge">
+                                @club.Difficulty
+                            </span>
 
-                                <span class="club-badge">
-                                    @club.Type
-                                </span>
+                            <span class="club-badge">
+                                @Html.DisplayFor(modelItem => club.Distance)
+                            </span>
+
+                            <span class="club-badge">
+                                @club.Type
+                            </span>
+
+                            <!-- MEMBER COUNT -->
+                            <span class="club-badge">
+                                <i class="bi bi-people-fill"></i>
+                                @(memberCounts != null && memberCounts.ContainsKey(club.Id)
+                                                            ? memberCounts[club.Id]
+                                                            : 0)
+                        </span>
+
                             </div>
 
                             <!-- BUTTON SECTION -->
@@ -86,7 +97,7 @@
                                 </a>
 
                                 <!-- Membership Logic -->
-                                @if (club.OwnerId == userId)
+                        @if (club.OwnerId == userId)
                                 {
                                     <span class="badge bg-secondary">Owner</span>
                                 }

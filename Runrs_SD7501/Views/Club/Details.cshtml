@@ -3,9 +3,12 @@
 @{
     var membership = ViewBag.Membership as Runrs_SD7501.Models.Membership;
     var userId = ViewBag.UserId as int? ?? 0;
+    var members = ViewBag.Members as List<Runrs_SD7501.Models.Membership>;
+
     ViewData["Title"] = Model.ClubName;
     ViewData["BodyClass"] = "home-page";
 }
+
 @if (TempData["Success"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -23,17 +26,9 @@
 
     <hr style="border-color:white;" />
 
-    <p>
-        <strong>Location:</strong> @Model.ClubLocation
-    </p>
-
-    <p>
-        <strong>Description:</strong> @Model.ClubDescription
-    </p>
-
-    <p>
-        <strong>Owner:</strong> @Model.Owner?.Username
-    </p>
+    <p><strong>Location:</strong> @Model.ClubLocation</p>
+    <p><strong>Description:</strong> @Model.ClubDescription</p>
+    <p><strong>Owner:</strong> @Model.Owner?.Username</p>
 
     <p>
         <strong>Type:</strong>
@@ -98,7 +93,79 @@
             Rejected
         </span>
     }
-    
+
+    <!-- ================= MEMBERS SECTION ================= -->
+
+    <hr style="border-color:white;" />
+
+    <h3 class="mt-4 mb-3">Club Members</h3>
+
+    @if (members == null || !members.Any())
+    {
+        <p>No members yet.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var member in members)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="club-card">
+
+                        <!-- Placeholder -->
+                        <div class="club-card-img-placeholder">
+                            <i class="bi bi-person"></i>
+                        </div>
+
+                        <div class="club-card-body">
+
+                            <h4 class="club-card-title">
+                                @member.User?.Username
+                            </h4>
+
+                            <p class="club-card-description">
+                                @member.User?.FirstName @member.User?.LastName
+                            </p>
+
+                            <div class="club-card-footer">
+
+                                <!-- Owner Highlight -->
+                                @if (member.UserId == Model.OwnerId)
+                                {
+                                    <span class="club-badge bg-primary">
+                                        Owner
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="club-badge bg-success">
+                                        Member
+                                    </span>
+                                }
+
+                                <!-- Admin Role -->
+                                @if (member.Role == "Admin")
+                                {
+                                    <span class="club-badge bg-warning text-dark">
+                                        Admin
+                                    </span>
+                                }
+
+                            </div>
+
+                            <p class="club-card-location mt-2">
+                                <i class="bi bi-calendar"></i>
+                                Joined: @member.JoinedAt.ToString("dd/MM/yyyy")
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <!-- ================= END MEMBERS ================= -->
 
     <br /><br />
 

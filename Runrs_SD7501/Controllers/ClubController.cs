@@ -193,6 +193,13 @@ namespace Runrs_SD7501.Controllers
             ViewBag.Membership = membership;
             ViewBag.UserId = userId;
 
+            var members = _unitOfWork.Membership
+                .GetAll(includeProperties: "User")
+                .Where(m => m.ClubId == id && m.Status == MembershipStatus.Approved)
+                .ToList();
+
+            ViewBag.Members = members;
+
             return View(club);
         }
 
