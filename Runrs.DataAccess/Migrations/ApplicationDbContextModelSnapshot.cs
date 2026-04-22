@@ -82,7 +82,7 @@ namespace Runrs.DataAccess.Migrations
                             CreatedAt = new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Difficulty = 1,
                             Distance = 1,
-                            ImageUrl = "",
+                            ImageUrl = "https://wordpress.nzrunning.co.nz/wp-content/uploads/2025/04/445cover.jpg",
                             IsPrivate = false,
                             OwnerId = 1,
                             Type = 0
@@ -96,7 +96,7 @@ namespace Runrs.DataAccess.Migrations
                             CreatedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Difficulty = 2,
                             Distance = 2,
-                            ImageUrl = "",
+                            ImageUrl = "https://www.changefitness.co.nz/wp-content/uploads/feb78d35-680f-4f15-81c1-1e7a0183f311.jpg",
                             IsPrivate = false,
                             OwnerId = 2,
                             Type = 3
@@ -110,7 +110,7 @@ namespace Runrs.DataAccess.Migrations
                             CreatedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Difficulty = 0,
                             Distance = 1,
-                            ImageUrl = "",
+                            ImageUrl = "https://cdn.eventfinda.co.nz/uploads/events/transformed/1771695-766708-34.jpg",
                             IsPrivate = false,
                             OwnerId = 3,
                             Type = 2

@@ -19,29 +19,12 @@ namespace Runrs_SD7501.Controllers
         {
             int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
 
-            List<Club> clubs;
-
-            if (string.IsNullOrEmpty(query))
-            {
-                clubs = _unitOfWork.Club.GetAll().ToList();
-            }
-            else
-            {
-                clubs = _unitOfWork.Club.GetAll()
-                    .Where(c => c.ClubName.Contains(query)
-                             || c.ClubLocation.Contains(query)
-                             || c.ClubDescription.Contains(query))
-                    .ToList();
-            }
-
-            // get memberships for current user
-            var memberships = _unitOfWork.Membership.GetAll()
-                .Where(m => m.UserId == userId)
-                .ToList();
-
-            ViewBag.Memberships = memberships;
-
-            return View(clubs);
+            var ownedClubs = _unitOfWork.Club.GetAll(includeProperties: "Owner").Where(c => c.OwnerId == userId).ToList(); // Byron 22/04//2026 - Shows clubs owned by the logged-in user on the My Clubs Page
+            var joinedClubIds = _unitOfWork.Membership.GetAll().Where(m => m.UserId == userId && m.Status == MembershipStatus.Approved).Select(m => m.ClubId).ToList(); // Byron 22/04//2026 - Gets the IDs of clubs the user has joined
+            var joinedClubs = _unitOfWork.Club.GetAll(includeProperties: "Owner").Where(c => joinedClubIds.Contains(c.Id) && c.OwnerId != userId).ToList(); // Byron 22/04//2026 - Shows clubs the user has "joined" on the My Clubs Page
+            ViewBag.OwnedClubs = ownedClubs;
+            ViewBag.JoinedClubs = joinedClubs;
+            return View(ownedClubs);
         }
         // ----------------------- Create Club Actions ----------------------- // // 
         public IActionResult Create()
@@ -167,34 +150,37 @@ namespace Runrs_SD7501.Controllers
 
             if (existing == null)
             {
+                var club = _unitOfWork.Club.Get(c => c.Id == id);
                 var membership = new Membership
                 {
                     UserId = userId,
                     ClubId = id,
                     Role = "Member",
                     JoinedAt = DateTime.Now,
-                    Status = MembershipStatus.Pending
+                    Status = club != null && club.IsPrivate ? MembershipStatus.Pending : MembershipStatus.Approved
                 };
 
                 _unitOfWork.Membership.Add(membership);
                 _unitOfWork.Save();
+                TempData["Success"] = club != null && club.IsPrivate ? "Request to join has been sent!" : "Joined club successfully!";
             }
-
-
-
+            else
+            {
+                TempData["Error"] = "You have already joined this club.";
+            }
             return RedirectToAction("Details", new { id });
         }
 
         // -----------------------------------------------------------------//
 
-        // -----------------------  details Club Action ----------------------- //
+        // -----------------------  Details Club Action ----------------------- //
 
         public IActionResult Details(int id)
         {
             if (id == 0)
                 return NotFound();
 
-            var club = _unitOfWork.Club.Get(c => c.Id == id);
+            var club = _unitOfWork.Club.Get(c => c.Id == id, includeProperties: "Owner");
 
             if (club == null)
                 return NotFound();
@@ -205,10 +191,24 @@ namespace Runrs_SD7501.Controllers
                 m.UserId == userId && m.ClubId == id);
 
             ViewBag.Membership = membership;
+            ViewBag.UserId = userId;
 
             return View(club);
         }
 
         // -------------------------------------------------------------------- //
+        // -----------------------  Leave Club Action ----------------------- //
+        [HttpPost]
+        public IActionResult Leave(int id)
+        {
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            var membership = _unitOfWork.Membership.Get(m => m.UserId == userId && m.ClubId == id);
+            if (membership == null)
+                return NotFound();
+            _unitOfWork.Membership.Remove(membership);
+            _unitOfWork.Save();
+            TempData["Success"] = "You have left this club!";
+            return RedirectToAction("Details", new { id });
+        }
     }
 }

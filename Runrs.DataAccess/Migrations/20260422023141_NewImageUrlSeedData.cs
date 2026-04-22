@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Runrs.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class reset : Migration
+    public partial class NewImageUrlSeedData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -102,9 +102,9 @@ namespace Runrs.DataAccess.Migrations
                 columns: new[] { "Id", "ClubDescription", "ClubLocation", "ClubName", "CreatedAt", "Difficulty", "Distance", "ImageUrl", "IsPrivate", "OwnerId", "Type" },
                 values: new object[,]
                 {
-                    { 1, "Join us every Wednesday & Saturday for a 10km run along Petone Esplanade/Beach", "Petone, Wellington", "Hutt Valley Run Club", new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 1, "", false, 1, 0 },
-                    { 2, "Wanting a challenge? Join our run club that regularly does the famous 'Bays Route', a 30km scenic route along some of the most beautiful bays Wellington has to offer.", "Wellington CBD, Wellington", "Bay Runners", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 2, "", false, 2, 3 },
-                    { 3, "Join our social run club based in Porirua which is open to all levels of fitness. We meet every Saturday at the Porirua pools to complete a 5km run and socialise over coffee after. ", "Porirua, Wellington", "Social Runners WLG", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 1, "", false, 3, 2 }
+                    { 1, "Join us every Wednesday & Saturday for a 10km run along Petone Esplanade/Beach", "Petone, Wellington", "Hutt Valley Run Club", new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 1, "https://wordpress.nzrunning.co.nz/wp-content/uploads/2025/04/445cover.jpg", false, 1, 0 },
+                    { 2, "Wanting a challenge? Join our run club that regularly does the famous 'Bays Route', a 30km scenic route along some of the most beautiful bays Wellington has to offer.", "Wellington CBD, Wellington", "Bay Runners", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 2, "https://www.changefitness.co.nz/wp-content/uploads/feb78d35-680f-4f15-81c1-1e7a0183f311.jpg", false, 2, 3 },
+                    { 3, "Join our social run club based in Porirua which is open to all levels of fitness. We meet every Saturday at the Porirua pools to complete a 5km run and socialise over coffee after. ", "Porirua, Wellington", "Social Runners WLG", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 1, "https://cdn.eventfinda.co.nz/uploads/events/transformed/1771695-766708-34.jpg", false, 3, 2 }
                 });
 
             migrationBuilder.CreateIndex(

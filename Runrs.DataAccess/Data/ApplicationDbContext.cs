@@ -86,7 +86,7 @@ namespace Runrs_SD7501.Data
                     Distance = DistanceRange.FiveToTen, // <- - Byron 17/04/2026 - Edited to match new DistanceRange enum
                     Type = ClubType.Casual, // <- - Byron 17/04/2026 - Edited to match new ClubType enum
                     OwnerId = 1,
-                    ImageUrl = ""
+                    ImageUrl = "https://wordpress.nzrunning.co.nz/wp-content/uploads/2025/04/445cover.jpg"
                 },
             // Byron 17/04/2026 - NEW Seed Data for Test Clubs
                 new Club
@@ -101,7 +101,7 @@ namespace Runrs_SD7501.Data
                     Distance = DistanceRange.TenPlus, // <- - Byron 17/04/2026 - Edited to match new DistanceRange enum
                     Type = ClubType.Training, // <- - Byron 17/04/2026 - Edited to match new ClubType enum
                     OwnerId = 2,
-                    ImageUrl = ""
+                    ImageUrl = "https://www.changefitness.co.nz/wp-content/uploads/feb78d35-680f-4f15-81c1-1e7a0183f311.jpg"
                 },
                 new Club
                 {
@@ -115,7 +115,7 @@ namespace Runrs_SD7501.Data
                     Distance = DistanceRange.FiveToTen, // <- - Byron 17/04/2026 - Edited to match new DistanceRange enum
                     Type = ClubType.Social, // <- - Byron 17/04/2026 - Edited to match new ClubType enum
                     OwnerId = 3,
-                    ImageUrl = ""
+                    ImageUrl = "https://cdn.eventfinda.co.nz/uploads/events/transformed/1771695-766708-34.jpg"
                 }
             );
             // ------------------------------------------

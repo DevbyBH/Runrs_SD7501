@@ -427,3 +427,31 @@ select.crud-input-border:disabled {
     border-color: #444;
 }
 /* ------------------------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------------------------- */
+/* Byron (22/04/2026) - CSS styling for the My Clubs TABLE View (Tracking created clubs) */
+
+.card-btn {
+    background-color: #0000006a;
+    height: 25px;
+    width: 8rem;
+    color: white;
+    border: 1px solid;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-btn:hover {
+    color: #fe9144;
+    border: 2px solid #fe9144;
+}
+
+member-btn {
+    width: 4rem;
+    height: 10px;
+    background-color: #000000;
+}

@@ -7,10 +7,10 @@ namespace Runrs_SD7501.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly IUserRepository _userRepository;
-        public LoginController(IUserRepository db)
+        private readonly IUnitOfWork _unitOfWork;
+        public LoginController(IUnitOfWork unitOfWork)
         {
-            _userRepository = db;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
@@ -23,7 +23,7 @@ namespace Runrs_SD7501.Controllers
         {
             if (user != null)
             {
-                var obj = _userRepository.GetByUsername(user.Username); 
+                var obj = _unitOfWork.User.GetByUsername(user.Username); 
 
                 if (obj != null && obj.PasswordHash == user.PasswordHash) 
                 {
@@ -57,15 +57,12 @@ namespace Runrs_SD7501.Controllers
         {
             if (ModelState.IsValid)
             {
-                _userRepository.Add(user);
-                _userRepository.Save();
-
-                // auto login
+                _unitOfWork.User.Add(user);
+                _unitOfWork.User.Save();
                 HttpContext.Session.SetInt32("UserId", user.Id);
                 TempData["Success"] = "Welcome! Registration successful.";
                 return RedirectToAction("Index", "Home"); ;
             }
-
             return View();
         }
     }
