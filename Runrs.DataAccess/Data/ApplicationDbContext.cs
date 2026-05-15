@@ -1,6 +1,7 @@
 ﻿using Runrs_SD7501.Models;
 using Microsoft.EntityFrameworkCore;
 using static Runrs_SD7501.Models.Club;
+using Runrs.Models;
 
 namespace Runrs_SD7501.Data
 {
@@ -14,6 +15,7 @@ namespace Runrs_SD7501.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Membership> Memberships { get; set; }
+        public DbSet<Friendship> Friendships { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
