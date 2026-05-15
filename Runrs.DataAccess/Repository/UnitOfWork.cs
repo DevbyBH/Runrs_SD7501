@@ -14,6 +14,7 @@ namespace Runrs.DataAccess.Repository
         public IClubRepository Club { get; private set; }
         public IUserRepository User { get; private set; }
         public IMembershipRepository Membership { get; private set; }
+        public IFriendshipRepository Friendship { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {

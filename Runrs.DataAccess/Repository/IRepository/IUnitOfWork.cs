@@ -11,6 +11,7 @@ namespace Runrs.DataAccess.Repository.IRepository
         IClubRepository Club { get; }
         IUserRepository User { get; }
         IMembershipRepository Membership { get; }
+        IFriendshipRepository Friendship { get; }
         void Save();
     }
 }
