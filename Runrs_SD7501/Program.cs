@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Runrs.DataAccess.Repository.IRepository;
 using Runrs.DataAccess.Repository;
-using Runrs_SD7501.Data;
+using Runrs.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +12,8 @@ builder.Services.AddScoped<IClubRepository, ClubRepository>(); // <------ Byron 
 builder.Services.AddScoped<IUserRepository, UserRepository>(); // <------ Byron 18/04/2026 - Registered the IUserRepository and UserRepository services for dependency injection in the LoginController
 builder.Services.AddScoped<IMembershipRepository, MembershipRepository>(); // <------ Byron 18/04/2026 - Registered the IMembership and MembershipRepository services for dependency injection in the ClubController (for future use)
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); // <------ Byron 18/04/2026 - Registered the IUnitOfWork and UnitOfWork services for dependency injection in the Club & Login Controllers  
+builder.Services.AddScoped<IEventRepository, EventRepository>(); // <------ Byron 16/05/2026 - Registered the IEventRepository and EventRepository services for dependency injection in the EventController 
+builder.Services.AddScoped<IEventRegistrationRepository, EventRegistrationRepository>(); // <------ Byron 16/05/2026 - Registered the IEventRegistrationRepository and EventRegistrationRepository services for dependency injection in the EventController 
 
 
 builder.Services.AddSession(); // <------ Byron 10/04/2026 - Registered session services for Mo's LoginController

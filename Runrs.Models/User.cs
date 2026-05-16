@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Runrs_SD7501.Models
+namespace Runrs.Models
 {
     public class User
     {

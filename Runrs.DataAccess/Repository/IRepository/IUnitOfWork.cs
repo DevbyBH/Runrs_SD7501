@@ -12,6 +12,8 @@ namespace Runrs.DataAccess.Repository.IRepository
         IUserRepository User { get; }
         IMembershipRepository Membership { get; }
         IFriendshipRepository Friendship { get; }
+        IEventRepository Event { get; } // <----- Added IEventRepository to UnitOfWork (Byron 16/05/2026)
+        IEventRegistrationRepository EventRegistration { get; } // <----- Added IEventRegistrationRepository to UnitOfWork (Byron 16/05/2026)
         void Save();
     }
 }

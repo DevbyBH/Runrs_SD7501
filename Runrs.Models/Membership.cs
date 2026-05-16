@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Runrs_SD7501.Models
+namespace Runrs.Models
 {
     public class Membership
     {

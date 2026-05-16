@@ -1,0 +1,70 @@
+﻿@model List<Runrs.Models.RunEvent>
+
+@{
+    ViewData["Title"] = "Club Events";
+    ViewData["BodyClass"] = "home-page";
+    var club = ViewBag.Club as Runrs.Models.Club;
+}
+
+<div class="search-container">
+    <div class="page-header">
+        <h1 class="text-white">@club?.ClubName — Events</h1>
+        @if (club != null && club.OwnerId == (Context.Session.GetInt32("UserId") ?? 0))
+        {
+            <a asp-controller="Event" asp-action="Create" asp-route-clubId="@club.Id" class="btn btn-custom">
+                <i class="bi bi-plus-circle"></i> Create Event
+            </a>
+        }
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mt-3">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <p class="text-white text-center mt-4">No events scheduled yet.</p>
+    }
+    else
+    {
+        <div class="row mt-4">
+            @foreach (var ev in Model.OrderBy(e => e.EventDate))
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="club-card">
+                        <div class="club-card-body">
+                            <h3 class="club-card-title">@ev.EventTitle</h3>
+                            <p class="club-card-location">
+                                <i class="bi bi-calendar-event"></i>
+                                @ev.EventDate.ToString("dd MMM yyyy h:mm tt")
+                            </p>
+                            <p class="club-card-location">
+                                <i class="bi bi-geo-alt-fill"></i> @ev.EventLocation
+                            </p>
+                            <p class="club-card-description">@ev.EventDescription</p>
+                            <div class="club-card-footer">
+                                <span class="club-badge">@ev.Distance km</span>
+                                <span class="club-badge">
+                                    @(ev.EntryFee == 0 ? "Free" : $"${ev.EntryFee}")
+                                </span>
+                                <a asp-controller="Event" asp-action="Details"
+                                   asp-route-id="@ev.Id" class="btn btn-custom btn-sm">
+                                    View Event
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <a asp-controller="Club" asp-action="Details" asp-route-id="@club?.Id"
+       class="btn btn-secondary mt-3">
+        <i class="bi bi-arrow-left"></i> Back to Club
+    </a>
+</div>

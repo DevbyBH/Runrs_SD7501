@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Runrs.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class NewImageUrlSeedData : Migration
+    public partial class FreshCreateAfterModifyingNamespace : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,6 +61,32 @@ namespace Runrs.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Friendships",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RequesterId = table.Column<int>(type: "int", nullable: false),
+                    AddresseeId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Friendships", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Friendships_Users_AddresseeId",
+                        column: x => x.AddresseeId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Friendships_Users_RequesterId",
+                        column: x => x.RequesterId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Memberships",
                 columns: table => new
                 {
@@ -87,6 +113,61 @@ namespace Runrs.DataAccess.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "RunEvents",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EventTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    EventDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    EventDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EventLocation = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Distance = table.Column<double>(type: "float", nullable: false),
+                    MaxParticipants = table.Column<int>(type: "int", nullable: false),
+                    EntryFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ClubId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RunEvents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RunEvents_Clubs_ClubId",
+                        column: x => x.ClubId,
+                        principalTable: "Clubs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventRegistrations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    PaymentStatus = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    EventId = table.Column<int>(type: "int", nullable: false),
+                    RunEventId = table.Column<int>(type: "int", nullable: false),
+                    RegisteredAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventRegistrations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EventRegistrations_RunEvents_EventId",
+                        column: x => x.EventId,
+                        principalTable: "RunEvents",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_EventRegistrations_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "DateOfBirth", "Email", "FirstName", "JoinedAt", "LastName", "PasswordHash", "Username" },
@@ -107,10 +188,40 @@ namespace Runrs.DataAccess.Migrations
                     { 3, "Join our social run club based in Porirua which is open to all levels of fitness. We meet every Saturday at the Porirua pools to complete a 5km run and socialise over coffee after. ", "Porirua, Wellington", "Social Runners WLG", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 1, "https://cdn.eventfinda.co.nz/uploads/events/transformed/1771695-766708-34.jpg", false, 3, 2 }
                 });
 
+            migrationBuilder.InsertData(
+                table: "RunEvents",
+                columns: new[] { "Id", "ClubId", "CreatedAt", "Distance", "EntryFee", "EventDate", "EventDescription", "EventLocation", "EventTitle", "MaxParticipants" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 10.0, 0m, new DateTime(2026, 11, 15, 9, 0, 0, 0, DateTimeKind.Unspecified), "Join us for a run along Petone Esplanade. This event will be an introductory event for any new members wanting to come and feel out the club!", "Petone Esplanade, Wellington", "Petone Run For Fun", 20 },
+                    { 2, 2, new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 30.0, 20m, new DateTime(2026, 11, 22, 8, 0, 0, 0, DateTimeKind.Unspecified), "The annual BAYS ROUTE MARATHON is coming up. Join us to raise money for local charities in Wellington.", "Wellington Waterfront, Wellington", "Bays Route Marathon", 50 },
+                    { 3, 3, new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 5.0, 0m, new DateTime(2026, 6, 6, 9, 0, 0, 0, DateTimeKind.Unspecified), "Our weekly Saturday 5km social run followed by coffee.", "Porirua Pools, Porirua", "Porirua 5km Social Run", 50 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Clubs_OwnerId",
                 table: "Clubs",
                 column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventRegistrations_EventId",
+                table: "EventRegistrations",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventRegistrations_UserId",
+                table: "EventRegistrations",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Friendships_AddresseeId",
+                table: "Friendships",
+                column: "AddresseeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Friendships_RequesterId",
+                table: "Friendships",
+                column: "RequesterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Memberships_ClubId",
@@ -121,13 +232,27 @@ namespace Runrs.DataAccess.Migrations
                 name: "IX_Memberships_UserId",
                 table: "Memberships",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RunEvents_ClubId",
+                table: "RunEvents",
+                column: "ClubId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "EventRegistrations");
+
+            migrationBuilder.DropTable(
+                name: "Friendships");
+
+            migrationBuilder.DropTable(
                 name: "Memberships");
+
+            migrationBuilder.DropTable(
+                name: "RunEvents");
 
             migrationBuilder.DropTable(
                 name: "Clubs");

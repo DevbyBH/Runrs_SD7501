@@ -1,9 +1,9 @@
-﻿@model Runrs_SD7501.Models.Club
+﻿@model Runrs.Models.Club
 
 @{
-    var membership = ViewBag.Membership as Runrs_SD7501.Models.Membership;
+    var membership = ViewBag.Membership as Runrs.Models.Membership;
     var userId = ViewBag.UserId as int? ?? 0;
-    var members = ViewBag.Members as List<Runrs_SD7501.Models.Membership>;
+    var members = ViewBag.Members as List<Runrs.Models.Membership>;
 
     ViewData["Title"] = Model.ClubName;
     ViewData["BodyClass"] = "home-page";
@@ -68,13 +68,13 @@
             </button>
         </form>
     }
-    else if (membership.Status == Runrs_SD7501.Models.MembershipStatus.Pending)
+    else if (membership.Status == Runrs.Models.MembershipStatus.Pending)
     {
         <span class="badge" style="background-color:#ffc107; color:black;">
             Pending Approval
         </span>
     }
-    else if (membership.Status == Runrs_SD7501.Models.MembershipStatus.Approved)
+    else if (membership.Status == Runrs.Models.MembershipStatus.Approved)
     {
         <div class="d-flex gap-2 align-items-center">
             <span class="badge" style="background-color:#28a745; color:white;">
@@ -164,6 +164,10 @@
             }
         </div>
     }
+
+    <a asp-controller="Event" asp-action="Index" asp-route-clubId="@Model.Id" class="btn btn-custom">
+        <i class="bi bi-calendar-event"></i> View Events
+    </a>
 
     <!-- ================= END MEMBERS ================= -->
 
