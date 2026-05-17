@@ -4,7 +4,7 @@ using Runrs.Models;
 
 namespace Runrs_SD7501.Controllers
 {
-    public class EventController : BaseController
+    public class EventController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         public EventController(IUnitOfWork unitOfWork)
@@ -13,13 +13,7 @@ namespace Runrs_SD7501.Controllers
         }
         public IActionResult Index(int clubId)
         {
-            var club = _unitOfWork.Club.Get(c => c.Id == clubId);
-            if (club == null) return NotFound();
-
-            var events = _unitOfWork.Event.GetAll(includeProperties: "Club").Where(e => e.ClubId == club.Id).ToList();
-
-            ViewBag.Club = club;
-            return View(events);
+            return RedirectToAction("Details", "Club", new { id = clubId });
         }
 
         public IActionResult Create(int clubId)
@@ -30,7 +24,7 @@ namespace Runrs_SD7501.Controllers
             if (club == null) return NotFound();
             if (club.OwnerId != userId) return Unauthorized();
 
-            ViewBag.Club = clubId;
+            ViewBag.ClubId = clubId;
             ViewBag.ClubName = club.ClubName;
             return View();
         }
@@ -69,7 +63,7 @@ namespace Runrs_SD7501.Controllers
                 _unitOfWork.Event.Add(runEvent);
                 _unitOfWork.Save();
                 TempData["Success"] = "Event created successfully!";
-                return RedirectToAction("Index", new { clubId = runEvent.ClubId });
+                return RedirectToAction("Details", "Club", new { clubId = runEvent.ClubId });
             }
             ViewBag.ClubId = runEvent.ClubId;
             return View(runEvent);
@@ -109,8 +103,21 @@ namespace Runrs_SD7501.Controllers
                 _unitOfWork.Event.Update(existingEvent);
                 _unitOfWork.Save();
                 TempData["Success"] = "Event updated successfully!";
-                return RedirectToAction("Index", new { clubId = existingEvent.ClubId });
+                return RedirectToAction("Details", "Club", new { clubId = existingEvent.ClubId });
             }
+            return View(runEvent);
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0) return NotFound();
+
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            var runEvent = _unitOfWork.Event.Get(e => e.Id == id, includeProperties: "Club");
+
+            if (runEvent == null) return NotFound();
+            if (runEvent.Club.OwnerId != userId) return Unauthorized();
+
             return View(runEvent);
         }
 
@@ -126,7 +133,7 @@ namespace Runrs_SD7501.Controllers
             _unitOfWork.Event.Remove(runEvent);
             _unitOfWork.Save();
             TempData["Success"] = "Event deleted successfully!";
-            return RedirectToAction("Index", new { clubId = runEvent.ClubId });
+            return RedirectToAction("Details", "Club", new { clubId = runEvent.ClubId });
         }
 
         [HttpPost]
@@ -144,7 +151,7 @@ namespace Runrs_SD7501.Controllers
                 return RedirectToAction("Details", new { id = eventId });
             }
 
-            var currentCount = -_unitOfWork.EventRegistration.GetAll().Count(r => r.EventId == eventId && r.Status == RegistrationStatus.Confirmed);
+            var currentCount = _unitOfWork.EventRegistration.GetAll().Count(r => r.EventId == eventId && r.Status == RegistrationStatus.Confirmed);
             if (currentCount >= runEvent.MaxParticipants)
             {
                 TempData["Error"] = "There are no more available spots!.";

@@ -3,45 +3,251 @@
     ViewData["BodyClass"] = "home-page";
 }
 
-<!-- Byron (14/04/2026) -->
-<!-- Designed the Homepage - Added images/headers/body text - Page will have no functionality (Completely Static) -->
-<!-- The Search and MyClubs pages will be where the functionality will be implemented - HP used for app explanation -->
-<div class="text-center">
-    <img id="icon-image" src="~/images/RunningMan.png"/>
-    <h1 id="homepage-header"><span style="color:#fe9144">RUN</span>RS</h1>
-    <h2 class="app-description">RUNRS IS A WEB-BASED RUN CLUB MANAGEMENT APPLICATION THAT 
-        ALLOWS USERS TO CREATE RUN CLUBS AIMED TOWARDS CREATING A SAFE SPACE
-        FOR MEETING NEW PEOPLE IN THEIR AREAS THAT ARE INTERESTED IN LEVELLING UP
-        THEIR FITNESS. THE APPLICATION ALLOWS FOR USERS TO SEARCH FOR AND FIND RUN CLUBS
-        IN THEIR LOCAL AND SURRONDING AREAS, WITH PEOPLE OF ALL FITNESS LEVELS.</h2>
-</div>
+@using Runrs.Models
 
-<div class="about-section">
-    <div class="row">
-        <div class="col-md-4 text-center">
-            <img src="~/images/CreateIcon.png" class="about-image"/>
-            <h3 class="about-header">Create Run Clubs</h3>
-            <p class="about-text">Create local run clubs that others can 
-                become members of. Run clubs are a great way to keep fit
-                while meeting and engaging with new people
-            </p>
+<body>
+    <svg class="background-svg" preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
+        <defs>
+            <style>
+                @@keyframes rotate {
+                    0% {
+                        transform: rotate(0deg);
+                    }
+
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+
+                .out-top {
+                    animation: rotate 20s linear infinite;
+                    transform-origin: 13px 25px;
+                }
+
+                .in-top {
+                    animation: rotate 10s linear infinite;
+                    transform-origin: 13px 25px;
+                }
+
+                .out-bottom {
+                    animation: rotate 25s linear infinite;
+                    transform-origin: 84px 93px;
+                }
+
+                .in-bottom {
+                    animation: rotate 15s linear infinite;
+                    transform-origin: 84px 93px;
+                }
+            </style>
+        </defs>
+        <path fill="#833AB4" class="out-top" d="M37-5C25.1-14.7,5.7-19.1-9.2-10-28.5,1.8-32.7,31.1-19.8,49c15.5,21.5,52.6,22,67.2,2.3C59.4,35,53.7,8.5,37-5Z" />
+        <path fill="#2a1344" class="in-top" d="M20.6,4.1C11.6,1.5-1.9,2.5-8,11.2-16.3,23.1-8.2,45.6,7.4,50S42.1,38.9,41,24.5C40.2,14.1,29.4,6.6,20.6,4.1Z" />
+        <path fill="#833AB4" class="out-bottom" d="M105.9,48.6c-12.4-8.2-29.3-4.8-39.4.8-23.4,12.8-37.7,51.9-19.1,74.1s63.9,15.3,76-5.6c7.6-13.3,1.8-31.1-2.3-43.8C117.6,63.3,114.7,54.3,105.9,48.6Z" />
+        <path fill="#2a1344" class="in-bottom" d="M102,67.1c-9.6-6.1-22-3.1-29.5,2-15.4,10.7-19.6,37.5-7.6,47.8s35.9,3.9,44.5-12.5C115.5,92.6,113.9,74.6,102,67.1Z" />
+    </svg>
+
+    <!-- New Dashboard Feature (User-specific) Byron (18/05/2026) -->
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Dashboard</h1>
         </div>
-        <div class="col-md-4 text-center">
-            <img src="~/images/JoinIcon.png" class="about-image"/>
-            <h3 class="about-header">Manage Clubs & Members</h3>
-            <p class="about-text">Manage your clubs details such as run locations,
-                distance of runs, start-to-end points and announcements. Club owners
-                can also manage the club members
-            </p>
+        <div class="dashboard-stats-row">
+            <div class="dashboard-stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 class="stat-value">@ViewBag.ClubCount</h3>
+                    <p class="stat-label">My Clubs</p>
+                </div>
+            </div>
+            <div class="dashboard-stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-calendar-event-fill"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 class="stat-value">@ViewBag.ThisWeekRuns</h3>
+                    <p class="stat-label">Runs This Week</p>
+                </div>
+            </div>
+            <div class="dashboard-stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-flag-fill"></i>
+                </div>
+                <div class="stat-info">
+                    @{
+                        var upcomingEvents = ViewBag.UpcomingEvents as List<RunEvent>;
+                        var nextEventDays = "N/A";
+                        if (upcomingEvents != null && upcomingEvents.Any())
+                        {
+                            var days = (upcomingEvents.First().EventDate - DateTime.Now).Days;
+                            nextEventDays = days == 0 ? "Today!" : $"{days} Days";
+                        }
+                    }
+                    <h3 class="stat-value">@nextEventDays</h3>
+                    <p class="stat-label">Next Event</p>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4 text-center">
-            <img src="~/images/SearchIcon.png" class="about-image"/>
-            <h3 class="about-header">Find & Join Other Run Clubs</h3>
-            <p class="about-text">Search for clubs in your area and attend runs
-                with other people in your community. This is a great chance to
-                mingle and mix with people with the same goal of increasing their
-                fitness levels
-            </p>
+
+        <div class="dashboard-content-row">
+            <!-- Left Column - Byron (18/05/2026) -->
+            <div class="dashboard-left-col">
+
+                <!-- Upcoming Events - Byron (18/05/2026) -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3><i class="bi bi-calendar-check"></i> Upcoming Events</h3>
+                    </div>
+                    <div class="dashboard-card-body">
+                        @if (upcomingEvents != null && upcomingEvents.Any())
+                        {
+                            foreach (var evt in upcomingEvents)
+                            {
+                                var daysUntil = (evt.EventDate - DateTime.Now).Days;
+                                var dayLabel = daysUntil == 0 ? "Today" : daysUntil == 1 ? "Tomorrow" : $"{daysUntil} days";
+
+                                <div class="dashboard-event-item">
+                                    <div class="event-date-badge">
+                                        <span class="event-date-day">@evt.EventDate.ToString("dd")</span>
+                                        <span class="event-date-month">@evt.EventDate.ToString("MMM")</span>
+                                    </div>
+                                    <div class="event-info">
+                                        <h4>@evt.EventTitle</h4>
+                                        <p class="event-club"><i class="bi bi-geo-alt-fill"></i> @evt.EventLocation</p>
+                                        <p class="event-meta">@evt.Club?.ClubName • @evt.Distance km • @dayLabel</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="dashboard-empty">
+                                <i class="bi bi-calendar-x"></i>
+                                <p>No upcoming events. Join more clubs to see events here!</p>
+                                <a asp-controller="Search" asp-action="Index" class="btn-custom">Find Clubs</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- My Clubs - Byron (18/05/2026) -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3><i class="bi bi-people-fill"></i> My Clubs</h3>
+                    </div>
+                    <div class="dashboard-card-body">
+                        @{
+                            var myClubs = ViewBag.MyClubs as List<Club>;
+                        }
+                        @if (myClubs != null && myClubs.Any())
+                        {
+                            <div class="dashboard-clubs-grid">
+                                @foreach (var club in myClubs.Take(4))
+                                {
+                                    <a asp-controller="Club" asp-action="Details" asp-route-id="@club.Id" class="dashboard-club-chip">
+                                        @if (!string.IsNullOrEmpty(club.ImageUrl))
+                                        {
+                                            <img src="@club.ImageUrl" alt="@club.ClubName" class="club-chip-img" />
+                                        }
+                                        else
+                                        {
+                                            <div class="club-chip-placeholder">
+                                                <i class="bi bi-people-fill"></i>
+                                            </div>
+                                        }
+                                        <span class="club-chip-name">@club.ClubName</span>
+                                    </a>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="dashboard-empty">
+                                <i class="bi bi-people"></i>
+                                <p>You haven't joined any clubs yet.</p>
+                                <a asp-controller="Search" asp-action="Index" class="btn-custom">Discover Clubs</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Byron (18/05/2026) -->
+            <div class="dashboard-right-col">
+
+                <!-- Suggested Clubs - Byron (18/05/2026) -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3><i class="bi bi-lightbulb-fill"></i> Suggested Clubs</h3>
+                    </div>
+                    <div class="dashboard-card-body">
+                        @{
+                            var suggestedClubs = ViewBag.SuggestedClubs as List<Club>;
+                        }
+                        @if (suggestedClubs != null && suggestedClubs.Any())
+                        {
+                            foreach (var club in suggestedClubs)
+                            {
+                                <div class="dashboard-suggested-item">
+                                    @if (!string.IsNullOrEmpty(club.ImageUrl))
+                                    {
+                                        <img src="@club.ImageUrl" alt="@club.ClubName" class="suggested-img" />
+                                    }
+                                    else
+                                    {
+                                        <div class="suggested-img-placeholder">
+                                            <i class="bi bi-people-fill"></i>
+                                        </div>
+                                    }
+                                    <div class="suggested-info">
+                                        <h4>@club.ClubName</h4>
+                                        <p><i class="bi bi-geo-alt-fill"></i> @club.ClubLocation</p>
+                                    </div>
+                                    <a asp-controller="Club" asp-action="Details" asp-route-id="@club.Id" class="dashboard-btn-custom" style="width:auto; padding:5px 15px; font-size:12px;">View</a>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="dashboard-empty">
+                                <p>No suggestions available right now.</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Recent Activity - Byron (18/05/2026) -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3><i class="bi bi-clock-history"></i> Recent Activity</h3>
+                    </div>
+                    <div class="dashboard-card-body">
+                        @{
+                            var recentActivity = ViewBag.RecentActivity as List<Membership>;
+                        }
+                        @if (recentActivity != null && recentActivity.Any())
+                        {
+                            foreach (var membership in recentActivity)
+                            {
+                                <div class="dashboard-activity-item">
+                                    <div class="activity-dot"></div>
+                                    <div class="activity-info">
+                                        <p>Joined <strong>@membership.Club?.ClubName</strong></p>
+                                        <span class="activity-time">@membership.JoinedAt.ToString("MMM dd, yyyy")</span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="dashboard-empty">
+                                <p>No recent activity.</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</body>
