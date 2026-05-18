@@ -216,17 +216,22 @@ h1, h2, h3 {
     max-width: 500px;
     padding: 10px 20px;
     border-radius: 25px;
-    border: none;
-    font-family: 'Rajdhani', sans-serif;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    font-family: 'Inter', sans-serif;
     font-size: 16px;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    outline: none; 
+    transition: border-color 0.3s ease;
+}
+
+.search-bar:focus {
+    border: 1px solid #ff479b;
 }
 
 .search-btn {
-    background-color: #000000;
+    background-color: #000000bf;
     color: #ffffff;
     border: none;
     border-radius: 25px;
@@ -236,22 +241,22 @@ h1, h2, h3 {
 }
 
 .search-btn:hover {
-    background-color: darkorange;
+    background-color: #ff479b;
     color: #ffffff;
 }
 
 .club-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 16px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .club-card:hover {
-    box-shadow: 0 0 10px #FF7614;
+    transform: translateY(-5px);
 }
 
 .club-card-img {
@@ -263,12 +268,12 @@ h1, h2, h3 {
 .club-card-img-placeholder {
     width: 100%;
     height: 180px;
-    background: rgba(255, 118, 20, 0.2);
+    background: #89119749;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 60px;
-    color: #FF7614;
+    color: #5e1134;
 }
 
 .club-card-body {
@@ -283,7 +288,14 @@ h1, h2, h3 {
 }
 
 .club-card-location {
-    color: #fe9144;
+    color: #ffdcec;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.club-card-location i {
+    color: #ff479b;
     font-family: 'Rajdhani', sans-serif;
     font-size: 14px;
     margin-bottom: 10px;
@@ -299,14 +311,14 @@ h1, h2, h3 {
 .club-card-footer {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px; 
+    gap: 4px; 
     align-items: center;
 }
 
 .club-badge {
     color: #e2e2e2ff;
     background-color: #1f1f1f4e;
-    border: 1px solid #fff;
+    border: 1px solid #806370;
     border-radius: 20px;
     padding: 6px 12px;
     font-size: 12px;
@@ -462,21 +474,22 @@ select.crud-input-border:disabled {
 
 .card-btn {
     background-color: #0000006a;
-    height: 25px;
+    height: 40px;
     width: 8rem;
     color: white;
     border: 1px solid;
     border-radius: 20px;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 600;
     display:flex;
     align-items: center;
     justify-content: center;
+    margin-top: 5px
 }
 
 .card-btn:hover {
-    color: #fe9144;
-    border: 2px solid #fe9144;
+    background-color: #ff479b;
+    color: #000;
 }
 
 member-btn {
@@ -489,6 +502,44 @@ member-btn {
 
 /* ------------------------------------------------------------------------------------------------- */
 /* Byron (17/05/2026) - CSS styling for the Event Carousel on Clubs Details (Tracking created clubs) */
+
+.join-btn-custom {
+    background-color: #38793a; 
+    color:white; 
+    width: 10vw; 
+    height: 6vh;
+    border: none;
+    font-weight: 600;
+    align-content: center;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+}
+
+.join-btn-custom:hover {
+    background-color: #499b4b; 
+    transform: translateY(-2px);
+}
+
+.member-badge {
+    background-color: #38793a;
+    color: white;
+    width: 3.0vw;
+    height: 6vh;
+    border: none;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.member-badge i {
+    font-size: 24px;
+    line-height: 1;
+}
 
 .event-carousel-card {
     background: rgba(255, 255, 255, 0.05);
@@ -1351,37 +1402,6 @@ member-btn {
     color: rgba(255, 255, 255, 0.4);
     font-size: 11px;
     font-family: 'Inter', sans-serif;
-}
-
-.quick-actions-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.quick-action-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    color: #ffffff;
-    text-decoration: none;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.quick-action-btn:hover {
-    background: rgba(254, 145, 68, 0.2);
-    color: #fe9144;
-}
-
-.quick-action-btn i {
-    font-size: 18px;
-    color: #fe9144;
 }
 
 .dashboard-empty {

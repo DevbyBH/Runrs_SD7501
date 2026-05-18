@@ -9,264 +9,328 @@
     ViewData["BodyClass"] = "home-page";
 }
 
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @TempData["Success"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-}
+<body>
 
-<div class="container mt-4 text-white">
+    <svg class="background-svg" preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
+        <defs>
+            <style>
+                @@keyframes rotate {
+                    0% {
+                        transform: rotate(0deg);
+                    }
 
-    <!-- Title -->
-    <h1>
-        <span style="color:white">@Model.ClubName</span>
-    </h1>
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
 
-    <hr style="border-color:white;" />
+                .out-top {
+                    animation: rotate 40s linear infinite;
+                    transform-origin: 13px 25px;
+                }
 
-    <p><strong>Location:</strong> @Model.ClubLocation</p>
-    <p><strong>Description:</strong> @Model.ClubDescription</p>
-    <p><strong>Owner:</strong> @Model.Owner?.Username</p>
+                .in-top {
+                    animation: rotate 20s linear infinite;
+                    transform-origin: 13px 25px;
+                }
 
-    <p>
-        <strong>Type:</strong>
-        <span style="color:#fe9144">@Model.Type</span>
-    </p>
+                .out-bottom {
+                    animation: rotate 50s linear infinite;
+                    transform-origin: 84px 93px;
+                }
 
-    <p>
-        <strong>Difficulty:</strong>
-        <span style="color:#fe9144">@Model.Difficulty</span>
-    </p>
+                .in-bottom {
+                    animation: rotate 30s linear infinite;
+                    transform-origin: 84px 93px;
+                }
+            </style>
+        </defs>
+        <path fill="#833AB4" class="out-top" d="M37-5C25.1-14.7,5.7-19.1-9.2-10-28.5,1.8-32.7,31.1-19.8,49c15.5,21.5,52.6,22,67.2,2.3C59.4,35,53.7,8.5,37-5Z" />
+        <path fill="#2a1344" class="in-top" d="M20.6,4.1C11.6,1.5-1.9,2.5-8,11.2-16.3,23.1-8.2,45.6,7.4,50S42.1,38.9,41,24.5C40.2,14.1,29.4,6.6,20.6,4.1Z" />
+        <path fill="#833AB4" class="out-bottom" d="M105.9,48.6c-12.4-8.2-29.3-4.8-39.4.8-23.4,12.8-37.7,51.9-19.1,74.1s63.9,15.3,76-5.6c7.6-13.3,1.8-31.1-2.3-43.8C117.6,63.3,114.7,54.3,105.9,48.6Z" />
+        <path fill="#2a1344" class="in-bottom" d="M102,67.1c-9.6-6.1-22-3.1-29.5,2-15.4,10.7-19.6,37.5-7.6,47.8s35.9,3.9,44.5-12.5C115.5,92.6,113.9,74.6,102,67.1Z" />
+    </svg>
 
-    <p>
-        <strong>Distance:</strong> @Html.DisplayFor(modelItem => Model.Distance)
-    </p>
+    <div class="container mt-4 text-white">
 
-    <hr style="border-color:white;" />
+        <!-- Title -->
+        <!-- Title Row - Club Name + Join/Status inline -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 style="margin:0;">
+                <span style="color:white">@Model.ClubName</span>
+            </h1>
 
-    <!-- Join Logic -->
-    @if (Model.OwnerId == userId)
-    {
-        <div class="d-flex gap-2 align-items-center">
-            <span class="badge bg-secondary">You are the owner</span>
-
-            <a asp-action="ManageRequests"
-               asp-route-id="@Model.Id"
-               class="btn btn-warning btn-sm">
-                Manage Join Requests
-            </a>
+            <div>
+                <!-- Join Logic -->
+                @if (Model.OwnerId == userId)
+                {
+                    <div class="d-flex gap-2 align-items-center">
+                        <span class="badge bg-secondary fs-6">Owner</span>
+                        <a asp-action="ManageRequests"
+                           asp-route-id="@Model.Id"
+                           class="btn btn-warning btn-sm">
+                            Manage Join Requests
+                        </a>
+                    </div>
+                }
+                else if (membership == null)
+                {
+                    <form asp-action="Join" asp-route-id="@Model.Id" method="post">
+                        <button type="submit" class="join-btn-custom">
+                            <i class="bi bi-box-arrow-in-right"></i> Join Club
+                        </button>
+                    </form>
+                }
+                else if (membership.Status == Runrs.Models.MembershipStatus.Pending)
+                {
+                    <span class="badge fs-6" style="background-color:#ffc107; color:black;">
+                        Pending Approval
+                    </span>
+                }
+                else if (membership.Status == Runrs.Models.MembershipStatus.Approved)
+                {
+                    <div class="d-flex gap-2 align-items-center">
+                        <span class="member-badge" style="background-color:#28a745; color:white;">
+                            <i class="bi bi-person-check-fill"></i>
+                        </span>
+                        <form asp-action="Leave" asp-route-id="@Model.Id" method="post">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="bi bi-box-arrow-left"></i> Leave
+                            </button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <span class="badge fs-6" style="background-color:#dc3545; color:white;">
+                        Rejected
+                    </span>
+                }
+            </div>
         </div>
-    }
-    else if (membership == null)
-    {
-        <form asp-action="Join" asp-route-id="@Model.Id" method="post">
-            <button type="submit" class="btn"
-                    style="background-color: green; color:white;">
-                Join Club
-            </button>
-        </form>
-    }
-    else if (membership.Status == Runrs.Models.MembershipStatus.Pending)
-    {
-        <span class="badge" style="background-color:#ffc107; color:black;">
-            Pending Approval
-        </span>
-    }
-    else if (membership.Status == Runrs.Models.MembershipStatus.Approved)
-    {
-        <div class="d-flex gap-2 align-items-center">
-            <span class="badge" style="background-color:#28a745; color:white;">
-                Member
-            </span>
-            <form asp-action="Leave" asp-route-id="@Model.Id" method="post">
-                <button type="submit" class="btn btn-danger btn-sm">
-                    <i class="bi bi-box-arrow-left"></i> Leave Club
-                </button>
-            </form>
+
+        <div class="dashboard-stats-row">
+            <div class="dashboard-stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="stat-info">
+                    <p class="stat-label">Club Owner:</p>
+                    <h3 class="stat-value" style="font-size:18px;">@Model.Owner?.Username</h3>
+                </div>
+            </div>
+            <div class="dashboard-stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-geo-alt-fill"></i>
+                </div>
+                <div class="stat-info">
+                    <p class="stat-label">Location:</p>
+                    <h3 class="stat-value" style="font-size:18px;">@Model.ClubLocation</h3>
+                </div>
+            </div>
+            <div class="dashboard-stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-person-walking"></i>
+                </div>
+                <div class="stat-info">
+                    <p class="stat-label">Club Type:</p>
+                    <h3 class="stat-value" style="font-size:18px;">@Model.Type Club</h3>
+                </div>
+            </div>
+            <div class="dashboard-stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                </div>
+                <div class="stat-info">
+                    <p class="stat-label">Difficulty:</p>
+                    <h3 class="stat-value" style="font-size:18px;">@Model.Difficulty</h3>
+                </div>
+            </div>
+            <div class="dashboard-stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-speedometer"></i>
+                </div>
+                <div class="stat-info">
+                    <p class="stat-label">AVG Run Distances:</p>
+                    <h3 class="stat-value" style="font-size:18px;">@Html.DisplayFor(modelItem => Model.Distance)</h3>
+                </div>
+            </div>
         </div>
-    }
-    else
-    {
-        <span class="badge" style="background-color:#dc3545; color:white;">
-            Rejected
-        </span>
-    }
 
-    <!-- ================= MEMBERS SECTION ================= -->
+        <!-- ================= MEMBERS SECTION ================= -->
 
-    <hr style="border-color:white;" />
+        <hr style="border-color:white;" />
 
-    <h3 class="mt-4 mb-3">Club Members</h3>
+        <h3 class="mt-4 mb-3">Club Members</h3>
 
-    @if (members == null || !members.Any())
-    {
-        <p>No members yet.</p>
-    }
-    else
-    {
-        <div class="row">
-            @foreach (var member in members)
-            {
-                <div class="col-md-4 mb-4">
-                    <div class="club-card">
+        @if (members == null || !members.Any())
+        {
+            <p>No members yet.</p>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var member in members)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="club-card">
 
-                        <!-- Placeholder -->
-                        <div class="club-card-img-placeholder">
-                            <i class="bi bi-person"></i>
-                        </div>
-
-                        <div class="club-card-body">
-
-                            <h4 class="club-card-title">
-                                @member.User?.Username
-                            </h4>
-
-                            <p class="club-card-description">
-                                @member.User?.FirstName @member.User?.LastName
-                            </p>
-
-                            <div class="club-card-footer">
-
-                                <!-- Owner Highlight -->
-                                @if (member.UserId == Model.OwnerId)
-                                {
-                                    <span class="club-badge bg-primary">
-                                        Owner
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="club-badge bg-success">
-                                        Member
-                                    </span>
-                                }
-
-                                <!-- Admin Role -->
-                                @if (member.Role == "Admin")
-                                {
-                                    <span class="club-badge bg-warning text-dark">
-                                        Admin
-                                    </span>
-                                }
-
+                            <!-- Placeholder -->
+                            <div class="club-card-img-placeholder">
+                                <i class="bi bi-person"></i>
                             </div>
 
-                            <p class="club-card-location mt-2">
-                                <i class="bi bi-calendar"></i>
-                                Joined: @member.JoinedAt.ToString("dd/MM/yyyy")
-                            </p>
+                            <div class="club-card-body">
 
+                                <h4 class="club-card-title">
+                                    @member.User?.Username
+                                </h4>
+
+                                <p class="club-card-description">
+                                    @member.User?.FirstName @member.User?.LastName
+                                </p>
+
+                                <div class="club-card-footer">
+
+                                    <!-- Owner Highlight -->
+                                    @if (member.UserId == Model.OwnerId)
+                                    {
+                                        <span class="club-badge bg-primary">
+                                            Owner
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="club-badge bg-success">
+                                            Member
+                                        </span>
+                                    }
+
+                                    <!-- Admin Role -->
+                                    @if (member.Role == "Admin")
+                                    {
+                                        <span class="club-badge bg-warning text-dark">
+                                            Admin
+                                        </span>
+                                    }
+
+                                </div>
+
+                                <p class="club-card-location mt-2">
+                                    <i class="bi bi-calendar"></i>
+                                    Joined: @member.JoinedAt.ToString("dd/MM/yyyy")
+                                </p>
+
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+            </div>
+        }
+
+        @{
+            var events = ViewBag.Events as List<Runrs.Models.RunEvent>;
+        }
+
+        <hr style="border-color:white;" />
+
+        <!-- Events Carousel -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="text-white mb-0">Upcoming Events</h3>
+            @if (Model.OwnerId == userId)
+            {
+                <a asp-controller="Event" asp-action="Create"
+                   asp-route-clubId="@Model.Id" class="btn btn-custom btn-sm">
+                    <i class="bi bi-plus-circle"></i> Create Event
+                </a>
             }
         </div>
-    }
 
-    @{
-        var events = ViewBag.Events as List<Runrs.Models.RunEvent>;
-    }
-
-    <hr style="border-color:white;" />
-
-    <!-- Events Carousel -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="text-white mb-0">Upcoming Events</h3>
-        @if (Model.OwnerId == userId)
+        @if (events == null || !events.Any())
         {
-            <a asp-controller="Event" asp-action="Create"
-               asp-route-clubId="@Model.Id" class="btn btn-custom btn-sm">
-                <i class="bi bi-plus-circle"></i> Create Event
-            </a>
+            <p class="text-muted">No upcoming events scheduled.</p>
         }
-    </div>
+        else
+        {
+            <div id="eventsCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
 
-    @if (events == null || !events.Any())
-    {
-        <p class="text-muted">No upcoming events scheduled.</p>
-    }
-    else
-    {
-        <div id="eventsCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                <!-- Indicators -->
+                <div class="carousel-indicators">
+                    @for (int i = 0; i < events.Count; i++)
+                    {
+                        <button type="button"
+                                data-bs-target="#eventsCarousel"
+                                data-bs-slide-to="@i"
+                                class="@(i == 0 ? "active" : "")"
+                                aria-label="Event @(i + 1)">
+                        </button>
+                    }
+                </div>
 
-            <!-- Indicators -->
-            <div class="carousel-indicators">
-                @for (int i = 0; i < events.Count; i++)
+                <!-- Carousel Items -->
+                <div class="carousel-inner">
+                    @for (int i = 0; i < events.Count; i++)
+                    {
+                        var ev = events[i];
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <div class="event-carousel-card">
+                                <div class="event-carousel-body">
+                                    <h4 class="event-carousel-title">@ev.EventTitle</h4>
+                                    <p class="event-carousel-info">
+                                        <i class="bi bi-calendar-event"></i>
+                                        @ev.EventDate.ToString("dd MMM yyyy h:mm tt")
+                                    </p>
+                                    <p class="event-carousel-info">
+                                        <i class="bi bi-geo-alt-fill"></i>
+                                        @ev.EventLocation
+                                    </p>
+                                    <p class="event-carousel-desc">@ev.EventDescription</p>
+                                    <div class="d-flex gap-2 flex-wrap mt-3">
+                                        <span class="club-badge">
+                                            <i class="bi bi-signpost-2"></i> @ev.Distance km
+                                        </span>
+                                        <span class="club-badge">
+                                            <i class="bi bi-people-fill"></i> @ev.MaxParticipants spots
+                                        </span>
+                                        <span class="club-badge">
+                                            @(ev.EntryFee == 0 ? "Free" : $"${ev.EntryFee}")
+                                        </span>
+                                    </div>
+                                    <a asp-controller="Event" asp-action="Details"
+                                       asp-route-id="@ev.Id"
+                                       class="btn btn-custom mt-3">
+                                        View Event
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Controls -->
+                @if (events.Count > 1)
                 {
-                    <button type="button"
-                            data-bs-target="#eventsCarousel"
-                            data-bs-slide-to="@i"
-                            class="@(i == 0 ? "active" : "")"
-                            aria-label="Event @(i + 1)">
+                    <button class="carousel-control-prev" type="button"
+                            data-bs-target="#eventsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button"
+                            data-bs-target="#eventsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
                     </button>
                 }
             </div>
+        }
 
-            <!-- Carousel Items -->
-            <div class="carousel-inner">
-                @for (int i = 0; i < events.Count; i++)
-                {
-                    var ev = events[i];
-                    <div class="carousel-item @(i == 0 ? "active" : "")">
-                        <div class="event-carousel-card">
-                            <div class="event-carousel-body">
-                                <h4 class="event-carousel-title">@ev.EventTitle</h4>
-                                <p class="event-carousel-info">
-                                    <i class="bi bi-calendar-event"></i>
-                                    @ev.EventDate.ToString("dd MMM yyyy h:mm tt")
-                                </p>
-                                <p class="event-carousel-info">
-                                    <i class="bi bi-geo-alt-fill"></i>
-                                    @ev.EventLocation
-                                </p>
-                                <p class="event-carousel-desc">@ev.EventDescription</p>
-                                <div class="d-flex gap-2 flex-wrap mt-3">
-                                    <span class="club-badge">
-                                        <i class="bi bi-signpost-2"></i> @ev.Distance km
-                                    </span>
-                                    <span class="club-badge">
-                                        <i class="bi bi-people-fill"></i> @ev.MaxParticipants spots
-                                    </span>
-                                    <span class="club-badge">
-                                        @(ev.EntryFee == 0 ? "Free" : $"${ev.EntryFee}")
-                                    </span>
-                                </div>
-                                <a asp-controller="Event" asp-action="Details"
-                                   asp-route-id="@ev.Id"
-                                   class="btn btn-custom mt-3">
-                                    View Event
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
+        <!-- ================= END MEMBERS ================= -->
 
-            <!-- Controls -->
-            @if (events.Count > 1)
-            {
-                <button class="carousel-control-prev" type="button"
-                        data-bs-target="#eventsCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" type="button"
-                        data-bs-target="#eventsCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </button>
-            }
-        </div>
-    }
+        <br /><br />
 
-    <!-- ================= END MEMBERS ================= -->
+        <a asp-action="Index"
+           asp-controller="Search"
+           class="btn btn-secondary">
+            Back to Search
+        </a>
 
-    <br /><br />
-
-    <a asp-action="Index"
-       asp-controller="Search"
-       class="btn btn-secondary">
-        Back to Search
-    </a>
-
-</div>
+    </div>
+</body>
