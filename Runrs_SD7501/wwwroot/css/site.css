@@ -52,7 +52,7 @@ body {
 }
 
 .navbar .nav-link:hover {
-    color: #9686ff !important;
+    color: #ff479b !important;
     transform: translateY(-4px);
 }
 
@@ -639,12 +639,25 @@ member-btn {
     display: block;
     margin-top: -20px;
     margin-bottom: 15px;
-    padding-left: 15px;
+    padding-left: 5vw;
     font-weight: bold;
+    justify-content: center;
+}
+
+.field-validation-error-row {
+    color: #ff4444;
+    font-size: 0.8em;
+    text-align: left;
+    display: block;
+    margin-top: -20px;
+    margin-bottom: 15px;
+    padding-left: 1vw;
+    font-weight: bold;
+    justify-content: center;
 }
 
 .btn-login {
-    background-color: #613DFF;
+    background-color: #ff479b;
     color: white;
     width: 15vw;
     height: 6vh;
@@ -662,7 +675,7 @@ member-btn {
 }
 
 .btn-register {
-    background-color: #613DFF;
+    background-color: #ff479b;
     color: white;
     width: 13vw;
     height: 6vh;
@@ -864,12 +877,12 @@ member-btn {
     font-weight: bolder;
     text-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
     font-family: 'Inter', sans-serif;
-    margin: 50px 0 40px 0;
+    margin: 10px 0 20px 0;
 }
 
 .register-input {
     width: 20vw;
-    height: 6vh;
+    height: 5vh;
     outline: none;
     border: 2px solid transparent;
     border-radius: 16px;
@@ -937,7 +950,7 @@ member-btn {
 }
 
 .btn-register-submit {
-    background-color: #613DFF;
+    background-color: #ff479b;
     color: white;
     width: 15vw;
     height: 6vh;
@@ -1003,7 +1016,7 @@ member-btn {
 
 .dashboard-stat-card {
     flex: 1;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -1028,7 +1041,7 @@ member-btn {
     align-items: center;
     justify-content: center;
     font-size: 24px;
-    color: #9a55ff;
+    color: #ff479b;
 }
 
 .stat-value {
@@ -1066,7 +1079,7 @@ member-btn {
 }
 
 .dashboard-card {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -1098,7 +1111,7 @@ member-btn {
 }
 
 .dashboard-card-header h3 i {
-    color: #9a55ff;
+    color: #ff479b;
     margin-right: 8px;
 }
 
@@ -1140,7 +1153,7 @@ member-btn {
 }
 
 .event-date-month {
-    color: #9a55ff;
+    color: #ff479b;
     font-size: 10px;
     text-transform: uppercase;
     font-family: 'Rajdhani', sans-serif;
@@ -1160,6 +1173,10 @@ member-btn {
     font-size: 13px;
     margin: 0 0 2px 0;
 }
+.event-club i {
+    color: #ff479b;
+}
+
 
 .event-meta {
     color: rgba(255, 255, 255, 0.5);
@@ -1241,7 +1258,7 @@ member-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9a55ff;
+    color: #ff479b;
     font-size: 22px;
     flex-shrink: 0;
 }
@@ -1260,10 +1277,14 @@ member-btn {
 }
 
 .suggested-info p {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(239, 213, 255, 1);
     font-family: 'Rajdhani', sans-serif;
     font-size: 12px;
     margin: 0 0 5px 0;
+}
+
+.suggested-info p i{
+    color: #ff479b;
 }
 
 .dashboard-btn-custom {
@@ -1279,8 +1300,24 @@ member-btn {
 }
 
 .dashboard-btn-custom:hover {
-    background-color: #9a55ff;
-    color: #fff;
+    background-color: #ff479b;
+    color: #000;
+}
+
+.dashboard-btn-custom-lg {
+    background-color: rgba(0, 0, 0, 0.6);
+    height: 30px;
+    width: 18%;
+    color: white;
+    align-content: center;
+    text-decoration: none;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.dashboard-btn-custom-lg:hover {
+    background-color: #ff479b;
+    color: #000;
 }
 
 .dashboard-activity-item {
@@ -1297,7 +1334,7 @@ member-btn {
 .activity-dot {
     width: 8px;
     height: 8px;
-    background: #9a55ff;
+    background: #ff479b;
     border-radius: 50%;
     margin-top: 6px;
     flex-shrink: 0;

@@ -20,22 +20,22 @@
                 }
 
                 .out-top {
-                    animation: rotate 20s linear infinite;
+                    animation: rotate 40s linear infinite;
                     transform-origin: 13px 25px;
                 }
 
                 .in-top {
-                    animation: rotate 10s linear infinite;
+                    animation: rotate 20s linear infinite;
                     transform-origin: 13px 25px;
                 }
 
                 .out-bottom {
-                    animation: rotate 25s linear infinite;
+                    animation: rotate 50s linear infinite;
                     transform-origin: 84px 93px;
                 }
 
                 .in-bottom {
-                    animation: rotate 15s linear infinite;
+                    animation: rotate 30s linear infinite;
                     transform-origin: 84px 93px;
                 }
             </style>
@@ -123,9 +123,8 @@
                         else
                         {
                             <div class="dashboard-empty">
-                                <i class="bi bi-calendar-x"></i>
-                                <p>No upcoming events. Join more clubs to see events here!</p>
-                                <a asp-controller="Search" asp-action="Index" class="btn-custom">Find Clubs</a>
+                                <p>No upcoming events!</p>
+                                <a asp-controller="Search" asp-action="Index" class="dashboard-btn-custom-lg">Find Clubs</a>
                             </div>
                         }
                     </div>
@@ -164,9 +163,8 @@
                         else
                         {
                             <div class="dashboard-empty">
-                                <i class="bi bi-people"></i>
-                                <p>You haven't joined any clubs yet.</p>
-                                <a asp-controller="Search" asp-action="Index" class="btn-custom">Discover Clubs</a>
+                                <p>You haven't joined any clubs yet!</p>
+                                <a asp-controller="Search" asp-action="Index" class="dashboard-btn-custom-lg">Discover Clubs</a>
                             </div>
                         }
                     </div>
