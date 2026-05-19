@@ -1,11 +1,11 @@
 ﻿using Runrs.DataAccess.Repository.IRepository;
-using Runrs_SD7501.Data;
-using Runrs_SD7501.Models;
+using Runrs.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Runrs.DataAccess.Data;
 
 namespace Runrs.DataAccess.Repository
 {

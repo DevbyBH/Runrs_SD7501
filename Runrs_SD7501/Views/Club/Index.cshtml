@@ -1,9 +1,9 @@
-﻿@model List<Runrs_SD7501.Models.Club>
+﻿@model List<Runrs.Models.Club>
 
 @{
     ViewData["Title"] = "My Clubs";
     ViewData["BodyClass"] = "home-page";
-    var joinedClubs = ViewBag.JoinedClubs as List<Runrs_SD7501.Models.Club>;
+    var joinedClubs = ViewBag.JoinedClubs as List<Runrs.Models.Club>;
 }
 
 @if (TempData["Success"] != null)

@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Runrs.DataAccess\Runrs.DataAccess.csproj" />
+    <ProjectReference Include="..\Runrs.Models\Runrs.Models.csproj" />
+    <ProjectReference Include="..\Runrs.Utilities\Runrs.Utility.csproj" />
   </ItemGroup>
 
 </Project>

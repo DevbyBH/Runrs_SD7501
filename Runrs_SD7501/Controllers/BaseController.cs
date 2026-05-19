@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Runrs.Models;
 
 namespace Runrs_SD7501.Controllers
 {

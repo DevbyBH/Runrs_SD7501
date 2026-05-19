@@ -1,5 +1,5 @@
 ﻿using Runrs.DataAccess.Repository.IRepository;
-using Runrs_SD7501.Data;
+using Runrs.DataAccess.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +22,7 @@ namespace Runrs.DataAccess.Repository
             Club = new ClubRepository(_db);
             User = new UserRepository(_db);
             Membership = new MembershipRepository(_db);
+            Friendship = new FriendshipRepository(_db);
         }
 
         public void Save()

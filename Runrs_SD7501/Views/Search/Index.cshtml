@@ -1,10 +1,10 @@
-﻿@model List<Runrs_SD7501.Models.Club>
+﻿@model List<Runrs.Models.Club>
 
 @{
     ViewData["Title"] = "Search";
     ViewData["BodyClass"] = "home-page";
 
-    var memberships = ViewBag.Memberships as List<Runrs_SD7501.Models.Membership>;
+    var memberships = ViewBag.Memberships as List<Runrs.Models.Membership>;
     var memberCounts = ViewBag.MemberCounts as Dictionary<int, int>;
     var userId = Context.Session.GetInt32("UserId") ?? 0;
 }
@@ -112,11 +112,11 @@
                                         </button>
                                     </form>
                                 }
-                                else if (membership.Status == Runrs_SD7501.Models.MembershipStatus.Pending)
+                                else if (membership.Status == Runrs.Models.MembershipStatus.Pending)
                                 {
                                     <span class="badge bg-warning text-dark">Pending</span>
                                 }
-                                else if (membership.Status == Runrs_SD7501.Models.MembershipStatus.Approved)
+                                else if (membership.Status == Runrs.Models.MembershipStatus.Approved)
                                 {
                                     <span class="badge bg-success">Member</span>
                                 }

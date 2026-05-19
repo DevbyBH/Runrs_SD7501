@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Runrs.DataAccess.Repository.IRepository;
-using Runrs_SD7501.Data;
 using System.Linq.Expressions;
+using Runrs.DataAccess.Data;
 
 namespace Runrs.DataAccess.Repository
 {

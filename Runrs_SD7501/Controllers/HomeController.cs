@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Runrs_SD7501.Models;
+using Runrs.Models;
 
 namespace Runrs_SD7501.Controllers;
 

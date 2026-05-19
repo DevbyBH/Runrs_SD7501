@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Runrs.DataAccess.Repository.IRepository;
-using Runrs_SD7501.Data;
-using Runrs_SD7501.Models;
+using Runrs.Models;
 
 namespace Runrs_SD7501.Controllers
 {

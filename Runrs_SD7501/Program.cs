@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Runrs.DataAccess.Repository.IRepository;
 using Runrs.DataAccess.Repository;
-using Runrs_SD7501.Data;
+using Runrs.Models;
+using Runrs.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

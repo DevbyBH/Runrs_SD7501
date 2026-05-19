@@ -1,6 +1,7 @@
 ﻿using Runrs.DataAccess.Repository.IRepository;
-using Runrs_SD7501.Data;
-using Runrs_SD7501.Models;
+using Runrs.Models;
+using Runrs.DataAccess.Data;
+
 
 namespace Runrs.DataAccess.Repository
 {

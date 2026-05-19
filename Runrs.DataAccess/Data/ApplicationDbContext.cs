@@ -1,9 +1,12 @@
-﻿using Runrs_SD7501.Models;
+﻿using Runrs.Models;
 using Microsoft.EntityFrameworkCore;
-using static Runrs_SD7501.Models.Club;
 using Runrs.Models;
+using Runrs.DataAccess.Repository;
+using Runrs.DataAccess.Data;
+using Runrs.DataAccess;
+using static Runrs.Models.Club;
 
-namespace Runrs_SD7501.Data
+namespace Runrs.DataAccess.Data
 {
     public class ApplicationDbContext :DbContext
     {
@@ -121,6 +124,20 @@ namespace Runrs_SD7501.Data
                 }
             );
             // ------------------------------------------
+
+           // mo 15/05/26 - stops cascade delete paths
+            modelBuilder.Entity<Friendship>()
+                 .HasOne(f => f.Requester)
+                 .WithMany()
+                 .HasForeignKey(f => f.RequesterId)
+                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Friendship>()
+                .HasOne(f => f.Addressee)
+                .WithMany()
+                .HasForeignKey(f => f.AddresseeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

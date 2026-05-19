@@ -1,47 +1,30 @@
-﻿using System.ComponentModel;
+﻿using Runrs.Models;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Runrs_SD7501.Models
+namespace Runrs.Models
 {
     public class User
     {
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Username is Required")]
-        [MaxLength(100)]
-        [DisplayName("Username")]
+        [Required, MaxLength(100)]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "First Name is Required")]
-        [MaxLength(100)]
-        [DisplayName("First Name")]
-        public string FirstName{ get; set; }
+        [Required, MaxLength(100)]
+        public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Last Name is Required")]
-        [MaxLength(100)]
-        [DisplayName("Last Name")]
+        [Required, MaxLength(100)]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Email Address is Required")]
-        [MaxLength(100)]
-        [DisplayName("Email Address")]
+        [Required, MaxLength(100)]
         public string Email { get; set; }
 
-        [Required]
-        [MaxLength(100)]
-        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long")]
-        [DataType(DataType.Password)]
-        [DisplayName("Password")]
+        [Required, MinLength(6)]
         public string PasswordHash { get; set; }
 
-        [Required(ErrorMessage = "Date of Birth is Required")]
-        [DataType(DataType.Date)]
-        [DisplayName("Date of Birth")]
         public DateTime DateOfBirth { get; set; }
-
-        [DataType(DataType.DateTime)]
-        [DisplayName("Joined At")]
         public DateTime JoinedAt { get; set; } = DateTime.Now;
 
         public ICollection<Membership>? Memberships { get; set; }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Runrs_SD7501.Data;
+using Runrs.DataAccess.Data;
 
 #nullable disable
 
@@ -22,7 +22,36 @@ namespace Runrs.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Runrs_SD7501.Models.Club", b =>
+            modelBuilder.Entity("Runrs.Models.Friendship", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AddresseeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RequesterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddresseeId");
+
+                    b.HasIndex("RequesterId");
+
+                    b.ToTable("Friendships");
+                });
+
+            modelBuilder.Entity("Runrs.Models.Club", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,7 +146,7 @@ namespace Runrs.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Runrs_SD7501.Models.Membership", b =>
+            modelBuilder.Entity("Runrs.Models.Membership", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -150,7 +179,7 @@ namespace Runrs.DataAccess.Migrations
                     b.ToTable("Memberships");
                 });
 
-            modelBuilder.Entity("Runrs_SD7501.Models.User", b =>
+            modelBuilder.Entity("Runrs.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -229,9 +258,28 @@ namespace Runrs.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Runrs_SD7501.Models.Club", b =>
+            modelBuilder.Entity("Runrs.Models.Friendship", b =>
                 {
-                    b.HasOne("Runrs_SD7501.Models.User", "Owner")
+                    b.HasOne("Runrs.Models.User", "Addressee")
+                        .WithMany()
+                        .HasForeignKey("AddresseeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Runrs.Models.User", "Requester")
+                        .WithMany()
+                        .HasForeignKey("RequesterId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Addressee");
+
+                    b.Navigation("Requester");
+                });
+
+            modelBuilder.Entity("Runrs.Models.Club", b =>
+                {
+                    b.HasOne("Runrs.Models.User", "Owner")
                         .WithMany("OwnedClubs")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -240,15 +288,15 @@ namespace Runrs.DataAccess.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("Runrs_SD7501.Models.Membership", b =>
+            modelBuilder.Entity("Runrs.Models.Membership", b =>
                 {
-                    b.HasOne("Runrs_SD7501.Models.Club", "Club")
+                    b.HasOne("Runrs.Models.Club", "Club")
                         .WithMany("Memberships")
                         .HasForeignKey("ClubId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Runrs_SD7501.Models.User", "User")
+                    b.HasOne("Runrs.Models.User", "User")
                         .WithMany("Memberships")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -259,12 +307,12 @@ namespace Runrs.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Runrs_SD7501.Models.Club", b =>
+            modelBuilder.Entity("Runrs.Models.Club", b =>
                 {
                     b.Navigation("Memberships");
                 });
 
-            modelBuilder.Entity("Runrs_SD7501.Models.User", b =>
+            modelBuilder.Entity("Runrs.Models.User", b =>
                 {
                     b.Navigation("Memberships");
 

@@ -1,0 +1,229 @@
+﻿@model Runrs.Models.ViewModels.ProfileVM
+@using Runrs.Models
+
+@{
+    var user = Model.User;
+    var friendship = Model.Friendship;
+    var currentUserId = Model.CurrentUserId;
+    var friends = Model.Friends;
+
+    bool isSelf = user.Id == currentUserId;
+    bool noFriendship = friendship == null;
+    bool isPending = friendship?.Status == FriendshipStatus.Pending;
+    bool isAccepted = friendship?.Status == FriendshipStatus.Accepted;
+    bool canAccept = isPending && friendship?.AddresseeId == currentUserId;
+
+    ViewData["Title"] = user.Username;
+    ViewData["BodyClass"] = "home-page";
+}
+
+<div class="container mt-4 text-white">
+
+    <!-- ================= PROFILE HERO ================= -->
+    <div class="text-center mb-4">
+
+        <!-- Avatar -->
+        <div style="font-size:90px;">
+            <i class="bi bi-person-circle"></i>
+        </div>
+
+        <h1 class="mt-2">@user.Username</h1>
+
+        <p class="text-muted">
+            @user.FirstName @user.LastName
+        </p>
+
+        <!-- Stats Row -->
+        <div class="row mt-4 text-center">
+
+            <div class="col-md-4 mb-2">
+                <div class="club-card">
+                    <div class="club-card-body">
+                        <h3>@friends.Count()</h3>
+                        <p class="club-card-description">Friends</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <div class="club-card">
+                    <div class="club-card-body">
+                        <h3>0</h3>
+                        <p class="club-card-description">Clubs Joined</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <div class="club-card">
+                    <div class="club-card-body">
+                        <h3>0</h3>
+                        <p class="club-card-description">Pending</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <hr style="border-color:white;" />
+
+    <!-- ================= FRIEND ACTIONS ================= -->
+    @if (!isSelf)
+    {
+        <div class="d-flex gap-2 justify-content-center mb-4">
+
+            @if (noFriendship)
+            {
+                <form asp-action="AddFriend" asp-route-id="@user.Id" method="post">
+                    <button class="btn btn-success btn-sm">
+                        Add Friend
+                    </button>
+                </form>
+            }
+            else if (canAccept)
+            {
+                <form asp-action="AcceptFriend" method="post">
+                    <input type="hidden" name="friendshipId" value="@friendship.Id" />
+                    <button class="btn btn-success btn-sm">
+                        Accept Request
+                    </button>
+                </form>
+            }
+            else if (isPending)
+            {
+                <span class="badge bg-warning text-dark">
+                    Pending
+                </span>
+            }
+            else if (isAccepted)
+            {
+                <form asp-action="RemoveFriend" asp-route-id="@user.Id" method="post">
+                    <button class="btn btn-danger btn-sm">
+                        Remove Friend
+                    </button>
+                </form>
+            }
+
+        </div>
+    }
+
+    <!-- ================= TABS ================= -->
+    <ul class="nav nav-tabs justify-content-center mb-4" id="profileTabs" role="tablist">
+
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#friends">
+                Friends
+            </button>
+        </li>
+
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile">
+                Profile Info
+            </button>
+        </li>
+
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#activity">
+                Activity
+            </button>
+        </li>
+
+    </ul>
+
+    <div class="tab-content">
+
+        <!-- ================= FRIENDS TAB ================= -->
+        <div class="tab-pane fade show active" id="friends">
+
+            @if (!friends.Any())
+            {
+                <p class="text-center">No friends yet.</p>
+            }
+            else
+            {
+                <div class="row">
+
+                    @foreach (var f in friends)
+                    {
+                        var friend = f.RequesterId == user.Id ? f.Addressee : f.Requester;
+
+                        if (friend == null)
+                            continue;
+
+                        <div class="col-md-4 mb-4">
+
+                            <div class="club-card">
+
+                                <div class="club-card-img-placeholder">
+                                    <i class="bi bi-person"></i>
+                                </div>
+
+                                <div class="club-card-body">
+
+                                    <h4 class="club-card-title">
+                                        @friend.Username
+                                    </h4>
+
+                                    <p class="club-card-description">
+                                        @friend.FirstName @friend.LastName
+                                    </p>
+
+                                    <div class="club-card-footer">
+                                        <span class="club-badge bg-success">Friend</span>
+                                    </div>
+
+                                    <div class="mt-3">
+
+                                        <!-- SECONDARY BUTTON STYLE -->
+                                        <a asp-controller="Profile"
+                                           asp-action="Details"
+                                           asp-route-id="@friend.Id"
+                                           class="btn btn-outline-light btn-sm">
+                                            View Profile
+                                        </a>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+            }
+
+        </div>
+
+        <!-- ================= PROFILE TAB ================= -->
+        <div class="tab-pane fade" id="profile">
+
+            <div class="club-card">
+
+                <div class="club-card-body">
+
+                    <h3>Profile Details</h3>
+
+                    <p><strong>Username:</strong> @user.Username</p>
+                    <p><strong>Name:</strong> @user.FirstName @user.LastName</p>
+                    <p><strong>User ID:</strong> @user.Id</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ================= ACTIVITY TAB ================= -->
+        <div class="tab-pane fade" id="activity">
+
+            <div class="text-center">
+                <p>No activity yet.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

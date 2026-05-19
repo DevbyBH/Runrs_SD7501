@@ -1,4 +1,6 @@
-namespace Runrs_SD7501.Models
+
+namespace Runrs.Models
+
 {
     public class ErrorViewModel
     {
