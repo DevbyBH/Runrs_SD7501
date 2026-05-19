@@ -1,4 +1,5 @@
-﻿using Runrs.DataAccess.Repository.IRepository;
+﻿using Runrs.DataAccess.Data;
+using Runrs.DataAccess.Repository.IRepository;
 using Runrs.Models;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Runrs.DataAccess.Data;
 using Runrs.Models;
 using Microsoft.EntityFrameworkCore;
 using Runrs.DataAccess.Repository.IRepository;
@@ -186,18 +187,19 @@ namespace Runrs_SD7501.Controllers
 
             int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
 
-            var membership = _unitOfWork.Membership.Get(m =>
-                m.UserId == userId && m.ClubId == id);
+            var membership = _unitOfWork.Membership.Get(m => m.UserId == userId && m.ClubId == id);
 
             ViewBag.Membership = membership;
             ViewBag.UserId = userId;
 
-            var members = _unitOfWork.Membership
-                .GetAll(includeProperties: "User")
-                .Where(m => m.ClubId == id && m.Status == MembershipStatus.Approved)
-                .ToList();
+            var members = _unitOfWork.Membership.GetAll(includeProperties: "User").Where(m => m.ClubId == id && m.Status == MembershipStatus.Approved).ToList();
+
+            var events = _unitOfWork.Event.GetAll().Where(e => e.ClubId == id).OrderBy(e => e.EventDate).ToList();
 
             ViewBag.Members = members;
+            ViewBag.Events = events;
+            ViewBag.UserId = userId;
+            ViewBag.Membership = membership;
 
             return View(club);
         }

@@ -1,0 +1,69 @@
+﻿@model Runrs.Models.RunEvent
+
+@{
+    ViewData["Title"] = "Create Event";
+    ViewData["BodyClass"] = "home-page";
+}
+
+<div class="crud-form shadow border-0 mt-4">
+    <div class="crud-card-header-box ml-0 py-3">
+        <div class="crud-card-header">
+            <h2 class="crud-header-text py-2">Create Event</h2>
+            <p class="text-white">Schedule a new event for your club:</p>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" class="row">
+            <input type="hidden" asp-for="ClubId" value="@ViewBag.ClubId" />
+            <div class="p-3">
+                <div class="mb-3 row p-1">
+                    <label asp-for="EventTitle" class="crud-form-label"></label>
+                    <input asp-for="EventTitle" class="form-control crud-input-border" />
+                    <span asp-validation-for="EventTitle" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="EventDescription" class="crud-form-label"></label>
+                    <textarea asp-for="EventDescription" class="form-control crud-input-border" rows="3"></textarea>
+                    <span asp-validation-for="EventDescription" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="EventDate" class="crud-form-label"></label>
+                    <input asp-for="EventDate" type="datetime-local" class="form-control crud-input-border" />
+                    <span asp-validation-for="EventDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="EventLocation" class="crud-form-label"></label>
+                    <input asp-for="EventLocation" class="form-control crud-input-border" />
+                    <span asp-validation-for="EventLocation" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="Distance" class="crud-form-label"></label>
+                    <input asp-for="Distance" type="number" step="0.1" class="form-control crud-input-border" />
+                    <span asp-validation-for="Distance" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="MaxParticipants" class="crud-form-label"></label>
+                    <input asp-for="MaxParticipants" type="number" class="form-control crud-input-border" />
+                    <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="EntryFee" class="crud-form-label"></label>
+                    <input asp-for="EntryFee" type="number" step="0.01" class="form-control crud-input-border" />
+                    <span asp-validation-for="EntryFee" class="text-danger"></span>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-custom form-control">Create</button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Club" asp-action="Details" asp-route-clubId="@ViewBag.ClubId"class="btn btn-secondary border form-control">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

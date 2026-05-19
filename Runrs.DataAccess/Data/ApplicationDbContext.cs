@@ -19,6 +19,8 @@ namespace Runrs.DataAccess.Data
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
+        public DbSet<RunEvent> RunEvents { get; set; } // <----- DbSet for RunEvent (Byron 16/05/2026)
+        public DbSet<EventRegistration> EventRegistrations { get; set; } // <----- DbSet for EventRegistration (Byron 16/05/2026)
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,6 +37,30 @@ namespace Runrs.DataAccess.Data
                 .HasOne(m => m.Club)
                 .WithMany(c => c.Memberships)
                 .HasForeignKey(m => m.ClubId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<EventRegistration>()
+                .HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<EventRegistration>()
+                .HasOne(e => e.RunEvent)
+                .WithMany(r => r.Registrations)
+                .HasForeignKey(e => e.EventId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Friendship>() // <---- Added configuration for Mo's Friendship entity to stop deleting related issues with seeded data (Byron 16/05/2026)
+                .HasOne(f => f.Requester)
+                .WithMany()
+                .HasForeignKey(f => f.RequesterId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Friendship>()
+                .HasOne(f => f.Addressee)
+                .WithMany()
+                .HasForeignKey(f => f.AddresseeId)
                 .OnDelete(DeleteBehavior.NoAction);
             // --------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -124,6 +150,48 @@ namespace Runrs.DataAccess.Data
                 }
             );
             // ------------------------------------------
+
+            modelBuilder.Entity<RunEvent>().HasData( // <----- Seed Data for RunEvents (Byron 16/05/2026)
+                new RunEvent
+                {
+                    Id = 1,
+                    EventTitle = "Petone Run For Fun",
+                    EventDescription = "Join us for a run along Petone Esplanade. This event will be an introductory event for any new members wanting to come and feel out the club!",
+                    EventDate = new DateTime(2026, 11, 15, 9, 0, 0),
+                    EventLocation = "Petone Esplanade, Wellington",
+                    Distance = 10,
+                    MaxParticipants = 20,
+                    EntryFee = 0,
+                    CreatedAt = new DateTime(2026, 4, 17),
+                    ClubId = 1
+                },
+                new RunEvent
+                {
+                    Id = 2,
+                    EventTitle = "Bays Route Marathon",
+                    EventDescription = "The annual BAYS ROUTE MARATHON is coming up. Join us to raise money for local charities in Wellington.",
+                    EventDate = new DateTime(2026, 11, 22, 8, 0, 0),
+                    EventLocation = "Wellington Waterfront, Wellington",
+                    Distance = 30,
+                    MaxParticipants = 50,
+                    EntryFee = 20,
+                    CreatedAt = new DateTime(2026, 4, 17),
+                    ClubId = 2
+                },
+                new RunEvent
+                {
+                    Id = 3,
+                    EventTitle = "Porirua 5km Social Run",
+                    EventDescription = "Our weekly Saturday 5km social run followed by coffee.",
+                    EventDate = new DateTime(2026, 6, 6, 9, 0, 0),
+                    EventLocation = "Porirua Pools, Porirua",
+                    Distance = 5.0,
+                    MaxParticipants = 50,
+                    EntryFee = 0,
+                    CreatedAt = new DateTime(2026, 4, 17),
+                    ClubId = 3
+                }
+            );
 
            // mo 15/05/26 - stops cascade delete paths
             modelBuilder.Entity<Friendship>()
