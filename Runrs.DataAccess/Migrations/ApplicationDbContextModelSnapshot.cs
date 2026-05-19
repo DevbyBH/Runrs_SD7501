@@ -29,37 +29,6 @@ namespace Runrs.DataAccess.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-            modelBuilder.Entity("Runrs.Models.Friendship", b =>
-            {
-
-                    b.Property<int>("AddresseeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("RequesterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddresseeId");
-
-                    b.HasIndex("RequesterId");
-
-                    b.ToTable("Friendships");
-                });
-
-            modelBuilder.Entity("Runrs.Models.Club", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClubDescription")
                         .IsRequired()
@@ -365,8 +334,7 @@ namespace Runrs.DataAccess.Migrations
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -411,25 +379,6 @@ namespace Runrs.DataAccess.Migrations
                             PasswordHash = "Test123",
                             Username = "testuser3"
                         });
-                });
-
-            modelBuilder.Entity("Runrs.Models.Friendship", b =>
-                {
-                    b.HasOne("Runrs.Models.User", "Addressee")
-                        .WithMany()
-                        .HasForeignKey("AddresseeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Runrs.Models.User", "Requester")
-                        .WithMany()
-                        .HasForeignKey("RequesterId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Addressee");
-
-                    b.Navigation("Requester");
                 });
 
             modelBuilder.Entity("Runrs.Models.Club", b =>

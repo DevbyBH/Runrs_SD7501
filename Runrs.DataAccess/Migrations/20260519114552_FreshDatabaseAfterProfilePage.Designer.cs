@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Runrs_SD7501.Data;
+using Runrs.DataAccess.Data;
 
 #nullable disable
 
 namespace Runrs.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260422045334_NewImageUrlSeedData")]
-    partial class NewImageUrlSeedData
+    [Migration("20260519114552_FreshDatabaseAfterProfilePage")]
+    partial class FreshDatabaseAfterProfilePage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Runrs.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Runrs_SD7501.Models.Club", b =>
+            modelBuilder.Entity("Runrs.Models.Club", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -120,7 +120,71 @@ namespace Runrs.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Runrs_SD7501.Models.Membership", b =>
+            modelBuilder.Entity("Runrs.Models.EventRegistration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RegisteredAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RunEventId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EventRegistrations");
+                });
+
+            modelBuilder.Entity("Runrs.Models.Friendship", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AddresseeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RequesterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddresseeId");
+
+                    b.HasIndex("RequesterId");
+
+                    b.ToTable("Friendships");
+                });
+
+            modelBuilder.Entity("Runrs.Models.Membership", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -153,7 +217,96 @@ namespace Runrs.DataAccess.Migrations
                     b.ToTable("Memberships");
                 });
 
-            modelBuilder.Entity("Runrs_SD7501.Models.User", b =>
+            modelBuilder.Entity("Runrs.Models.RunEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClubId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Distance")
+                        .HasColumnType("float");
+
+                    b.Property<decimal?>("EntryFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("EventDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EventDescription")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("EventLocation")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("EventTitle")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("MaxParticipants")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
+
+                    b.ToTable("RunEvents");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClubId = 1,
+                            CreatedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Distance = 10.0,
+                            EntryFee = 0m,
+                            EventDate = new DateTime(2026, 11, 15, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventDescription = "Join us for a run along Petone Esplanade. This event will be an introductory event for any new members wanting to come and feel out the club!",
+                            EventLocation = "Petone Esplanade, Wellington",
+                            EventTitle = "Petone Run For Fun",
+                            MaxParticipants = 20
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClubId = 2,
+                            CreatedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Distance = 30.0,
+                            EntryFee = 20m,
+                            EventDate = new DateTime(2026, 11, 22, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventDescription = "The annual BAYS ROUTE MARATHON is coming up. Join us to raise money for local charities in Wellington.",
+                            EventLocation = "Wellington Waterfront, Wellington",
+                            EventTitle = "Bays Route Marathon",
+                            MaxParticipants = 50
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ClubId = 3,
+                            CreatedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Distance = 5.0,
+                            EntryFee = 0m,
+                            EventDate = new DateTime(2026, 6, 6, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventDescription = "Our weekly Saturday 5km social run followed by coffee.",
+                            EventLocation = "Porirua Pools, Porirua",
+                            EventTitle = "Porirua 5km Social Run",
+                            MaxParticipants = 50
+                        });
+                });
+
+            modelBuilder.Entity("Runrs.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -184,8 +337,7 @@ namespace Runrs.DataAccess.Migrations
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -232,9 +384,9 @@ namespace Runrs.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Runrs_SD7501.Models.Club", b =>
+            modelBuilder.Entity("Runrs.Models.Club", b =>
                 {
-                    b.HasOne("Runrs_SD7501.Models.User", "Owner")
+                    b.HasOne("Runrs.Models.User", "Owner")
                         .WithMany("OwnedClubs")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -243,15 +395,53 @@ namespace Runrs.DataAccess.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("Runrs_SD7501.Models.Membership", b =>
+            modelBuilder.Entity("Runrs.Models.EventRegistration", b =>
                 {
-                    b.HasOne("Runrs_SD7501.Models.Club", "Club")
+                    b.HasOne("Runrs.Models.RunEvent", "RunEvent")
+                        .WithMany("Registrations")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Runrs.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("RunEvent");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Runrs.Models.Friendship", b =>
+                {
+                    b.HasOne("Runrs.Models.User", "Addressee")
+                        .WithMany()
+                        .HasForeignKey("AddresseeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Runrs.Models.User", "Requester")
+                        .WithMany()
+                        .HasForeignKey("RequesterId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Addressee");
+
+                    b.Navigation("Requester");
+                });
+
+            modelBuilder.Entity("Runrs.Models.Membership", b =>
+                {
+                    b.HasOne("Runrs.Models.Club", "Club")
                         .WithMany("Memberships")
                         .HasForeignKey("ClubId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Runrs_SD7501.Models.User", "User")
+                    b.HasOne("Runrs.Models.User", "User")
                         .WithMany("Memberships")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -262,12 +452,28 @@ namespace Runrs.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Runrs_SD7501.Models.Club", b =>
+            modelBuilder.Entity("Runrs.Models.RunEvent", b =>
+                {
+                    b.HasOne("Runrs.Models.Club", "Club")
+                        .WithMany()
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Club");
+                });
+
+            modelBuilder.Entity("Runrs.Models.Club", b =>
                 {
                     b.Navigation("Memberships");
                 });
 
-            modelBuilder.Entity("Runrs_SD7501.Models.User", b =>
+            modelBuilder.Entity("Runrs.Models.RunEvent", b =>
+                {
+                    b.Navigation("Registrations");
+                });
+
+            modelBuilder.Entity("Runrs.Models.User", b =>
                 {
                     b.Navigation("Memberships");
 

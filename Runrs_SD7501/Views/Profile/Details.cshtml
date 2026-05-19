@@ -16,214 +16,255 @@
     ViewData["Title"] = user.Username;
     ViewData["BodyClass"] = "home-page";
 }
+<svg class="background-svg" preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
+    <defs>
+        <style>
+            @@keyframes rotate {
+                0% {
+                    transform: rotate(0deg);
+                }
 
-<div class="container mt-4 text-white">
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
 
-    <!-- ================= PROFILE HERO ================= -->
-    <div class="text-center mb-4">
+            .out-top {
+                animation: rotate 40s linear infinite;
+                transform-origin: 13px 25px;
+            }
 
-        <!-- Avatar -->
-        <div style="font-size:90px;">
-            <i class="bi bi-person-circle"></i>
-        </div>
+            .in-top {
+                animation: rotate 20s linear infinite;
+                transform-origin: 13px 25px;
+            }
 
-        <h1 class="mt-2">@user.Username</h1>
+            .out-bottom {
+                animation: rotate 50s linear infinite;
+                transform-origin: 84px 93px;
+            }
 
-        <p class="text-muted">
-            @user.FirstName @user.LastName
-        </p>
+            .in-bottom {
+                animation: rotate 30s linear infinite;
+                transform-origin: 84px 93px;
+            }
+        </style>
+    </defs>
+    <path fill="#833AB4" class="out-top" d="M37-5C25.1-14.7,5.7-19.1-9.2-10-28.5,1.8-32.7,31.1-19.8,49c15.5,21.5,52.6,22,67.2,2.3C59.4,35,53.7,8.5,37-5Z" />
+    <path fill="#2a1344" class="in-top" d="M20.6,4.1C11.6,1.5-1.9,2.5-8,11.2-16.3,23.1-8.2,45.6,7.4,50S42.1,38.9,41,24.5C40.2,14.1,29.4,6.6,20.6,4.1Z" />
+    <path fill="#833AB4" class="out-bottom" d="M105.9,48.6c-12.4-8.2-29.3-4.8-39.4.8-23.4,12.8-37.7,51.9-19.1,74.1s63.9,15.3,76-5.6c7.6-13.3,1.8-31.1-2.3-43.8C117.6,63.3,114.7,54.3,105.9,48.6Z" />
+    <path fill="#2a1344" class="in-bottom" d="M102,67.1c-9.6-6.1-22-3.1-29.5,2-15.4,10.7-19.6,37.5-7.6,47.8s35.9,3.9,44.5-12.5C115.5,92.6,113.9,74.6,102,67.1Z" />
+</svg>
 
-        <!-- Stats Row -->
-        <div class="row mt-4 text-center">
+<body>
+    <div class="container mt-4 text-white">
 
-            <div class="col-md-4 mb-2">
-                <div class="club-card">
-                    <div class="club-card-body">
-                        <h3>@friends.Count()</h3>
-                        <p class="club-card-description">Friends</p>
-                    </div>
-                </div>
+        <!-- ================= PROFILE HERO ================= -->
+        <div class="text-center mb-4">
+
+            <!-- Avatar -->
+            <div style="font-size:90px;">
+                <i class="bi bi-person-circle"></i>
             </div>
 
-            <div class="col-md-4 mb-2">
-                <div class="club-card">
-                    <div class="club-card-body">
-                        <h3>0</h3>
-                        <p class="club-card-description">Clubs Joined</p>
-                    </div>
-                </div>
-            </div>
+            <h1 class="mt-2">@user.Username</h1>
 
-            <div class="col-md-4 mb-2">
-                <div class="club-card">
-                    <div class="club-card-body">
-                        <h3>0</h3>
-                        <p class="club-card-description">Pending</p>
-                    </div>
-                </div>
-            </div>
+            <p class="text-muted">
+                @user.FirstName @user.LastName
+            </p>
 
-        </div>
-    </div>
+            <!-- Stats Row -->
+            <div class="row mt-4 text-center">
 
-    <hr style="border-color:white;" />
-
-    <!-- ================= FRIEND ACTIONS ================= -->
-    @if (!isSelf)
-    {
-        <div class="d-flex gap-2 justify-content-center mb-4">
-
-            @if (noFriendship)
-            {
-                <form asp-action="AddFriend" asp-route-id="@user.Id" method="post">
-                    <button class="btn btn-success btn-sm">
-                        Add Friend
-                    </button>
-                </form>
-            }
-            else if (canAccept)
-            {
-                <form asp-action="AcceptFriend" method="post">
-                    <input type="hidden" name="friendshipId" value="@friendship.Id" />
-                    <button class="btn btn-success btn-sm">
-                        Accept Request
-                    </button>
-                </form>
-            }
-            else if (isPending)
-            {
-                <span class="badge bg-warning text-dark">
-                    Pending
-                </span>
-            }
-            else if (isAccepted)
-            {
-                <form asp-action="RemoveFriend" asp-route-id="@user.Id" method="post">
-                    <button class="btn btn-danger btn-sm">
-                        Remove Friend
-                    </button>
-                </form>
-            }
-
-        </div>
-    }
-
-    <!-- ================= TABS ================= -->
-    <ul class="nav nav-tabs justify-content-center mb-4" id="profileTabs" role="tablist">
-
-        <li class="nav-item">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#friends">
-                Friends
-            </button>
-        </li>
-
-        <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile">
-                Profile Info
-            </button>
-        </li>
-
-        <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#activity">
-                Activity
-            </button>
-        </li>
-
-    </ul>
-
-    <div class="tab-content">
-
-        <!-- ================= FRIENDS TAB ================= -->
-        <div class="tab-pane fade show active" id="friends">
-
-            @if (!friends.Any())
-            {
-                <p class="text-center">No friends yet.</p>
-            }
-            else
-            {
-                <div class="row">
-
-                    @foreach (var f in friends)
-                    {
-                        var friend = f.RequesterId == user.Id ? f.Addressee : f.Requester;
-
-                        if (friend == null)
-                            continue;
-
-                        <div class="col-md-4 mb-4">
-
-                            <div class="club-card">
-
-                                <div class="club-card-img-placeholder">
-                                    <i class="bi bi-person"></i>
-                                </div>
-
-                                <div class="club-card-body">
-
-                                    <h4 class="club-card-title">
-                                        @friend.Username
-                                    </h4>
-
-                                    <p class="club-card-description">
-                                        @friend.FirstName @friend.LastName
-                                    </p>
-
-                                    <div class="club-card-footer">
-                                        <span class="club-badge bg-success">Friend</span>
-                                    </div>
-
-                                    <div class="mt-3">
-
-                                        <!-- SECONDARY BUTTON STYLE -->
-                                        <a asp-controller="Profile"
-                                           asp-action="Details"
-                                           asp-route-id="@friend.Id"
-                                           class="btn btn-outline-light btn-sm">
-                                            View Profile
-                                        </a>
-
-                                    </div>
-
-                                </div>
-                            </div>
-
+                <div class="col-md-4 mb-2">
+                    <div class="club-card">
+                        <div class="club-card-body">
+                            <h3>@friends.Count()</h3>
+                            <p class="club-card-description">Friends</p>
                         </div>
-                    }
-
+                    </div>
                 </div>
-            }
 
+                <div class="col-md-4 mb-2">
+                    <div class="club-card">
+                        <div class="club-card-body">
+                            <h3>0</h3>
+                            <p class="club-card-description">Clubs Joined</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-2">
+                    <div class="club-card">
+                        <div class="club-card-body">
+                            <h3>0</h3>
+                            <p class="club-card-description">Pending</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <!-- ================= PROFILE TAB ================= -->
-        <div class="tab-pane fade" id="profile">
+        <hr style="border-color:white;" />
 
-            <div class="club-card">
+        <!-- ================= FRIEND ACTIONS ================= -->
+        @if (!isSelf)
+        {
+            <div class="d-flex gap-2 justify-content-center mb-4">
 
-                <div class="club-card-body">
+                @if (noFriendship)
+                {
+                    <form asp-action="AddFriend" asp-route-id="@user.Id" method="post">
+                        <button class="btn btn-success btn-sm">
+                            Add Friend
+                        </button>
+                    </form>
+                }
+                else if (canAccept)
+                {
+                    <form asp-action="AcceptFriend" method="post">
+                        <input type="hidden" name="friendshipId" value="@friendship.Id" />
+                        <button class="btn btn-success btn-sm">
+                            Accept Request
+                        </button>
+                    </form>
+                }
+                else if (isPending)
+                {
+                    <span class="badge bg-warning text-dark">
+                        Pending
+                    </span>
+                }
+                else if (isAccepted)
+                {
+                    <form asp-action="RemoveFriend" asp-route-id="@user.Id" method="post">
+                        <button class="btn btn-danger btn-sm">
+                            Remove Friend
+                        </button>
+                    </form>
+                }
 
-                    <h3>Profile Details</h3>
+            </div>
+        }
 
-                    <p><strong>Username:</strong> @user.Username</p>
-                    <p><strong>Name:</strong> @user.FirstName @user.LastName</p>
-                    <p><strong>User ID:</strong> @user.Id</p>
+        <!-- ================= TABS ================= -->
+        <ul class="nav nav-tabs justify-content-center mb-4" id="profileTabs" role="tablist">
+
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#friends">
+                    Friends
+                </button>
+            </li>
+
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile">
+                    Profile Info
+                </button>
+            </li>
+
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#activity">
+                    Activity
+                </button>
+            </li>
+
+        </ul>
+
+        <div class="tab-content">
+
+            <!-- ================= FRIENDS TAB ================= -->
+            <div class="tab-pane fade show active" id="friends">
+
+                @if (!friends.Any())
+                {
+                    <p class="text-center">No friends yet.</p>
+                }
+                else
+                {
+                    <div class="row">
+
+                        @foreach (var f in friends)
+                        {
+                            var friend = f.RequesterId == user.Id ? f.Addressee : f.Requester;
+
+                            if (friend == null)
+                                continue;
+
+                            <div class="col-md-4 mb-4">
+
+                                <div class="club-card">
+
+                                    <div class="club-card-img-placeholder">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+
+                                    <div class="club-card-body">
+
+                                        <h4 class="club-card-title">
+                                            @friend.Username
+                                        </h4>
+
+                                        <p class="club-card-description">
+                                            @friend.FirstName @friend.LastName
+                                        </p>
+
+                                        <div class="club-card-footer">
+                                            <span class="club-badge bg-success">Friend</span>
+                                        </div>
+
+                                        <div class="mt-3">
+
+                                            <!-- SECONDARY BUTTON STYLE -->
+                                            <a asp-controller="Profile"
+                                               asp-action="Details"
+                                               asp-route-id="@friend.Id"
+                                               class="btn btn-outline-light btn-sm">
+                                                View Profile
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+                }
+
+            </div>
+
+            <!-- ================= PROFILE TAB ================= -->
+            <div class="tab-pane fade" id="profile">
+
+                <div class="club-card">
+
+                    <div class="club-card-body">
+
+                        <h3>Profile Details</h3>
+
+                        <p><strong>Username:</strong> @user.Username</p>
+                        <p><strong>Name:</strong> @user.FirstName @user.LastName</p>
+                        <p><strong>User ID:</strong> @user.Id</p>
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
+            <!-- ================= ACTIVITY TAB ================= -->
+            <div class="tab-pane fade" id="activity">
 
-        <!-- ================= ACTIVITY TAB ================= -->
-        <div class="tab-pane fade" id="activity">
+                <div class="text-center">
+                    <p>No activity yet.</p>
+                </div>
 
-            <div class="text-center">
-                <p>No activity yet.</p>
             </div>
 
         </div>
 
     </div>
-
-</div>
+</body>
