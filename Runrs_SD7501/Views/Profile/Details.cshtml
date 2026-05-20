@@ -76,6 +76,87 @@
                 @user.FirstName @user.LastName
             </p>
 
+            <!-- ================= BIO SECTION ================= -->
+
+            <div class="mt-3 d-flex justify-content-center">
+
+                <div class="club-card" style="max-width:700px; width:100%;">
+
+                    <div class="club-card-body">
+
+                        <h5 class="mb-3">
+                            <i class="bi bi-person-lines-fill me-2"></i>
+                            Bio
+                        </h5>
+
+                        @if (!string.IsNullOrWhiteSpace(user.Bio))
+                        {
+                            <p class="mb-0">
+                                @user.Bio
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">
+                                No bio added yet.
+                            </p>
+                        }
+
+                        <!-- ================= EDIT BIO (ONLY SELF) ================= -->
+                        @if (isSelf)
+                        {
+                            <button class="btn btn-outline-light btn-sm mt-3"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#editBio">
+
+                                Edit Bio
+                            </button>
+
+                            <div class="collapse mt-3" id="editBio">
+
+                                <form asp-controller="Profile"
+                                      asp-action="UpdateBio"
+                                      method="post">
+
+                                    <input type="hidden" name="id" value="@user.Id" />
+
+                                    <textarea name="bio"
+                                          class="form-control"
+                                          rows="4"
+                                          maxlength="500"
+                                          placeholder="Write something about yourself...">@user.Bio</textarea>
+
+                                    <div class="d-flex gap-2 mt-2">
+
+                                        <button type="submit"
+                                                class="btn btn-success btn-sm">
+
+                                            Save
+
+                                        </button>
+
+                                        <button type="button"
+                                                class="btn btn-secondary btn-sm"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#editBio">
+
+                                            Cancel
+
+                                        </button>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
             <!-- ================= STATS ================= -->
 
             <div class="row mt-4 text-center">

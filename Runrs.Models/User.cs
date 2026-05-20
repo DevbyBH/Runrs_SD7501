@@ -27,7 +27,10 @@ namespace Runrs.Models
         public DateTime DateOfBirth { get; set; }
         public DateTime JoinedAt { get; set; } = DateTime.Now;
 
+        [MaxLength(500)]
+        public string? Bio { get; set; }
         public ICollection<Membership>? Memberships { get; set; }
         public ICollection<Club>? OwnedClubs { get; set; }
     }
+
 }

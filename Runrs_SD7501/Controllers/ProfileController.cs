@@ -268,5 +268,32 @@ namespace Runrs_SD7501.Controllers
 
             return RedirectToAction("Details", new { id });
         }
+
+        //--------------------------------------------------------------------------------------------
+
+        // ================= Bio ACTIONS =================
+
+        [HttpPost]
+        public IActionResult UpdateBio(int id, string bio)
+        {
+            int currentUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            if (currentUserId != id)
+                return Unauthorized();
+
+            var user = _unitOfWork.User.Get(u => u.Id == id);
+
+            if (user == null)
+                return NotFound();
+
+            user.Bio = bio;
+
+            _unitOfWork.User.Update(user);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "Bio updated successfully!";
+
+            return RedirectToAction("Details", new { id });
+        }
     }
 }
