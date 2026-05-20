@@ -142,32 +142,36 @@ namespace Runrs_SD7501.Controllers
             if (userId == 0)
                 return Unauthorized();
 
-            // check if already joined
             var existing = _unitOfWork.Membership.Get(m =>
                 m.UserId == userId && m.ClubId == id);
-
-
 
             if (existing == null)
             {
                 var club = _unitOfWork.Club.Get(c => c.Id == id);
+
                 var membership = new Membership
                 {
                     UserId = userId,
                     ClubId = id,
                     Role = "Member",
                     JoinedAt = DateTime.Now,
-                    Status = club != null && club.IsPrivate ? MembershipStatus.Pending : MembershipStatus.Approved
+                    Status = club != null && club.IsPrivate
+                        ? MembershipStatus.Pending
+                        : MembershipStatus.Approved
                 };
 
                 _unitOfWork.Membership.Add(membership);
                 _unitOfWork.Save();
-                TempData["Success"] = club != null && club.IsPrivate ? "Request to join has been sent!" : "Joined club successfully!";
+
+                TempData["Success"] = club != null && club.IsPrivate
+                    ? "Request to join has been sent!"
+                    : "Joined club successfully!";
             }
             else
             {
                 TempData["Error"] = "You have already joined this club.";
             }
+
             return RedirectToAction("Details", new { id });
         }
 
@@ -252,7 +256,7 @@ namespace Runrs_SD7501.Controllers
 
             var membership = _unitOfWork.Membership.Get(
                 m => m.Id == membershipId,
-                includeProperties: "Club"
+                includeProperties: "Club,User"
             );
 
             if (membership == null)
@@ -266,9 +270,12 @@ namespace Runrs_SD7501.Controllers
             _unitOfWork.Membership.Update(membership);
             _unitOfWork.Save();
 
-            TempData["Success"] = "Membership request approved!";
+            TempData["Success"] =
+                $"{membership.User.Username} has been approved!";
 
-            return RedirectToAction("ManageRequests", new { id = membership.ClubId });
+            return RedirectToAction(
+                "ManageRequests",
+                new { id = membership.ClubId });
         }
 
         [HttpPost]

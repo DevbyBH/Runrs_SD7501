@@ -16,6 +16,7 @@
     ViewData["Title"] = user.Username;
     ViewData["BodyClass"] = "home-page";
 }
+
 <svg class="background-svg" preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
     <defs>
         <style>
@@ -50,6 +51,7 @@
             }
         </style>
     </defs>
+
     <path fill="#833AB4" class="out-top" d="M37-5C25.1-14.7,5.7-19.1-9.2-10-28.5,1.8-32.7,31.1-19.8,49c15.5,21.5,52.6,22,67.2,2.3C59.4,35,53.7,8.5,37-5Z" />
     <path fill="#2a1344" class="in-top" d="M20.6,4.1C11.6,1.5-1.9,2.5-8,11.2-16.3,23.1-8.2,45.6,7.4,50S42.1,38.9,41,24.5C40.2,14.1,29.4,6.6,20.6,4.1Z" />
     <path fill="#833AB4" class="out-bottom" d="M105.9,48.6c-12.4-8.2-29.3-4.8-39.4.8-23.4,12.8-37.7,51.9-19.1,74.1s63.9,15.3,76-5.6c7.6-13.3,1.8-31.1-2.3-43.8C117.6,63.3,114.7,54.3,105.9,48.6Z" />
@@ -57,12 +59,13 @@
 </svg>
 
 <body>
+
     <div class="container mt-4 text-white">
 
         <!-- ================= PROFILE HERO ================= -->
+
         <div class="text-center mb-4">
 
-            <!-- Avatar -->
             <div style="font-size:90px;">
                 <i class="bi bi-person-circle"></i>
             </div>
@@ -73,37 +76,71 @@
                 @user.FirstName @user.LastName
             </p>
 
-            <!-- Stats Row -->
+            <!-- ================= STATS ================= -->
+
             <div class="row mt-4 text-center">
 
                 <div class="col-md-4 mb-2">
+
                     <div class="club-card">
+
                         <div class="club-card-body">
+
                             <h3>@friends.Count()</h3>
-                            <p class="club-card-description">Friends</p>
+
+                            <p class="club-card-description">
+                                Friends
+                            </p>
+
                         </div>
+
                     </div>
+
                 </div>
 
                 <div class="col-md-4 mb-2">
+
                     <div class="club-card">
+
                         <div class="club-card-body">
-                            <h3>0</h3>
-                            <p class="club-card-description">Clubs Joined</p>
+
+                            <h3>
+                                @Model.Activities.Count(a =>
+                                a.Message.Contains("Joined club"))
+                            </h3>
+
+                            <p class="club-card-description">
+                                Clubs Joined
+                            </p>
+
                         </div>
+
                     </div>
+
                 </div>
 
                 <div class="col-md-4 mb-2">
+
                     <div class="club-card">
+
                         <div class="club-card-body">
-                            <h3>0</h3>
-                            <p class="club-card-description">Pending</p>
+
+                            <h3 id="activityCount">
+                                @Model.Activities.Count()
+                            </h3>
+
+                            <p class="club-card-description">
+                                Activities
+                            </p>
+
                         </div>
+
                     </div>
+
                 </div>
 
             </div>
+
         </div>
 
         <hr style="border-color:white;" />
@@ -115,19 +152,29 @@
 
                 @if (noFriendship)
                 {
-                    <form asp-action="AddFriend" asp-route-id="@user.Id" method="post">
+                    <form asp-action="AddFriend"
+                          asp-route-id="@user.Id"
+                          method="post">
+
                         <button class="btn btn-success btn-sm">
                             Add Friend
                         </button>
+
                     </form>
                 }
                 else if (canAccept)
                 {
-                    <form asp-action="AcceptFriend" method="post">
-                        <input type="hidden" name="friendshipId" value="@friendship.Id" />
+                    <form asp-action="AcceptFriend"
+                          method="post">
+
+                        <input type="hidden"
+                               name="friendshipId"
+                               value="@friendship.Id" />
+
                         <button class="btn btn-success btn-sm">
                             Accept Request
                         </button>
+
                     </form>
                 }
                 else if (isPending)
@@ -138,10 +185,14 @@
                 }
                 else if (isAccepted)
                 {
-                    <form asp-action="RemoveFriend" asp-route-id="@user.Id" method="post">
+                    <form asp-action="RemoveFriend"
+                          asp-route-id="@user.Id"
+                          method="post">
+
                         <button class="btn btn-danger btn-sm">
                             Remove Friend
                         </button>
+
                     </form>
                 }
 
@@ -149,24 +200,46 @@
         }
 
         <!-- ================= TABS ================= -->
-        <ul class="nav nav-tabs justify-content-center mb-4" id="profileTabs" role="tablist">
+
+        <ul class="nav nav-tabs justify-content-center mb-4"
+            id="profileTabs"
+            role="tablist">
 
             <li class="nav-item">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#friends">
+
+                <button class="nav-link active"
+                        data-bs-toggle="tab"
+                        data-bs-target="#friends">
+
                     Friends
+
                 </button>
+
             </li>
 
             <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile">
+
+                <button class="nav-link"
+                        data-bs-toggle="tab"
+                        data-bs-target="#profile">
+
                     Profile Info
+
                 </button>
+
             </li>
 
             <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#activity">
+
+                <button class="nav-link"
+                        data-bs-toggle="tab"
+                        data-bs-target="#activity"
+                        id="activityTab">
+
                     Activity
+
                 </button>
+
             </li>
 
         </ul>
@@ -174,11 +247,14 @@
         <div class="tab-content">
 
             <!-- ================= FRIENDS TAB ================= -->
+
             <div class="tab-pane fade show active" id="friends">
 
                 @if (!friends.Any())
                 {
-                    <p class="text-center">No friends yet.</p>
+                    <p class="text-center">
+                        No friends yet.
+                    </p>
                 }
                 else
                 {
@@ -186,7 +262,9 @@
 
                         @foreach (var f in friends)
                         {
-                            var friend = f.RequesterId == user.Id ? f.Addressee : f.Requester;
+                            var friend = f.RequesterId == user.Id
+                            ? f.Addressee
+                            : f.Requester;
 
                             if (friend == null)
                                 continue;
@@ -210,22 +288,28 @@
                                         </p>
 
                                         <div class="club-card-footer">
-                                            <span class="club-badge bg-success">Friend</span>
+
+                                            <span class="club-badge bg-success">
+                                                Friend
+                                            </span>
+
                                         </div>
 
                                         <div class="mt-3">
 
-                                            <!-- SECONDARY BUTTON STYLE -->
                                             <a asp-controller="Profile"
                                                asp-action="Details"
                                                asp-route-id="@friend.Id"
                                                class="btn btn-outline-light btn-sm">
+
                                                 View Profile
+
                                             </a>
 
                                         </div>
 
                                     </div>
+
                                 </div>
 
                             </div>
@@ -237,6 +321,7 @@
             </div>
 
             <!-- ================= PROFILE TAB ================= -->
+
             <div class="tab-pane fade" id="profile">
 
                 <div class="club-card">
@@ -245,9 +330,20 @@
 
                         <h3>Profile Details</h3>
 
-                        <p><strong>Username:</strong> @user.Username</p>
-                        <p><strong>Name:</strong> @user.FirstName @user.LastName</p>
-                        <p><strong>User ID:</strong> @user.Id</p>
+                        <p>
+                            <strong>Username:</strong>
+                            @user.Username
+                        </p>
+
+                        <p>
+                            <strong>Name:</strong>
+                            @user.FirstName @user.LastName
+                        </p>
+
+                        <p>
+                            <strong>User ID:</strong>
+                            @user.Id
+                        </p>
 
                     </div>
 
@@ -256,15 +352,90 @@
             </div>
 
             <!-- ================= ACTIVITY TAB ================= -->
+
             <div class="tab-pane fade" id="activity">
 
-                <div class="text-center">
-                    <p>No activity yet.</p>
-                </div>
+                @if (!Model.Activities.Any())
+                {
+                    <div class="text-center">
+
+                        <p>No activity yet.</p>
+
+                    </div>
+                }
+                else
+                {
+                    @foreach (var activity in Model.Activities)
+                    {
+                        var badgeClass = activity.Type switch
+                        {
+                            "success" => "bg-success",
+                            "warning" => "bg-warning text-dark",
+                            "info" => "bg-info text-dark",
+                            _ => "bg-secondary"
+                        };
+
+                        <a href="@activity.Url"
+                           class="text-decoration-none text-white">
+
+                            <div class="club-card mb-3 activity-card">
+
+                                <div class="club-card-body">
+
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                                        <div>
+
+                                            <span class="badge @badgeClass me-2">
+
+                                                @activity.Type.ToUpper()
+
+                                            </span>
+
+                                            @activity.Message
+
+                                        </div>
+
+                                        <small class="text-muted">
+
+                                            @activity.Date.ToString("dd MMM yyyy")
+
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </a>
+                    }
+                }
 
             </div>
 
         </div>
 
     </div>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const activityTab =
+                document.getElementById("activityTab");
+
+            const activityCount =
+                document.getElementById("activityCount");
+
+            activityTab.addEventListener("click", function () {
+
+                activityCount.innerText = "0";
+
+            });
+
+        });
+
+    </script>
+
 </body>
