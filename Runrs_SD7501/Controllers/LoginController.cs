@@ -27,6 +27,7 @@ namespace Runrs_SD7501.Controllers
 
                 if (obj != null && obj.PasswordHash == user.PasswordHash) 
                 {
+                    TempData.Clear();
                     HttpContext.Session.SetInt32("UserId", obj.Id);
                     return RedirectToAction("Index", "Home");
                 }

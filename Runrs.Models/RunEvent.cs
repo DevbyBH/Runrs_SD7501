@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Http;
 
 namespace Runrs.Models
 {
@@ -47,7 +48,7 @@ namespace Runrs.Models
         [DisplayName("Entry Fee:")]
         [Range(0, 1000, ErrorMessage = "Event Fee must be between $0 and $1000")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal? EntryFee { get; set; } = 0; // Entry Fee for the Event ($0 for free events)
+        public decimal EntryFee { get; set; } = 0; // Entry Fee for the Event ($0 for free events)
 
         [Display(Name = "Created on:")]
         public DateTime CreatedAt { get; set; } = DateTime.Now; // Date the Event was created
@@ -59,6 +60,11 @@ namespace Runrs.Models
         public Club? Club { get; set; } // Nav to the Club hosting the Event
 
         public ICollection<EventRegistration>? Registrations { get; set; }
+
+        public string? ImageUrl { get; set; }  // Add this if not present
+
+        [NotMapped]
+        public IFormFile? ImageFile { get; set; }
 
     }
 }

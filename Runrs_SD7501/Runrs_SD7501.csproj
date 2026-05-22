@@ -8,9 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.27" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.27" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.27">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -20,6 +20,10 @@
     <ProjectReference Include="..\Runrs.DataAccess\Runrs.DataAccess.csproj" />
     <ProjectReference Include="..\Runrs.Models\Runrs.Models.csproj" />
     <ProjectReference Include="..\Runrs.Utilities\Runrs.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\club-images\" />
   </ItemGroup>
 
 </Project>

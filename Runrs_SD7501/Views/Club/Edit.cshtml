@@ -38,11 +38,23 @@
                     </div>
                     <span asp-validation-for="IsPrivate" class="text-danger"></span>
                 </div>
+                
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="mb-3 row p-1">
+                        <label class="crud-form-label">Current Image</label>
+                        <div>
+                            <img src="@Model.ImageUrl" alt="Current club image" style="max-width: 200px; max-height: 200px; border-radius: 10px;" />
+                        </div>
+                    </div>
+                }
                 <div class="mb-3 row p-1">
-                    <label asp-for="ImageUrl" class="crud-form-label"></label>
-                    <input asp-for="ImageUrl" type="url" placeholder="https://example.com" class="form-control crud-input-border" />
-                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    <label class="crud-form-label">Change Image (optional)</label>
+                    <input type="file" name="imageFile" class="form-control crud-input-border" accept="image/*" />
+                    <small class="text-muted">Upload a new club image (max 5MB). Leave empty to keep current image.</small>
                 </div>
+                <input type="hidden" asp-for="ImageUrl" />
+
                 <div class="mb-3 row p-1">
                     <label asp-for="Difficulty" class="crud-form-label"></label>
                     <select asp-for="Difficulty"

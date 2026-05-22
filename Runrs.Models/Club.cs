@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -52,6 +53,9 @@ namespace Runrs.Models
 
         [DisplayName("Club Image URL:")]
         public string? ImageUrl { get; set; }
+
+        [NotMapped]
+        public IFormFile? ImageFile { get; set; }
 
 
         public ICollection<Membership>? Memberships { get; set; }

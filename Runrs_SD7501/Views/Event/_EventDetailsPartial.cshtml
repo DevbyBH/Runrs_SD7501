@@ -1,0 +1,147 @@
+﻿@model Runrs.Models.RunEvent
+
+@{
+    var registration = ViewBag.Registration as Runrs.Models.EventRegistration;
+    var registrations = ViewBag.Registrations as List<Runrs.Models.EventRegistration>;
+    var userId = ViewBag.UserId as int? ?? 0;
+    var spotsLeft = ViewBag.AvailableSpots as int? ?? 0;
+}
+
+<div class="modal fade" id="eventDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content event-modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header event-modal-header">
+                <h4 class="modal-title event-modal-title">@Model.EventTitle</h4>
+                <button type="button" class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body event-modal-body">
+
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="event-image-container mb-3">
+                        <img src="@Model.ImageUrl"
+                             alt="@Model.EventTitle"
+                             class="event-detail-image"
+                             style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px;" />
+                    </div>
+                }
+                else
+                {
+                    <div class="event-image-container mb-3">
+                        <div class="event-placeholder-image"
+                             style="width: 100%; height: 200px; background: linear-gradient(135deg, #833AB4, #2a1344);
+                                    border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-calendar-event" style="font-size: 3rem; color: rgba(255,255,255,0.3);"></i>
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <strong>Description:</strong>
+                        <p class="event-modal-desc">@Model.EventDescription</p>
+                        <p class="event-modal-info">
+                            <strong>Date/Time:</strong> @Model.EventDate.ToString("dd MMM yyyy h:mm tt")
+                        </p>
+                        <p class="event-modal-info">
+                            <strong>Location:</strong> @Model.EventLocation
+                        </p>
+                        <p class="event-modal-info">
+                            <strong>Club Name:</strong>: @Model.Club?.ClubName
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="event-modal-stats">
+                            <div class="event-stat">
+                                <span class="event-stat-label">Distance</span>
+                                <span class="event-stat-value">@Model.Distance km</span>
+                            </div>
+                            <div class="event-stat">
+                                <span class="event-stat-label">Ticket Price</span>
+                                <span class="event-stat-value">
+                                    @(Model.EntryFee == 0 ? "Free" : $"${Model.EntryFee}")
+                                </span>
+                            </div>
+                            <div class="event-stat">
+                                <span class="event-stat-label">Spots Left</span>
+                                <span class="event-stat-value">@spotsLeft / @Model.MaxParticipants</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border-color: rgba(255,255,255,0.2);" />
+
+                <!-- Registration Status -->
+                @if (registration == null)
+                {
+                    <form asp-controller="Event" asp-action="Register" method="post">
+                        <input type="hidden" name="eventId" value="@Model.Id" />
+                        <div class="text-center">
+                            <button type="submit" class="create-btn">
+                                <i class="bi bi-person-plus"></i>
+                                @(Model.EntryFee == 0 ? "Register" : $"Register — ${Model.EntryFee}")
+                            </button>
+                        </div>
+                    </form>
+                }
+                else if (registration.Status == Runrs.Models.RegistrationStatus.Confirmed)
+                {
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="badge" style="background-color:#28a745; color:white; padding: 8px 15px;">
+                            <i class="bi bi-check-circle"></i> Registered
+                        </span>
+                        <form asp-controller="Event" asp-action="CancelRegistration" method="post">
+                            <input type="hidden" name="eventId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="bi bi-x-circle"></i> Cancel Registration
+                            </button>
+                        </form>
+                    </div>
+                }
+
+                <!-- Registered Participants -->
+                @if (registrations != null && registrations.Any())
+                {
+                    <div class="mt-3">
+                        <h6 class="text-white">
+                            Registered Participants (@registrations.Count)
+                        </h6>
+                        <div class="d-flex flex-wrap gap-2 mt-2">
+                            @foreach (var reg in registrations)
+                            {
+                                <span class="club-badge">
+                                    <i class="bi bi-person-fill"></i> @reg.User?.Username
+                                </span>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <form id="deleteEventForm" asp-controller="Event" asp-action="Delete" method="post" style="display:none;">
+                <input type="hidden" name="id" value="@Model.Id" />
+            </form>
+
+            <div class="modal-footer event-modal-footer">
+                @if (Model.Club?.OwnerId == userId)
+                {
+                    <a asp-controller="Event" asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil-fill"></i> Edit
+                    </a>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDeleteEvent(@Model.Id)">
+                        <i class="bi bi-trash3-fill"></i> Delete
+                    </button>
+                }
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

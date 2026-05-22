@@ -1,6 +1,5 @@
 ﻿using Runrs.Models;
 using Microsoft.EntityFrameworkCore;
-using Runrs.Models;
 using Runrs.DataAccess.Repository;
 using Runrs.DataAccess.Data;
 using Runrs.DataAccess;

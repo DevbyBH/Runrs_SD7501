@@ -4,15 +4,20 @@ using Runrs.Models;
 using Microsoft.EntityFrameworkCore;
 using Runrs.DataAccess.Repository.IRepository;
 using Runrs.DataAccess.Repository;
+using Microsoft.AspNetCore.Hosting;
+using System;
+using System.IO;
 
 namespace Runrs_SD7501.Controllers
 {
     public class ClubController : BaseController
     {
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IUnitOfWork _unitOfWork;
-        public ClubController(IUnitOfWork unitOfWork)
+        public ClubController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index(string query)
@@ -33,19 +38,59 @@ namespace Runrs_SD7501.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Club club)
+        public async Task<IActionResult> Create(Club club, IFormFile? imageFile)
         {
             club.OwnerId = HttpContext.Session.GetInt32("UserId") ?? 0;
             club.CreatedAt = DateTime.Now;
+            ModelState.Remove("ImageUrl");
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Club.Add(club);
-                _unitOfWork.Save();
-                TempData["Success"] = "Club created successfully!";
-                return RedirectToAction("Index");
+                try
+                {
+                    if (imageFile != null && imageFile.Length > 0)
+                    {
+                        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                        var extension = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
+
+                        if (!allowedExtensions.Contains(extension))
+                        {
+                            ModelState.AddModelError("imageFile", "Invalid file type. Allowed: JPG, PNG, GIF");
+                            return View(club);
+                        }
+                        if (imageFile.Length > 5 * 1024 * 1024)
+                        {
+                            ModelState.AddModelError("imageFile", "File size must be less than 5MB");
+                            return View(club);
+                        }
+
+                        var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+                        var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "club-images");
+
+                        if (!Directory.Exists(uploadsFolder))
+                        {
+                            Directory.CreateDirectory(uploadsFolder);
+                        }
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(fileStream);
+                        }
+
+                        club.ImageUrl = $"/uploads/club-images/{uniqueFileName}";
+                    }
+
+                    _unitOfWork.Club.Add(club);
+                    _unitOfWork.Save();
+                    TempData["Success"] = "Club created successfully!";
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", $"Error uploading file: {ex.Message}");
+                }
             }
-            return View();
+            return View(club);
         }
         // ------------------------------------------------------------------ //
 

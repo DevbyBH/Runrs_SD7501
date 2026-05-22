@@ -1,0 +1,145 @@
+﻿@model Runrs.Models.RunEvent
+
+@{
+    ViewData["Title"] = "Edit Event";
+    ViewData["BodyClass"] = "home-page";
+}
+
+<div class="crud-form shadow border-0 mt-4">
+    <div class="crud-card-header-box ml-0 py-3">
+        <div class="crud-card-header">
+            <h2 class="crud-header-text py-2">Edit Event</h2>
+            <p class="text-white">Update your event details:</p>
+        </div>
+    </div>
+
+    <div class="dashboard-card-body p-4">
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ClubId" />
+
+            <div class="create-side-by-side-input mb-3">
+                <div>
+                    <label asp-for="EventTitle" class="crud-form-label"></label>
+                    <input asp-for="EventTitle" class="create-event-input" />
+                    <span asp-validation-for="EventTitle" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="EventLocation" class="crud-form-label"></label>
+                    <input asp-for="EventLocation" class="create-event-input" />
+                    <span asp-validation-for="EventLocation" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EventDescription" class="crud-form-label"></label>
+                <textarea asp-for="EventDescription" class="create-event-textbox" rows="3"></textarea>
+                <span asp-validation-for="EventDescription" class="text-danger"></span>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="mb-3">
+                    <label class="crud-form-label">Current Image</label>
+                    <div>
+                        <img src="@Model.ImageUrl" alt="Current event image"
+                             style="max-width: 200px; max-height: 200px; border-radius: 10px;" />
+                    </div>
+                </div>
+            }
+
+            <div class="mb-3">
+                <label class="crud-form-label">Change Image (optional)</label>
+                <input type="file" name="imageFile" class="form-control crud-input-border" accept="image/*" />
+                <small class="text-muted">Upload a new event image (max 5MB). Leave empty to keep current image.</small>
+                <input type="hidden" asp-for="ImageUrl" />
+            </div>
+
+            <div class="create-side-by-side-input mb-3">
+                <div>
+                    <label asp-for="EventDate" class="crud-form-label"></label>
+                    <input asp-for="EventDate" type="datetime-local" class="create-event-input" />
+                    <span asp-validation-for="EventDate" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="Distance" class="crud-form-label"></label>
+                    <input asp-for="Distance" type="number" step="0.1" class="create-event-input" />
+                    <span asp-validation-for="Distance" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="create-side-by-side-input mb-3">
+                <div>
+                    <label asp-for="MaxParticipants" class="crud-form-label"></label>
+                    <input asp-for="MaxParticipants" type="number" class="create-event-input" />
+                    <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+                </div>
+                <div>
+                    <label class="crud-form-label">Event Type</label>
+                    <div class="event-type-toggle">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="eventType" id="freeEvent"
+                            @(Model.EntryFee == 0 ? "checked" : "") onchange="toggleEntryFee()">
+                            <label class="form-check-label text-white" for="freeEvent">
+                                <i class="bi bi-gift"></i> Free Event
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="eventType" id="paidEvent"
+                            @(Model.EntryFee > 0 ? "checked" : "") onchange="toggleEntryFee()">
+                            <label class="form-check-label text-white" for="paidEvent">
+                                <i class="bi bi-cash"></i> Paid Event
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4" id="entryFeeSection" style="display: @(Model.EntryFee > 0 ? "block" : "none");">
+                <label asp-for="EntryFee" class="crud-form-label">
+                    <i class="bi bi-currency-dollar"></i> Entry Fee Amount
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input asp-for="EntryFee" type="number" step="0.01" min="0.01"
+                           class="form-control create-event-input" placeholder="0.00"
+                           value="@(Model.EntryFee > 0 ? Model.EntryFee.ToString("F2") : "")" />
+                </div>
+                <small class="text-muted">Set the registration fee for this event</small>
+                <span asp-validation-for="EntryFee" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex gap-3">
+                <button type="submit" class="create-btn">Update Event</button>
+                <a asp-controller="Club" asp-action="Details" asp-route-id="@Model.ClubId" class="create-cancel-btn">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        function toggleEntryFee() {
+            const freeEventRadio = document.getElementById('freeEvent');
+            const entryFeeSection = document.getElementById('entryFeeSection');
+            const entryFeeInput = document.querySelector('input[name="EntryFee"]');
+
+            if (freeEventRadio.checked) {
+                entryFeeSection.style.display = 'none';
+                entryFeeInput.value = '0';
+                entryFeeInput.required = false;
+            } else {
+                entryFeeSection.style.display = 'block';
+                if (!entryFeeInput.value || parseFloat(entryFeeInput.value) === 0) {
+                    entryFeeInput.value = '';
+                }
+                entryFeeInput.required = true;
+                entryFeeInput.focus();
+            }
+        }
+    </script>
+}

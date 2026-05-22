@@ -5,65 +5,184 @@
     ViewData["BodyClass"] = "home-page";
 }
 
-<div class="crud-form shadow border-0 mt-4">
-    <div class="crud-card-header-box ml-0 py-3">
-        <div class="crud-card-header">
-            <h2 class="crud-header-text py-2">Create Event</h2>
-            <p class="text-white">Schedule a new event for your club:</p>
+<body>
+    <svg class="background-svg" preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
+        <defs>
+            <style>
+                @@keyframes rotate {
+                    0% {
+                        transform: rotate(0deg);
+                    }
+
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+
+                .out-top {
+                    animation: rotate 40s linear infinite;
+                    transform-origin: 13px 25px;
+                }
+
+                .in-top {
+                    animation: rotate 20s linear infinite;
+                    transform-origin: 13px 25px;
+                }
+
+                .out-bottom {
+                    animation: rotate 50s linear infinite;
+                    transform-origin: 84px 93px;
+                }
+
+                .in-bottom {
+                    animation: rotate 30s linear infinite;
+                    transform-origin: 84px 93px;
+                }
+            </style>
+        </defs>
+        <path fill="#833AB4" class="out-top" d="M37-5C25.1-14.7,5.7-19.1-9.2-10-28.5,1.8-32.7,31.1-19.8,49c15.5,21.5,52.6,22,67.2,2.3C59.4,35,53.7,8.5,37-5Z" />
+        <path fill="#2a1344" class="in-top" d="M20.6,4.1C11.6,1.5-1.9,2.5-8,11.2-16.3,23.1-8.2,45.6,7.4,50S42.1,38.9,41,24.5C40.2,14.1,29.4,6.6,20.6,4.1Z" />
+        <path fill="#833AB4" class="out-bottom" d="M105.9,48.6c-12.4-8.2-29.3-4.8-39.4.8-23.4,12.8-37.7,51.9-19.1,74.1s63.9,15.3,76-5.6c7.6-13.3,1.8-31.1-2.3-43.8C117.6,63.3,114.7,54.3,105.9,48.6Z" />
+        <path fill="#2a1344" class="in-bottom" d="M102,67.1c-9.6-6.1-22-3.1-29.5,2-15.4,10.7-19.6,37.5-7.6,47.8s35.9,3.9,44.5-12.5C115.5,92.6,113.9,74.6,102,67.1Z" />
+    </svg>
+
+    <div class="crud-form shadow border-0 mt-4">
+        <div class="crud-card-header-box ml-0 py-3">
+            <div class="crud-card-header">
+                <h2 class="crud-header-text py-2">Create Event</h2>
+                <p class="text-white">Schedule a new event for your club:</p>
+            </div>
         </div>
-    </div>
-    <div class="card-body p-4">
-        <form method="post" class="row">
-            <input type="hidden" asp-for="ClubId" value="@ViewBag.ClubId" />
-            <div class="p-3">
-                <div class="mb-3 row p-1">
-                    <label asp-for="EventTitle" class="crud-form-label"></label>
-                    <input asp-for="EventTitle" class="form-control crud-input-border" />
-                    <span asp-validation-for="EventTitle" class="text-danger"></span>
+
+        <div class="dashboard-card-body p-4">
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="ClubId" value="@ViewBag.ClubId" />
+
+                <div class="create-side-by-side-input mb-3">
+                    <div>
+                        <label asp-for="EventTitle" class="crud-form-label"></label>
+                        <input asp-for="EventTitle" class="create-event-input" />
+                        <span asp-validation-for="EventTitle" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="EventLocation" class="crud-form-label"></label>
+                        <input asp-for="EventLocation" class="create-event-input" />
+                        <span asp-validation-for="EventLocation" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="mb-3 row p-1">
+
+                <div class="mb-3">
                     <label asp-for="EventDescription" class="crud-form-label"></label>
-                    <textarea asp-for="EventDescription" class="form-control crud-input-border" rows="3"></textarea>
+                    <textarea asp-for="EventDescription" class="create-event-textbox" rows="3"></textarea>
                     <span asp-validation-for="EventDescription" class="text-danger"></span>
                 </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="EventDate" class="crud-form-label"></label>
-                    <input asp-for="EventDate" type="datetime-local" class="form-control crud-input-border" />
-                    <span asp-validation-for="EventDate" class="text-danger"></span>
+
+                <div class="mb-3">
+                    <label class="crud-form-label">Event Image</label>
+                    <input type="file" name="imageFile" class="form-control crud-input-border" accept="image/*" />
+                    <small class="text-muted">Upload an event image (max 5MB). Supported formats: JPG, PNG, GIF</small>
                 </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="EventLocation" class="crud-form-label"></label>
-                    <input asp-for="EventLocation" class="form-control crud-input-border" />
-                    <span asp-validation-for="EventLocation" class="text-danger"></span>
+
+                <div class="create-side-by-side-input mb-3">
+                    <div>
+                        <label asp-for="EventDate" class="crud-form-label"></label>
+                        <input asp-for="EventDate" type="datetime-local" class="create-event-input" />
+                        <span asp-validation-for="EventDate" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Distance" class="crud-form-label"></label>
+                        <input asp-for="Distance" type="number" step="0.1" class="create-event-input" />
+                        <span asp-validation-for="Distance" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="Distance" class="crud-form-label"></label>
-                    <input asp-for="Distance" type="number" step="0.1" class="form-control crud-input-border" />
-                    <span asp-validation-for="Distance" class="text-danger"></span>
+
+                <div class="create-side-by-side-input mb-3">
+                    <div>
+                        <label asp-for="MaxParticipants" class="crud-form-label"></label>
+                        <input asp-for="MaxParticipants" type="number" class="create-event-input" />
+                        <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label class="crud-form-label">Event Type</label>
+                        <div class="event-type-toggle">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="eventType" id="freeEvent" checked onchange="toggleEntryFee()">
+                                <label class="form-check-label text-white" for="freeEvent">Free Event</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="eventType" id="paidEvent" onchange="toggleEntryFee()">
+                                <label class="form-check-label text-white" for="paidEvent">Paid Event</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="MaxParticipants" class="crud-form-label"></label>
-                    <input asp-for="MaxParticipants" type="number" class="form-control crud-input-border" />
-                    <span asp-validation-for="MaxParticipants" class="text-danger"></span>
-                </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="EntryFee" class="crud-form-label"></label>
-                    <input asp-for="EntryFee" type="number" step="0.01" class="form-control crud-input-border" />
+
+                <div class="mb-4" id="entryFeeSection" style="display: none;">
+                    <label asp-for="EntryFee" class="crud-form-label">
+                        <i class="bi bi-currency-dollar"></i> Price per Ticket:
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input asp-for="EntryFee" type="number" step="0.01" min="0.01" class="form-control create-event-input" placeholder="0.00" />
+                    </div>
                     <span asp-validation-for="EntryFee" class="text-danger"></span>
                 </div>
-                <div class="row pt-2">
-                    <div class="col-6 col-md-3">
-                        <button type="submit" class="btn btn-custom form-control">Create</button>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <a asp-controller="Club" asp-action="Details" asp-route-clubId="@ViewBag.ClubId"class="btn btn-secondary border form-control">Cancel</a>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 
+                <div class="d-flex gap-3">
+                    <button type="submit" class="create-btn">Create Event</button>
+                    <a asp-controller="Club" asp-action="Details" asp-route-id="@ViewBag.ClubId" class="create-cancel-btn"><i class="bi bi-x-circle"></i> Cancel</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</body>
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        function toggleEntryFee() {
+            const freeEventRadio = document.getElementById('freeEvent');
+            const entryFeeSection = document.getElementById('entryFeeSection');
+            const entryFeeInput = document.querySelector('input[name="EntryFee"]');
+
+            if (freeEventRadio.checked) {
+                entryFeeSection.style.display = 'none';
+                entryFeeInput.value = '0';
+                entryFeeInput.removeAttribute('required');
+                if (entryFeeInput.classList.contains('input-validation-error')) {
+                    entryFeeInput.classList.remove('input-validation-error');
+                }
+            } else {
+                entryFeeSection.style.display = 'block';
+                entryFeeInput.value = '';
+                entryFeeInput.setAttribute('required', 'required');  
+                entryFeeInput.focus();
+            }
+        }
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const freeEventRadio = document.getElementById('freeEvent');
+            const entryFeeInput = document.querySelector('input[name="EntryFee"]');
+
+            if (freeEventRadio.checked) {
+                entryFeeInput.value = '0';
+                entryFeeInput.removeAttribute('required');
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const entryFeeInput = document.querySelector('input[name="EntryFee"]');
+            const paidEventRadio = document.getElementById('paidEvent');
+            const freeEventRadio = document.getElementById('freeEvent');
+            if (freeEventRadio.checked) {
+                document.getElementById('entryFeeSection').style.display = 'none';
+                entryFeeInput.value = '0';
+                entryFeeInput.removeAttribute('required');
+            }
+            if (entryFeeInput.value && parseFloat(entryFeeInput.value) > 0) {
+                paidEventRadio.checked = true;
+                document.getElementById('entryFeeSection').style.display = 'block';
+                entryFeeInput.setAttribute('required', 'required');
+            }
+        });
+    </script>
 }
