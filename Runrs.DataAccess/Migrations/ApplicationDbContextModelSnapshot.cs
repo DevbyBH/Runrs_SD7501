@@ -342,6 +342,9 @@ namespace Runrs.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -361,6 +364,7 @@ namespace Runrs.DataAccess.Migrations
                             JoinedAt = new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "User",
                             PasswordHash = "Test123",
+                            Role = 2,
                             Username = "testuser"
                         },
                         new
@@ -372,6 +376,7 @@ namespace Runrs.DataAccess.Migrations
                             JoinedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "User2",
                             PasswordHash = "Test123",
+                            Role = 1,
                             Username = "testuser2"
                         },
                         new
@@ -383,6 +388,7 @@ namespace Runrs.DataAccess.Migrations
                             JoinedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "User3",
                             PasswordHash = "Test123",
+                            Role = 0,
                             Username = "testuser3"
                         });
                 });

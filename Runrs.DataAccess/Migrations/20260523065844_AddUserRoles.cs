@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Runrs.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddBioToUser : Migration
+    public partial class AddUserRoles : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,7 +26,8 @@ namespace Runrs.DataAccess.Migrations
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     JoinedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Bio = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                    Bio = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Role = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -171,12 +172,12 @@ namespace Runrs.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Bio", "DateOfBirth", "Email", "FirstName", "JoinedAt", "LastName", "PasswordHash", "Username" },
+                columns: new[] { "Id", "Bio", "DateOfBirth", "Email", "FirstName", "JoinedAt", "LastName", "PasswordHash", "Role", "Username" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test@gmail.com", "Test", new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", "Test123", "testuser" },
-                    { 2, null, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test2@gmail.com", "Test2", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "User2", "Test123", "testuser2" },
-                    { 3, null, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test@gmail.com", "Test3", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "User3", "Test123", "testuser3" }
+                    { 1, null, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test@gmail.com", "Test", new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", "Test123", 2, "testuser" },
+                    { 2, null, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test2@gmail.com", "Test2", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "User2", "Test123", 1, "testuser2" },
+                    { 3, null, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test@gmail.com", "Test3", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "User3", "Test123", 0, "testuser3" }
                 });
 
             migrationBuilder.InsertData(

@@ -31,6 +31,8 @@ namespace Runrs.Models
         public string? Bio { get; set; }
         public ICollection<Membership>? Memberships { get; set; }
         public ICollection<Club>? OwnedClubs { get; set; }
+
+        public UserRoles Role { get; set; } = UserRoles.Basic;
     }
 
 }

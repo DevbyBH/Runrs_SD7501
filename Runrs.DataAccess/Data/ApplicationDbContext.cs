@@ -1,6 +1,5 @@
 ﻿using Runrs.Models;
 using Microsoft.EntityFrameworkCore;
-using Runrs.Models;
 using Runrs.DataAccess.Repository;
 using Runrs.DataAccess.Data;
 using Runrs.DataAccess;
@@ -74,6 +73,7 @@ namespace Runrs.DataAccess.Data
                     LastName = "User",
                     Email = "Test@gmail.com",
                     PasswordHash = "Test123", // <-- Password for logging in with Test User
+                    Role = UserRoles.Admin,
                     DateOfBirth = new DateTime(1999, 3, 7),
                     JoinedAt = new DateTime(2026, 10, 4)
                 },
@@ -86,6 +86,7 @@ namespace Runrs.DataAccess.Data
                     LastName = "User2",
                     Email = "Test2@gmail.com",
                     PasswordHash = "Test123", // <-- Password for logging in with Test User
+                    Role = UserRoles.Premium,
                     DateOfBirth = new DateTime(1999, 3, 7),
                     JoinedAt = new DateTime(2026, 4, 17)
                 },
@@ -97,6 +98,7 @@ namespace Runrs.DataAccess.Data
                     LastName = "User3",
                     Email = "Test@gmail.com",
                     PasswordHash = "Test123", // <-- Password for logging in with Test User
+                    Role = UserRoles.Basic,
                     DateOfBirth = new DateTime(1999, 3, 7),
                     JoinedAt = new DateTime(2026, 4, 17),
                 }
