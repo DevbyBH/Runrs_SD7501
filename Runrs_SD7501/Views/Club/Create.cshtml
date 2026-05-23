@@ -5,7 +5,6 @@
     ViewData["BodyClass"] = "home-page";
 }
 
-<!-- Byron 17/04/2026 - NEW Create Form for creating new Clubs (Have implemented all properties and is now functional) + CSS & Bootstrap Styling -->
 <div class="crud-form shadow border-0 mt-4">
     <div class="crud-card-header-box ml-0 py-3">
         <div class="crud-card-header">
@@ -14,7 +13,8 @@
         </div>
     </div>
     <div class="card-body p-4">
-        <form method="post" class="row">
+        <!-- IMPORTANT: Add enctype="multipart/form-data" for file upload -->
+        <form method="post" class="row" enctype="multipart/form-data">
             <div class="p-3">
                 <div class="mb-3 row p-1">
                     <label asp-for="ClubName" class="crud-form-label"></label>
@@ -39,10 +39,12 @@
                     <span asp-validation-for="IsPrivate" class="text-danger"></span>
                 </div>
                 <div class="mb-3 row p-1">
-                    <label asp-for="ImageUrl" class="crud-form-label"></label>
-                    <input asp-for="ImageUrl" type="url" placeholder="https://example.com" class="form-control crud-input-border" />
-                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    <label class="crud-form-label">Club Image</label>
+                    <input type="file" name="imageFile" class="form-control crud-input-border" accept="image/*" />
+                    <small class="text-muted">Upload a club logo or image (max 5MB). Supported formats: JPG, PNG, GIF</small>
+                    <span class="text-danger"></span>
                 </div>
+
                 <div class="mb-3 row p-1">
                     <label asp-for="Difficulty" class="crud-form-label"></label>
                     <select asp-for="Difficulty"
@@ -81,3 +83,9 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

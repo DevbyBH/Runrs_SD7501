@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Runrs.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using Runrs.DataAccess.Data;
 namespace Runrs.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260522131606_AddImageUploadAndEventCrud")]
+    partial class AddImageUploadAndEventCrud
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -343,9 +346,6 @@ namespace Runrs.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -365,7 +365,6 @@ namespace Runrs.DataAccess.Migrations
                             JoinedAt = new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "User",
                             PasswordHash = "Test123",
-                            Role = 2,
                             Username = "testuser"
                         },
                         new
@@ -377,7 +376,6 @@ namespace Runrs.DataAccess.Migrations
                             JoinedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "User2",
                             PasswordHash = "Test123",
-                            Role = 1,
                             Username = "testuser2"
                         },
                         new
@@ -389,7 +387,6 @@ namespace Runrs.DataAccess.Migrations
                             JoinedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "User3",
                             PasswordHash = "Test123",
-                            Role = 0,
                             Username = "testuser3"
                         });
                 });

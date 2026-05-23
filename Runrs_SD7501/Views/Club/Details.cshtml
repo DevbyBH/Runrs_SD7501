@@ -51,15 +51,14 @@
         <path fill="#2a1344" class="in-bottom" d="M102,67.1c-9.6-6.1-22-3.1-29.5,2-15.4,10.7-19.6,37.5-7.6,47.8s35.9,3.9,44.5-12.5C115.5,92.6,113.9,74.6,102,67.1Z" />
     </svg>
 
+    <a asp-action="Index" asp-controller="Search"class="btn rounded-circle club-back-button" title="Back to Search"><i class="bi bi-arrow-left fs-5"></i></a>
+
     <div class="container mt-4 text-white">
 
-        <!-- Title -->
-        <!-- Title Row - Club Name + Join/Status inline -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 style="margin:0;">
                 <span style="color:white">@Model.ClubName</span>
             </h1>
-
             <div>
                 <!-- Join Logic -->
                 @if (Model.OwnerId == userId)
@@ -240,7 +239,7 @@
             @if (Model.OwnerId == userId)
             {
                 <a asp-controller="Event" asp-action="Create"
-                   asp-route-clubId="@Model.Id" class="btn btn-custom btn-sm">
+                   asp-route-clubId="@Model.Id" class="dashboard-btn-custom" style="text-align: center;">
                     <i class="bi bi-plus-circle"></i> Create Event
                 </a>
             }
@@ -276,31 +275,31 @@
                             <div class="event-carousel-card">
                                 <div class="event-carousel-body">
                                     <h4 class="event-carousel-title">@ev.EventTitle</h4>
-                                    <p class="event-carousel-info">
-                                        <i class="bi bi-calendar-event"></i>
-                                        @ev.EventDate.ToString("dd MMM yyyy h:mm tt")
-                                    </p>
-                                    <p class="event-carousel-info">
-                                        <i class="bi bi-geo-alt-fill"></i>
-                                        @ev.EventLocation
-                                    </p>
+                                    <div class="carousel-side-by-side">
+                                        <p class="carousel-info-card">
+                                            <i class="bi bi-calendar-event"></i>
+                                            @ev.EventDate.ToString("dd MMM yyyy h:mm tt")
+                                        </p>
+                                        <p class="carousel-info-card">
+                                            <i class="bi bi-geo-alt-fill"></i>
+                                            @ev.EventLocation
+                                        </p>
+                                    </div>
                                     <p class="event-carousel-desc">@ev.EventDescription</p>
                                     <div class="d-flex gap-2 flex-wrap mt-3">
-                                        <span class="club-badge">
-                                            <i class="bi bi-signpost-2"></i> @ev.Distance km
-                                        </span>
-                                        <span class="club-badge">
-                                            <i class="bi bi-people-fill"></i> @ev.MaxParticipants spots
-                                        </span>
-                                        <span class="club-badge">
-                                            @(ev.EntryFee == 0 ? "Free" : $"${ev.EntryFee}")
-                                        </span>
+                                        <div class="event-carousel-badge">
+                                            <span class="club-badge">
+                                                <i class="bi bi-signpost-2"></i> @ev.Distance km
+                                            </span>
+                                            <span class="club-badge">
+                                                <i class="bi bi-people-fill"></i> @ev.MaxParticipants spots
+                                            </span>
+                                            <span class="club-badge">
+                                                @(ev.EntryFee == 0 ? "Free" : $"${ev.EntryFee}")
+                                            </span>
+                                        </div>
                                     </div>
-                                    <a asp-controller="Event" asp-action="Details"
-                                       asp-route-id="@ev.Id"
-                                       class="btn btn-custom mt-3">
-                                        View Event
-                                    </a>
+                                    <button class="dashboard-btn-custom view-event-btn" style="margin-top: 20px;" data-event-id="@ev.Id">View Event</button>
                                 </div>
                             </div>
                         </div>
@@ -324,13 +323,7 @@
 
         <!-- ================= END MEMBERS ================= -->
 
-        <br /><br />
-
-        <a asp-action="Index"
-           asp-controller="Search"
-           class="btn btn-secondary">
-            Back to Search
-        </a>
 
     </div>
+    <div id="eventModalContainer"></div>
 </body>

@@ -541,48 +541,6 @@ member-btn {
     line-height: 1;
 }
 
-.event-carousel-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 16px;
-    padding: 30px;
-    margin: 0 40px 40px 40px;
-    min-height: 280px;
-}
-
-.event-carousel-title {
-    color: #ffffff;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 32px;
-    letter-spacing: 0.1rem;
-    margin-bottom: 10px;
-}
-
-.event-carousel-info {
-    color: #FF7614;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
-.event-carousel-desc {
-    color: #cccccc;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 15px;
-    margin-top: 10px;
-}
-
-.carousel-indicators button {
-    background-color: #FF7614;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    filter: invert(60%) sepia(100%) saturate(500%) hue-rotate(360deg);
-}
-
 /* ------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------------------------------- */
@@ -1434,4 +1392,355 @@ member-btn {
     .dashboard-clubs-grid {
         grid-template-columns: 1fr;
     }
+}
+/*-------------------------------------------------------------------------------------------------*/
+
+/*---------------------- Event Modal (Pop-up) Screen - Byron 22/05/2026 ---------------------------*/
+.event-modal-content {
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    color: #ffffff;
+}
+
+.event-modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 25px;
+}
+
+.event-modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.1rem;
+    color: #ffffff;
+}
+
+.event-modal-body {
+    padding: 25px;
+}
+
+.event-modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px 25px;
+}
+
+.event-modal-info {
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.event-modal-info i {
+    color: #ff479b;
+}
+
+.event-modal-desc {
+    color: #cccccc;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    margin-top: 9px;
+}
+
+.event-modal-stats {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.event-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-stat:last-child {
+    border-bottom: none;
+}
+
+.event-stat-label {
+    color: #cccccc;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+}
+
+.event-stat-value {
+    color: #ff479b;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+}
+
+.carousel-info-card {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    gap: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 18px;
+}
+
+.carousel-info-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-side-by-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 700px; 
+    margin: 0 auto; 
+    gap: 0 10px;
+}
+/*-------------------------------------------------------------------------------------------------*/
+
+/*---------------------- Create Event Form Styling - Byron 22/05/2026 ---------------------------*/
+
+.event-carousel-card {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 30px;
+    margin: 0 40px 40px 40px;
+    min-height: 280px;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.event-carousel-title {
+    color: #ffffff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 0.1rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.event-carousel-info {
+    color: #ff479b;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.event-carousel-desc {
+    color: #cccccc;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.event-carousel-badge {
+    justify-content: center;
+    align-content:center;
+    text-align: center;
+    max-width: 100%;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+}
+
+.carousel-indicators button {
+    background-color: #ff479b;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(60%) sepia(100%) saturate(500%) hue-rotate(360deg);
+}
+
+.create-event-input {
+    width: 100%;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #ffffff;
+    padding: 0 15px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    transition: border 0.3s ease;
+}
+
+.create-event-input:focus {
+    outline: none;
+    border: 1px solid #ff479b;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+.create-event-textbox {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #ffffff;
+    padding: 10px 15px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    resize: vertical;
+    transition: border 0.3s ease;
+}
+
+.create-event-textbox:focus {
+    outline: none;
+    border: 1px solid #ff479b;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+.create-side-by-side-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 20px;
+    margin-bottom: 20px;
+}
+
+.create-cancel-btn {
+    background-color: #ff4444;
+    height: 40px;
+    width: 8rem;
+    color: white;
+    border: none;
+    font-weight: 600;
+    align-content: center;
+    text-decoration: none;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.create-cancel-btn:hover {
+    background-color: #fc7979;
+    color: #fff;
+}
+
+.crud-form-label {
+    color: #ffffff;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.05rem;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.create-btn {
+    background-color: #38793a;
+    height: 40px;
+    width: 14rem;
+    color: white;
+    border: none;
+    font-weight: 600;
+    align-content: center;
+    text-decoration: none;
+    border-radius: 20px;
+}
+
+.create-btn:hover {
+    background-color: #59c15d;
+}
+
+.event-image-container {
+    border-radius: 20px;
+    border: 1px solid #cccccc;
+    overflow: hidden;
+}
+
+.event-placeholder-image {
+    background: linear-gradient(135deg, #833AB4, #2a1344);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.event-placeholder-image:hover {
+    background: linear-gradient(135deg, #9b4de0, #3d1e63);
+}
+
+.event-image-border {
+    border-width: 3px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.25);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+}
+
+.event-image-border:focus {
+    border-color: #ff479b;
+    outline: none;
+    box-shadow: 0 0 0.2rem orange;
+}
+
+.event-type-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.event-type-toggle .form-check-input:checked {
+    background-color: #833AB4;
+    border-color: #833AB4;
+}
+
+.event-type-toggle .form-check-label {
+    cursor: pointer;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.event-type-toggle .form-check-label:hover {
+    color: #833AB4 !important;
+}
+
+#entryFeeSection {
+    animation: slideDown 0.3s ease;
+}
+
+@@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.input-group-text {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.club-back-button {
+    position: fixed;
+    top: 100px;
+    left: 30px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    background-color: #833AB4;
+    border: 1px solid transparent;
+}
+
+.club-back-button:hover {
+    border: 1px solid #fff;
+    color: #fff;
 }
