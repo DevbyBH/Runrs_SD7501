@@ -12,18 +12,49 @@ using Runrs.DataAccess.Data;
 namespace Runrs.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260523065844_AddUserRoles")]
-    partial class AddUserRoles
+    [Migration("20260524013139_FreshUpdateForAnnouncements")]
+    partial class FreshUpdateForAnnouncements
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.27")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Runrs.Models.Announcement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClubId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PostedByUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
+
+                    b.HasIndex("PostedByUserId");
+
+                    b.ToTable("Announcements");
+                });
 
             modelBuilder.Entity("Runrs.Models.Club", b =>
                 {
@@ -231,11 +262,10 @@ namespace Runrs.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("Distance")
-                        .IsRequired()
+                    b.Property<double>("Distance")
                         .HasColumnType("float");
 
-                    b.Property<decimal?>("EntryFee")
+                    b.Property<decimal>("EntryFee")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("EventDate")
@@ -256,8 +286,10 @@ namespace Runrs.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("MaxParticipants")
-                        .IsRequired()
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MaxParticipants")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -394,6 +426,25 @@ namespace Runrs.DataAccess.Migrations
                             Role = 0,
                             Username = "testuser3"
                         });
+                });
+
+            modelBuilder.Entity("Runrs.Models.Announcement", b =>
+                {
+                    b.HasOne("Runrs.Models.Club", "Club")
+                        .WithMany()
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Runrs.Models.User", "PostedBy")
+                        .WithMany()
+                        .HasForeignKey("PostedByUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Club");
+
+                    b.Navigation("PostedBy");
                 });
 
             modelBuilder.Entity("Runrs.Models.Club", b =>

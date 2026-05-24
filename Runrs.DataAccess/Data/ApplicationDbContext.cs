@@ -20,6 +20,7 @@ namespace Runrs.DataAccess.Data
         public DbSet<Friendship> Friendships { get; set; }
         public DbSet<RunEvent> RunEvents { get; set; } // <----- DbSet for RunEvent (Byron 16/05/2026)
         public DbSet<EventRegistration> EventRegistrations { get; set; } // <----- DbSet for EventRegistration (Byron 16/05/2026)
+        public DbSet<Announcement> Announcements { get; set; } // <----- DbSet for Announcements (Byron 17/05/2026)
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -60,6 +61,18 @@ namespace Runrs.DataAccess.Data
                 .HasOne(f => f.Addressee)
                 .WithMany()
                 .HasForeignKey(f => f.AddresseeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Announcement>()
+                .HasOne(a => a.PostedBy)
+                .WithMany()
+                .HasForeignKey(a => a.PostedByUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Announcement>()
+                .HasOne(a => a.Club)
+                .WithMany()
+                .HasForeignKey(a => a.ClubId)
                 .OnDelete(DeleteBehavior.NoAction);
             // --------------------------------------------------------------------------------------------------------------------------------------------
 

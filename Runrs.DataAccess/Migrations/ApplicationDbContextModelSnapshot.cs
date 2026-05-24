@@ -22,6 +22,37 @@ namespace Runrs.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Runrs.Models.Announcement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClubId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PostedByUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
+
+                    b.HasIndex("PostedByUserId");
+
+                    b.ToTable("Announcements");
+                });
+
             modelBuilder.Entity("Runrs.Models.Club", b =>
                 {
                     b.Property<int>("Id")
@@ -392,6 +423,25 @@ namespace Runrs.DataAccess.Migrations
                             Role = 0,
                             Username = "testuser3"
                         });
+                });
+
+            modelBuilder.Entity("Runrs.Models.Announcement", b =>
+                {
+                    b.HasOne("Runrs.Models.Club", "Club")
+                        .WithMany()
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Runrs.Models.User", "PostedBy")
+                        .WithMany()
+                        .HasForeignKey("PostedByUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Club");
+
+                    b.Navigation("PostedBy");
                 });
 
             modelBuilder.Entity("Runrs.Models.Club", b =>

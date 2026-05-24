@@ -4,6 +4,7 @@
     var membership = ViewBag.Membership as Runrs.Models.Membership;
     var userId = ViewBag.UserId as int? ?? 0;
     var members = ViewBag.Members as List<Runrs.Models.Membership>;
+    var announcements = ViewBag.Announcements as List<Runrs.Models.Announcement>;
 
     ViewData["Title"] = Model.ClubName;
     ViewData["BodyClass"] = "home-page";
@@ -109,16 +110,7 @@
         </div>
 
         <div class="dashboard-stats-row">
-            <div class="dashboard-stat-card">
-                <div class="stat-icon">
-                    <i class="bi bi-person-fill"></i>
-                </div>
-                <div class="stat-info">
-                    <p class="stat-label">Club Owner:</p>
-                    <h3 class="stat-value" style="font-size:18px;">@Model.Owner?.Username</h3>
-                </div>
-            </div>
-            <div class="dashboard-stat-card">
+            <div class="club-stat-card">
                 <div class="stat-icon">
                     <i class="bi bi-geo-alt-fill"></i>
                 </div>
@@ -127,7 +119,7 @@
                     <h3 class="stat-value" style="font-size:18px;">@Model.ClubLocation</h3>
                 </div>
             </div>
-            <div class="dashboard-stat-card">
+            <div class="club-stat-card">
                 <div class="stat-icon">
                     <i class="bi bi-person-walking"></i>
                 </div>
@@ -136,7 +128,7 @@
                     <h3 class="stat-value" style="font-size:18px;">@Model.Type Club</h3>
                 </div>
             </div>
-            <div class="dashboard-stat-card">
+            <div class="club-stat-card">
                 <div class="stat-icon">
                     <i class="bi bi-bar-chart-line-fill"></i>
                 </div>
@@ -145,7 +137,7 @@
                     <h3 class="stat-value" style="font-size:18px;">@Model.Difficulty</h3>
                 </div>
             </div>
-            <div class="dashboard-stat-card">
+            <div class="club-stat-card">
                 <div class="stat-icon">
                     <i class="bi bi-speedometer"></i>
                 </div>
@@ -156,9 +148,73 @@
             </div>
         </div>
 
+        <hr />
+
+        <!-- Announcement / Newsfeed Section (Byron 24/05/2026) -->
+        <div class="text-center mb-3">
+            <h3 class="text-white mb-0">Announcements</h3>
+        </div>
+
+        <!-- Post Announcement - Club Owner Only (Byron 24/05/2026) -->
+        @if (Model.OwnerId == userId)
+        {
+            <form action="/Club/PostAnnouncement" method="post" class="mb-4">
+                <input type="hidden" name="clubId" value="@Model.Id" />
+                <div class="mb-2">
+                    <textarea id="announcementContent" name="content" class="create-event-textbox" rows="3" placeholder="Write an announcement for your club members..."></textarea>
+                </div>
+                <button type="submit" class="post-announcement-btn"><i class="bi bi-megaphone"></i> Post Announcement</button>
+            </form>
+        }
+
+        <!-- Announcements Cards (Visible to users) -->
+        @if (announcements == null || !announcements.Any())
+        {
+        }
+        else
+        {
+            @foreach (var announcement in announcements)
+            {
+                <div class="announcement-card mb-3">
+                    <div class="announcement-header">
+                        <span class="announcement-author">
+                            <i class="bi bi-person-fill"></i>
+                            @announcement.PostedBy?.Username
+                        </span>
+                        <span class="announcement-date">
+                            @announcement.CreatedDate.ToString("dd MMM yyyy h:mm tt")
+                        </span>
+                    </div>
+                    <div class="announcement-content">@Html.Raw(announcement.Content)</div>
+
+                    @if (Model.OwnerId == userId)
+                    {
+                        <!-- Hidden form -->
+                        <form id="deleteAnnouncementForm-@announcement.Id"
+                              action="/Club/DeleteAnnouncement"
+                              method="post"
+                              style="display:none;">
+                            <input type="hidden" name="announcementId" value="@announcement.Id" />
+                            <input type="hidden" name="clubId" value="@Model.Id" />
+                        </form>
+
+                        <!-- Button triggers SweetAlert -->
+                        <button type="button"
+                                class="btn btn-danger btn-sm"
+                                onclick="confirmDeleteAnnouncement(@announcement.Id)">
+                            <i class="bi bi-trash3-fill"></i> Delete
+                        </button>
+                    }
+                </div>
+            }
+        }
+
+
+
+
         <!-- ================= MEMBERS SECTION ================= -->
 
-        <hr style="border-color:white;" />
+        <hr />
 
         <h3 class="mt-4 mb-3">Club Members</h3>
 
@@ -231,17 +287,16 @@
             var events = ViewBag.Events as List<Runrs.Models.RunEvent>;
         }
 
-        <hr style="border-color:white;" />
+        <hr style="border-color:white; margin-top: 10vh; margin-bottom: 5vh;" />
 
         <!-- Events Carousel -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="text-white mb-0">Upcoming Events</h3>
+        <div class="d-flex justify-content-between align-items-center mb-3 position-relative">
+            <h2 class="text-white mb-0 position-absolute start-50 translate-middle-x">Upcoming Events</h2>
             @if (Model.OwnerId == userId)
             {
-                <a asp-controller="Event" asp-action="Create"
-                   asp-route-clubId="@Model.Id" class="dashboard-btn-custom" style="text-align: center;">
-                    <i class="bi bi-plus-circle"></i> Create Event
-                </a>
+                <div class="ms-auto">
+                    <a asp-controller="Event" asp-action="Create" asp-route-clubId="@Model.Id" class="create-btn"><i class="bi bi-plus-circle"></i> Create Event</a>
+                </div>
             }
         </div>
 

@@ -245,10 +245,13 @@ namespace Runrs_SD7501.Controllers
 
             var events = _unitOfWork.Event.GetAll().Where(e => e.ClubId == id).OrderBy(e => e.EventDate).ToList();
 
+            var announcements = _unitOfWork.Announcement.GetAll(includeProperties: "PostedBy").Where(a => a.ClubId == id).OrderByDescending(a => a.CreatedDate).ToList();
+
             ViewBag.Members = members;
             ViewBag.Events = events;
             ViewBag.UserId = userId;
             ViewBag.Membership = membership;
+            ViewBag.Announcements = announcements;
 
             return View(club);
         }
@@ -349,6 +352,46 @@ namespace Runrs_SD7501.Controllers
             return RedirectToAction("ManageRequests", new { id = membership.ClubId });
         }
 
+        // ----------------------- Announcement Actions (Byron - 24/05/2026) ----------------------- //
 
+        [HttpPost]
+        public IActionResult PostAnnouncement(int clubId, string content)
+        {
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            var club = _unitOfWork.Club.Get(c => c.Id == clubId);
+            if (club == null) return NotFound();
+            if (club.OwnerId != userId) return Unauthorized();
+            if (!string.IsNullOrWhiteSpace(content))
+            {
+                var announcement = new Announcement
+                {
+                    ClubId = clubId,
+                    Content = content,
+                    PostedByUserId = userId,
+                    CreatedDate = DateTime.Now
+                };
+                _unitOfWork.Announcement.Add(announcement);
+                _unitOfWork.Save();
+                TempData["Success"] = "Announcement posted successfully!";
+            }
+            return RedirectToAction("Details", new { id = clubId });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteAnnouncement(int announcementId, int clubId)
+        {
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            var announcement = _unitOfWork.Announcement.Get(a => a.Id == announcementId);
+
+            if (announcement == null) return NotFound();
+
+            var club = _unitOfWork.Club.Get(c => c.Id == clubId);
+            if (announcement.Club.OwnerId != userId) return Unauthorized();
+
+            _unitOfWork.Announcement.Remove(announcement);
+            _unitOfWork.Save();
+            TempData["Success"] = "Announcement deleted successfully!";
+            return RedirectToAction("Details", new { id = clubId });
+        }
     }
 }

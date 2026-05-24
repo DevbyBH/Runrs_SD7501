@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Runrs.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUserRoles : Migration
+    public partial class FreshUpdateForAnnouncements : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,6 +89,32 @@ namespace Runrs.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Announcements",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ClubId = table.Column<int>(type: "int", nullable: false),
+                    PostedByUserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Announcements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Announcements_Clubs_ClubId",
+                        column: x => x.ClubId,
+                        principalTable: "Clubs",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Announcements_Users_PostedByUserId",
+                        column: x => x.PostedByUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Memberships",
                 columns: table => new
                 {
@@ -127,9 +153,10 @@ namespace Runrs.DataAccess.Migrations
                     EventLocation = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Distance = table.Column<double>(type: "float", nullable: false),
                     MaxParticipants = table.Column<int>(type: "int", nullable: false),
-                    EntryFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    EntryFee = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClubId = table.Column<int>(type: "int", nullable: false)
+                    ClubId = table.Column<int>(type: "int", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -192,13 +219,23 @@ namespace Runrs.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "RunEvents",
-                columns: new[] { "Id", "ClubId", "CreatedAt", "Distance", "EntryFee", "EventDate", "EventDescription", "EventLocation", "EventTitle", "MaxParticipants" },
+                columns: new[] { "Id", "ClubId", "CreatedAt", "Distance", "EntryFee", "EventDate", "EventDescription", "EventLocation", "EventTitle", "ImageUrl", "MaxParticipants" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 10.0, 0m, new DateTime(2026, 11, 15, 9, 0, 0, 0, DateTimeKind.Unspecified), "Join us for a run along Petone Esplanade. This event will be an introductory event for any new members wanting to come and feel out the club!", "Petone Esplanade, Wellington", "Petone Run For Fun", 20 },
-                    { 2, 2, new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 30.0, 20m, new DateTime(2026, 11, 22, 8, 0, 0, 0, DateTimeKind.Unspecified), "The annual BAYS ROUTE MARATHON is coming up. Join us to raise money for local charities in Wellington.", "Wellington Waterfront, Wellington", "Bays Route Marathon", 50 },
-                    { 3, 3, new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 5.0, 0m, new DateTime(2026, 6, 6, 9, 0, 0, 0, DateTimeKind.Unspecified), "Our weekly Saturday 5km social run followed by coffee.", "Porirua Pools, Porirua", "Porirua 5km Social Run", 50 }
+                    { 1, 1, new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 10.0, 0m, new DateTime(2026, 11, 15, 9, 0, 0, 0, DateTimeKind.Unspecified), "Join us for a run along Petone Esplanade. This event will be an introductory event for any new members wanting to come and feel out the club!", "Petone Esplanade, Wellington", "Petone Run For Fun", null, 20 },
+                    { 2, 2, new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 30.0, 20m, new DateTime(2026, 11, 22, 8, 0, 0, 0, DateTimeKind.Unspecified), "The annual BAYS ROUTE MARATHON is coming up. Join us to raise money for local charities in Wellington.", "Wellington Waterfront, Wellington", "Bays Route Marathon", null, 50 },
+                    { 3, 3, new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 5.0, 0m, new DateTime(2026, 6, 6, 9, 0, 0, 0, DateTimeKind.Unspecified), "Our weekly Saturday 5km social run followed by coffee.", "Porirua Pools, Porirua", "Porirua 5km Social Run", null, 50 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Announcements_ClubId",
+                table: "Announcements",
+                column: "ClubId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Announcements_PostedByUserId",
+                table: "Announcements",
+                column: "PostedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clubs_OwnerId",
@@ -244,6 +281,9 @@ namespace Runrs.DataAccess.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Announcements");
+
             migrationBuilder.DropTable(
                 name: "EventRegistrations");
 

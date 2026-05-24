@@ -15,6 +15,7 @@ builder.Services.AddScoped<IMembershipRepository, MembershipRepository>(); // <-
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); // <------ Byron 18/04/2026 - Registered the IUnitOfWork and UnitOfWork services for dependency injection in the Club & Login Controllers  
 builder.Services.AddScoped<IEventRepository, EventRepository>(); // <------ Byron 16/05/2026 - Registered the IEventRepository and EventRepository services for dependency injection in the EventController 
 builder.Services.AddScoped<IEventRegistrationRepository, EventRegistrationRepository>(); // <------ Byron 16/05/2026 - Registered the IEventRegistrationRepository and EventRegistrationRepository services for dependency injection in the EventController 
+builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>(); // <------ Byron 24/05/2026 - Registered the IAnnouncementRepository and AnnouncementRepository services for dependency injection in the AnnouncementController
 
 
 builder.Services.AddSession(); // <------ Byron 10/04/2026 - Registered session services for Mo's LoginController

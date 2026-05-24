@@ -39,6 +39,25 @@ function confirmDeleteEvent(eventId) {
     });
 }
 
+function confirmDeleteAnnouncement(announcementId) {
+    Swal.fire({
+        title: "Delete Announcement?",
+        text: "This action cannot be undone!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#FF7614",
+        cancelButtonColor: "#444",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+        background: "#1a1a1a",
+        color: "#ffffff"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById(`deleteAnnouncementForm-${announcementId}`).submit();
+        }
+    });
+}
+
 function getAntiForgeryToken() {
     return document.querySelector('input[name="__RequestVerificationToken"]')?.value;
 }

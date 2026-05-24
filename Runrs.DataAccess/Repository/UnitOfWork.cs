@@ -17,6 +17,7 @@ namespace Runrs.DataAccess.Repository
         public IFriendshipRepository Friendship { get; private set; }
         public IEventRepository Event { get; private set; } // <----- Added IEventRepository property to UnitOfWork (Byron 16/05/2026)
         public IEventRegistrationRepository EventRegistration { get; private set; } // <----- Added IEventRegistrationRepository property to UnitOfWork (Byron 16/05/2026)
+        public IAnnouncementRepository Announcement { get; private set; } // <----- Added IAnnouncementRepository property to UnitOfWork (Byron 24/05/2026)
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -27,6 +28,7 @@ namespace Runrs.DataAccess.Repository
             Friendship = new FriendshipRepository(_db);
             Event = new EventRepository(_db);
             EventRegistration = new EventRegistrationRepository(_db);
+            Announcement = new AnnouncementRepository(_db);
         }
 
         public void Save()
