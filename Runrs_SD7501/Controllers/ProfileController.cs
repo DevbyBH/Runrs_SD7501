@@ -2,16 +2,19 @@
 using Runrs.DataAccess.Repository.IRepository;
 using Runrs.Models.ViewModels;
 using Runrs.Models;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Runrs_SD7501.Controllers
 {
     public class ProfileController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProfileController(IUnitOfWork unitOfWork)
+        public ProfileController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Details(int id)
@@ -293,6 +296,115 @@ namespace Runrs_SD7501.Controllers
 
             TempData["Success"] = "Bio updated successfully!";
 
+            return RedirectToAction("Details", new { id });
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UploadProfilePicture(int id, IFormFile? profileImage)
+        {
+            int currentUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            if (currentUserId != id)
+                return Unauthorized();
+
+            var user = _unitOfWork.User.Get(u => u.Id == id);
+            if (user == null)
+                return NotFound();
+
+            if (profileImage != null && profileImage.Length > 0)
+            {
+                try
+                {
+                    // Validate file type
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+                    var extension = Path.GetExtension(profileImage.FileName).ToLowerInvariant();
+
+                    if (!allowedExtensions.Contains(extension))
+                    {
+                        TempData["Error"] = "Invalid file type. Allowed: JPG, PNG, GIF, WEBP";
+                        return RedirectToAction("Details", new { id });
+                    }
+
+                    // Validate file size (max 5MB)
+                    if (profileImage.Length > 5 * 1024 * 1024)
+                    {
+                        TempData["Error"] = "File size must be less than 5MB";
+                        return RedirectToAction("Details", new { id });
+                    }
+
+                    // Delete old profile image if exists (but not the default one)
+                    if (!string.IsNullOrEmpty(user.ProfileImageUrl) &&
+                        !user.ProfileImageUrl.Contains("default-avatar"))
+                    {
+                        var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
+                            user.ProfileImageUrl.TrimStart('/'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    // Generate unique filename
+                    var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "profile-pictures");
+
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await profileImage.CopyToAsync(fileStream);
+                    }
+
+                    user.ProfileImageUrl = $"/uploads/profile-pictures/{uniqueFileName}";
+
+                    _unitOfWork.User.Update(user);
+                    _unitOfWork.Save();
+
+                    TempData["Success"] = "Profile picture updated successfully!";
+                }
+                catch (Exception ex)
+                {
+                    TempData["Error"] = $"Error uploading image: {ex.Message}";
+                }
+            }
+
+            return RedirectToAction("Details", new { id });
+        }
+
+        [HttpPost]
+        public IActionResult RemoveProfilePicture(int id)
+        {
+            int currentUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            if (currentUserId != id)
+                return Unauthorized();
+
+            var user = _unitOfWork.User.Get(u => u.Id == id);
+            if (user == null)
+                return NotFound();
+
+            // Delete the image file
+            if (!string.IsNullOrEmpty(user.ProfileImageUrl))
+            {
+                var imagePath = Path.Combine(_webHostEnvironment.WebRootPath,
+                    user.ProfileImageUrl.TrimStart('/'));
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
+
+            // Set to null or default avatar
+            user.ProfileImageUrl = null;
+            _unitOfWork.User.Update(user);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "Profile picture removed successfully!";
             return RedirectToAction("Details", new { id });
         }
     }

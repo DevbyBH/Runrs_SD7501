@@ -12,8 +12,8 @@ using Runrs.DataAccess.Data;
 namespace Runrs.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260524013139_FreshUpdateForAnnouncements")]
-    partial class FreshUpdateForAnnouncements
+    [Migration("20260524133109_FreshDatabaseForProfilePicture")]
+    partial class FreshDatabaseForProfilePicture
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -376,6 +376,10 @@ namespace Runrs.DataAccess.Migrations
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");

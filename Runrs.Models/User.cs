@@ -29,6 +29,10 @@ namespace Runrs.Models
 
         [MaxLength(500)]
         public string? Bio { get; set; }
+
+        [MaxLength(500)]
+        public string? ProfileImageUrl { get; set; }
+
         public ICollection<Membership>? Memberships { get; set; }
         public ICollection<Club>? OwnedClubs { get; set; }
 
