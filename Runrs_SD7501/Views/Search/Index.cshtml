@@ -142,9 +142,8 @@
                                     else if (membership == null)
                                     {
                                         <form asp-controller="Club" asp-action="Join" asp-route-id="@club.Id" method="post">
-                                            <button type="submit" class="btn btn-sm btn-success">
-                                                Join
-                                            </button>
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-success">Join</button>
                                         </form>
                                     }
                                     else if (membership.Status == Runrs.Models.MembershipStatus.Pending)

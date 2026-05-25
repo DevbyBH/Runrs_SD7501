@@ -26,9 +26,7 @@
                     <div class="club-card">
 
                         <!-- Placeholder (same style as search cards) -->
-                        <div class="club-card-img-placeholder">
-                            <i class="bi bi-person"></i>
-                        </div>
+                        <div class="club-card-img-placeholder"> <i class="bi bi-person"></i></div>
 
                         <div class="club-card-body">
 
@@ -49,26 +47,22 @@
                             </p>
 
                             <div class="club-card-footer mb-2">
-                                <span class="club-badge bg-warning text-dark">
-                                    Pending
-                                </span>
+                                <span class="club-badge bg-warning text-dark">Pending</span>
                             </div>
 
                             <!-- ACTION BUTTONS -->
                             <div class="d-flex justify-content-between mt-3">
 
                                 <form asp-action="ApproveRequest" method="post">
+                                    @Html.AntiForgeryToken()
                                     <input type="hidden" name="membershipId" value="@request.Id" />
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                        Approve
-                                    </button>
+                                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
                                 </form>
 
                                 <form asp-action="RejectRequest" method="post">
+                                    @Html.AntiForgeryToken()
                                     <input type="hidden" name="membershipId" value="@request.Id" />
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        Reject
-                                    </button>
+                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
                                 </form>
 
                             </div>

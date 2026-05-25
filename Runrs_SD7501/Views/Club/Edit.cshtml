@@ -15,6 +15,7 @@
     </div>
     <div class="card-body p-4">
         <form method="post" class="row">
+            @Html.AntiForgeryToken()
             <div class="p-3">
                 <div class="mb-3 row p-1">
                     <label asp-for="ClubName" class="crud-form-label"></label>
@@ -57,26 +58,17 @@
 
                 <div class="mb-3 row p-1">
                     <label asp-for="Difficulty" class="crud-form-label"></label>
-                    <select asp-for="Difficulty"
-                            asp-items="Html.GetEnumSelectList<Club.DifficultyLevel>()"
-                            class="form-control crud-input-border">
-                    </select>
+                    <select asp-for="Difficulty" asp-items="Html.GetEnumSelectList<Club.DifficultyLevel>()" class="form-control crud-input-border"></select>
                     <span asp-validation-for="Difficulty" class="text-danger"></span>
                 </div>
                 <div class="mb-3 row p-1">
                     <label asp-for="Distance" class="crud-form-label"></label>
-                    <select asp-for="Distance"
-                            asp-items="Html.GetEnumSelectList<Club.DistanceRange>()"
-                            class="form-control crud-input-border">
-                    </select>
+                    <select asp-for="Distance" asp-items="Html.GetEnumSelectList<Club.DistanceRange>()" class="form-control crud-input-border"> </select>
                     <span asp-validation-for="Distance" class="text-danger"></span>
                 </div>
                 <div class="mb-3 row p-1">
                     <label asp-for="Type" class="crud-form-label"></label>
-                    <select asp-for="Type"
-                            asp-items="Html.GetEnumSelectList<Club.ClubType>()"
-                            class="form-control crud-input-border">
-                    </select>
+                    <select asp-for="Type" asp-items="Html.GetEnumSelectList<Club.ClubType>()" class="form-control crud-input-border"></select>
                     <span asp-validation-for="Type" class="text-danger"></span>
                 </div>
                 <div class="row pt-2">

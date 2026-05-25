@@ -77,7 +77,8 @@
                 @if (isSelf)
                 {
                     <button type="button" class="btn btn-sm btn-custom upload-pic-btn" onclick="document.getElementById('profileImageInput').click();"><i class="bi bi-camera"></i></button>
-                    <form id="uploadProfilePicForm" asp-action="UploadProfilePicture" asp-route-id="@user.Id" method="post" enctype="multipart/form-data"style="display:none;">@Html.AntiForgeryToken()
+                    <form id="uploadProfilePicForm" asp-action="UploadProfilePicture" asp-route-id="@user.Id" method="post" enctype="multipart/form-data"style="display:none;">
+                        @Html.AntiForgeryToken()
                         <input type="file" id="profileImageInput" name="profileImage"/>
                     </form>
 
@@ -135,23 +136,13 @@
                             </button>
 
                             <div class="collapse mt-3" id="editBio">
-                                <form asp-controller="Profile"
-                                      asp-action="UpdateBio"
-                                      method="post">
+                                <form asp-controller="Profile" asp-action="UpdateBio" method="post">
+                                    @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@user.Id" />
-                                    <textarea name="bio"
-                                              class="form-control"
-                                              rows="4"
-                                              maxlength="500"
-                                              placeholder="Write something about yourself...">@user.Bio</textarea>
+                                    <textarea name="bio" class="form-control" rows="4" maxlength="500" placeholder="Write something about yourself...">@user.Bio</textarea>
                                     <div class="d-flex gap-2 mt-2">
                                         <button type="submit" class="btn btn-success btn-sm">Save</button>
-                                        <button type="button"
-                                                class="btn btn-secondary btn-sm"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#editBio">
-                                            Cancel
-                                        </button>
+                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#editBio">Cancel</button>
                                     </div>
                                 </form>
                             </div>
@@ -200,12 +191,14 @@
                 @if (noFriendship)
                 {
                     <form asp-action="AddFriend" asp-route-id="@user.Id" method="post">
+                        @Html.AntiForgeryToken()
                         <button class="btn btn-success btn-sm">Add Friend</button>
                     </form>
                 }
                 else if (canAccept)
                 {
                     <form asp-action="AcceptFriend" method="post">
+                        @Html.AntiForgeryToken()
                         <input type="hidden" name="friendshipId" value="@friendship.Id" />
                         <button class="btn btn-success btn-sm">Accept Request</button>
                     </form>
@@ -217,6 +210,7 @@
                 else if (isAccepted)
                 {
                     <form asp-action="RemoveFriend" asp-route-id="@user.Id" method="post">
+                        @Html.AntiForgeryToken()
                         <button class="btn btn-danger btn-sm">Remove Friend</button>
                     </form>
                 }

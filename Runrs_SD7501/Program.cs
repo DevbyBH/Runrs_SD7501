@@ -4,11 +4,14 @@ using Runrs.DataAccess.Repository;
 using Runrs.Models;
 using Runrs.DataAccess.Data;
 using Stripe;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options => {
+    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+});
 builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IClubRepository, ClubRepository>(); // <------ Byron 18/04/2026 - Registered the IClubRepository and ClubRepository services for dependency injection in the ClubController
 builder.Services.AddScoped<IUserRepository, UserRepository>(); // <------ Byron 18/04/2026 - Registered the IUserRepository and UserRepository services for dependency injection in the LoginController
