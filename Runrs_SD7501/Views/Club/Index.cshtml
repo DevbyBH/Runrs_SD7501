@@ -3,7 +3,11 @@
 @{
     ViewData["Title"] = "My Clubs";
     ViewData["BodyClass"] = "home-page";
+
     var joinedClubs = ViewBag.JoinedClubs as List<Runrs.Models.Club>;
+    var memberships = ViewBag.Memberships as List<Runrs.Models.Membership>;
+    var memberCounts = ViewBag.MemberCounts as Dictionary<int, int>;
+    var userId = Context.Session.GetInt32("UserId") ?? 0;
 }
 
 @if (TempData["Success"] != null)
@@ -50,121 +54,250 @@
                 }
             </style>
         </defs>
+
         <path fill="#833AB4" class="out-top" d="M37-5C25.1-14.7,5.7-19.1-9.2-10-28.5,1.8-32.7,31.1-19.8,49c15.5,21.5,52.6,22,67.2,2.3C59.4,35,53.7,8.5,37-5Z" />
         <path fill="#2a1344" class="in-top" d="M20.6,4.1C11.6,1.5-1.9,2.5-8,11.2-16.3,23.1-8.2,45.6,7.4,50S42.1,38.9,41,24.5C40.2,14.1,29.4,6.6,20.6,4.1Z" />
         <path fill="#833AB4" class="out-bottom" d="M105.9,48.6c-12.4-8.2-29.3-4.8-39.4.8-23.4,12.8-37.7,51.9-19.1,74.1s63.9,15.3,76-5.6c7.6-13.3,1.8-31.1-2.3-43.8C117.6,63.3,114.7,54.3,105.9,48.6Z" />
         <path fill="#2a1344" class="in-bottom" d="M102,67.1c-9.6-6.1-22-3.1-29.5,2-15.4,10.7-19.6,37.5-7.6,47.8s35.9,3.9,44.5-12.5C115.5,92.6,113.9,74.6,102,67.1Z" />
     </svg>
 
-    <div>
-        <div class="page-header">
-            <h1 class="text-white py-2 mb-0 position-absolute start-50 translate-middle-x letter-spacing-lg">My Clubs</h1>
-            <a asp-controller="Club" asp-action="Create" class="btn btn-custom">
-                <i class="bi bi-plus-circle"></i> Create New Club
+    <div class="search-container">
+
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <h1 class="search-header mb-0">My Clubs</h1>
+
+            <a asp-controller="Club"
+               asp-action="Create"
+               class="btn search-btn">
+                <i class="bi bi-plus-circle"></i>
+                Create New Club
             </a>
         </div>
 
-        <div class="card-body p-4">
+        <!-- OWNED CLUBS -->
 
-            <!-- OWNED CLUBS -->
-            <h3 class="text-white mb-3">Owned Clubs</h3>
-            @if (Model == null || !Model.Any())
-            {
-                <p class="text-muted text-center fw-bold">You have not created any clubs yet.</p>
-            }
-            else
-            {
-                <div class="club-table-container">
-                    <table class="club-table">
-                        <thead class="club-table-header">
-                            <tr>
-                                <th>Owner</th>
-                                <th>Name</th>
-                                <th>Location</th>
-                                <th>Description</th>
-                                <th>Private</th>
-                                <th>Created On</th>
-                                <th>Distance</th>
-                                <th>Difficulty</th>
-                                <th>Club Type</th>
-                                <th>Edit/Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var club in Model.OrderBy(u => u.ClubName))
+        <h2 class="text-white mb-4">Owned Clubs</h2>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p class="text-white text-center fw-bold">
+                You have not created any clubs yet.
+            </p>
+        }
+        else
+        {
+            <div class="row">
+
+                @foreach (var club in Model.OrderBy(c => c.ClubName))
+                {
+                    var membership = memberships?.FirstOrDefault(m => m.ClubId == club.Id);
+
+                    <div class="col-md-4 mb-4">
+
+                        <div class="club-card">
+
+                            @if (!string.IsNullOrEmpty(club.ImageUrl))
                             {
-                                <tr>
-                                    <td>@club.Owner?.Username</td>
-                                    <td>@club.ClubName</td>
-                                    <td>@club.ClubLocation</td>
-                                    <td>@club.ClubDescription</td>
-                                    <td>@(club.IsPrivate ? "Yes" : "No")</td>
-                                    <td>@club.CreatedAt.ToString("dd MMM yyyy")</td>
-                                    <td>@Html.DisplayFor(modelItem => club.Distance)</td>
-                                    <td>@Html.DisplayFor(modelItem => club.Difficulty)</td>
-                                    <td>@Html.DisplayFor(modelItem => club.Type)</td>
-                                    <td>
-                                        <div class="d-flex gap-2">
-                                            <a asp-controller="Club" asp-action="Edit" asp-route-id="@club.Id" class="btn crud-btn mx-1">
-                                                <i class="bi bi-pencil-fill"></i>
-                                            </a>
-                                            <a asp-controller="Club" asp-action="Delete" asp-route-id="@club.Id" class="btn crud-btn mx-1">
-                                                <i class="bi bi-trash3-fill"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <img src="@club.ImageUrl"
+                                     class="club-card-img"
+                                     alt="@club.ClubName" />
                             }
-                        </tbody>
-                    </table>
-                </div>
-            }
-
-            <!-- JOINED CLUBS -->
-            <h3 class="text-white mt-5 mb-3">Joined Clubs</h3>
-            @if (joinedClubs == null || !joinedClubs.Any())
-            {
-                <p class="text-muted text-center fw-bold">You have not joined any clubs yet.</p>
-            }
-            else
-            {
-                <div class="club-table-container">
-                    <table class="club-table">
-                        <thead class="club-table-header">
-                            <tr>
-                                <th>Owner</th>
-                                <th>Name</th>
-                                <th>Location</th>
-                                <th>Description</th>
-                                <th>Distance</th>
-                                <th>Difficulty</th>
-                                <th>Club Type</th>
-                                <th>Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var club in joinedClubs.OrderBy(u => u.ClubName))
+                            else
                             {
-                                <tr>
-                                    <td>@club.Owner?.Username</td>
-                                    <td>@club.ClubName</td>
-                                    <td>@club.ClubLocation</td>
-                                    <td>@club.ClubDescription</td>
-                                    <td>@Html.DisplayFor(modelItem => club.Distance)</td>
-                                    <td>@Html.DisplayFor(modelItem => club.Difficulty)</td>
-                                    <td>@Html.DisplayFor(modelItem => club.Type)</td>
-                                    <td>
-                                        <a asp-controller="Club" asp-action="Details" asp-route-id="@club.Id" class="btn crud-btn mx-1">
-                                            <i class="bi bi-eye-fill"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                                <div class="club-card-img-placeholder">
+                                    <i class="bi bi-person-running"></i>
+                                </div>
                             }
-                        </tbody>
-                    </table>
-                </div>
-            }
 
-        </div>
+                        <div class="club-card-body">
+
+                            <h3 class="club-card-title">
+                                @club.ClubName
+                            </h3>
+
+                            <p class="club-card-location">
+                                <i class="bi bi-geo-alt-fill"></i>
+                                @club.ClubLocation
+                            </p>
+
+                            <p class="club-card-description">
+                                @club.ClubDescription
+                            </p>
+
+                            <div class="club-card-footer mb-3">
+
+                                <span class="club-badge">
+                                    Owner
+                                </span>
+
+                                <span class="club-badge">
+                                    @(club.IsPrivate ? "Private" : "Public")
+                                </span>
+
+                                <span class="club-badge">
+                                    @club.Difficulty
+                                </span>
+
+                                <span class="club-badge">
+                                    @Html.DisplayFor(modelItem => club.Distance)
+                                </span>
+
+                                <span class="club-badge">
+                                    @club.Type
+                                </span>
+
+                                <span class="club-badge">
+                                    <i class="bi bi-people-fill"></i>
+
+                                    @(memberCounts != null && memberCounts.ContainsKey(club.Id)
+                                                                    ? memberCounts[club.Id]
+                                                                    : 0)
+                            </span>
+
+                                </div>
+
+                                <div class="d-flex gap-2 flex-wrap">
+
+                                    <a asp-controller="Club"
+                                       asp-action="Details"
+                                       asp-route-id="@club.Id"
+                                       class="btn card-btn">
+                                        View Details
+                                    </a>
+
+                                    <a asp-controller="Club"
+                                       asp-action="Edit"
+                                       asp-route-id="@club.Id"
+                                       class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+
+                                    <a asp-controller="Club"
+                                       asp-action="Delete"
+                                       asp-route-id="@club.Id"
+                                       class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                        }
+
+            </div>
+        }
+
+        <!-- JOINED CLUBS -->
+
+        <h2 class="text-white mt-5 mb-4">Joined Clubs</h2>
+
+        @if (joinedClubs == null || !joinedClubs.Any())
+        {
+            <p class="text-white text-center fw-bold">
+                You have not joined any clubs yet.
+            </p>
+        }
+        else
+        {
+            <div class="row">
+
+                @foreach (var club in joinedClubs.OrderBy(c => c.ClubName))
+                {
+                    var membership = memberships?.FirstOrDefault(m => m.ClubId == club.Id);
+
+                    <div class="col-md-4 mb-4">
+
+                        <div class="club-card">
+
+                            @if (!string.IsNullOrEmpty(club.ImageUrl))
+                            {
+                                <img src="@club.ImageUrl"
+                                     class="club-card-img"
+                                     alt="@club.ClubName" />
+                            }
+                            else
+                            {
+                                <div class="club-card-img-placeholder">
+                                    <i class="bi bi-person-running"></i>
+                                </div>
+                            }
+
+                        <div class="club-card-body">
+
+                            <h3 class="club-card-title">
+                                @club.ClubName
+                            </h3>
+
+                            <p class="club-card-location">
+                                <i class="bi bi-geo-alt-fill"></i>
+                                @club.ClubLocation
+                            </p>
+
+                            <p class="club-card-description">
+                                @club.ClubDescription
+                            </p>
+
+                            <div class="club-card-footer mb-3">
+
+                                <span class="club-badge bg-success">
+                                    Joined
+                                </span>
+
+                                <span class="club-badge">
+                                    @club.Difficulty
+                                </span>
+
+                                <span class="club-badge">
+                                    @Html.DisplayFor(modelItem => club.Distance)
+                                </span>
+
+                                <span class="club-badge">
+                                    @club.Type
+                                </span>
+
+                                <span class="club-badge">
+                                    <i class="bi bi-people-fill"></i>
+
+                                    @(memberCounts != null && memberCounts.ContainsKey(club.Id)
+                                                                    ? memberCounts[club.Id]
+                                                                    : 0)
+                            </span>
+
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center">
+
+                                    <a asp-controller="Club"
+                                       asp-action="Details"
+                                       asp-route-id="@club.Id"
+                                       class="btn card-btn">
+                                        View Details
+                                    </a>
+
+                            @if (membership != null &&
+                                                        membership.Status == Runrs.Models.MembershipStatus.Approved)
+                                    {
+                                        <span class="badge bg-success">
+                                            Member
+                                        </span>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
     </div>
+
 </body>

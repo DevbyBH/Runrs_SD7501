@@ -4,6 +4,7 @@
 }
 
 @using Runrs.Models
+@using Runrs.Models.ViewModels
 
 <body>
     <svg class="background-svg" preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
@@ -216,25 +217,62 @@
                 </div>
 
                 <!-- Recent Activity - Byron (18/05/2026) -->
+                <!-- Recent Activity -->
                 <div class="dashboard-card">
                     <div class="dashboard-card-header">
-                        <h3><i class="bi bi-clock-history"></i> Recent Activity</h3>
+                        <h3>
+                            <i class="bi bi-clock-history"></i>
+                            Recent Activity
+                        </h3>
                     </div>
+
                     <div class="dashboard-card-body">
+
                         @{
-                            var recentActivity = ViewBag.RecentActivity as List<Membership>;
+                            var recentActivity =
+                            ViewBag.RecentActivity as List<ActivityItem>;
                         }
+
                         @if (recentActivity != null && recentActivity.Any())
                         {
-                            foreach (var membership in recentActivity)
+                            foreach (var activity in recentActivity)
                             {
-                                <div class="dashboard-activity-item">
-                                    <div class="activity-dot"></div>
-                                    <div class="activity-info">
-                                        <p>Joined <strong>@membership.Club?.ClubName</strong></p>
-                                        <span class="activity-time">@membership.JoinedAt.ToString("MMM dd, yyyy")</span>
+                                var badgeClass = activity.Type switch
+                                {
+                                    "success" => "bg-success",
+                                    "warning" => "bg-warning text-dark",
+                                    "info" => "bg-info text-dark",
+                                    _ => "bg-secondary"
+                                };
+
+                                <a href="@activity.Url"
+                                   class="text-decoration-none text-white">
+
+                                    <div class="club-card mb-3 activity-card">
+
+                                        <div class="club-card-body">
+
+                                            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                                                <div>
+                                                    <span class="badge @badgeClass me-2">
+                                                        @activity.Type.ToUpper()
+                                                    </span>
+
+                                                    @activity.Message
+                                                </div>
+
+                                                <small class="text-muted">
+                                                    @activity.Date.ToString("dd MMM yyyy")
+                                                </small>
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
-                                </div>
+
+                                </a>
                             }
                         }
                         else
@@ -243,6 +281,7 @@
                                 <p>No recent activity.</p>
                             </div>
                         }
+
                     </div>
                 </div>
             </div>

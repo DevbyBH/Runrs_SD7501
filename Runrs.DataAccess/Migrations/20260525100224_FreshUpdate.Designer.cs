@@ -12,8 +12,8 @@ using Runrs.DataAccess.Data;
 namespace Runrs.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260525023116_FreshUpdateForStripePayments")]
-    partial class FreshUpdateForStripePayments
+    [Migration("20260525100224_FreshUpdate")]
+    partial class FreshUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

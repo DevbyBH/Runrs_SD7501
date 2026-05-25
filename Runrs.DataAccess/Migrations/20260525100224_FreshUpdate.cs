@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Runrs.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class FreshUpdateForStripePayments : Migration
+    public partial class FreshUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
