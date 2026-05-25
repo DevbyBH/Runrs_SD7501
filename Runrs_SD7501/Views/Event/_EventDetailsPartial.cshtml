@@ -80,15 +80,30 @@
                 <!-- Registration Status -->
                 @if (registration == null)
                 {
-                    <form asp-controller="Event" asp-action="Register" method="post">
-                        <input type="hidden" name="eventId" value="@Model.Id" />
-                        <div class="text-center">
-                            <button type="submit" class="create-btn">
-                                <i class="bi bi-person-plus"></i>
-                                @(Model.EntryFee == 0 ? "Register" : $"Register — ${Model.EntryFee}")
-                            </button>
-                        </div>
-                    </form>
+                    @if (Model.EntryFee == 0)
+                    {
+                        <!-- Free event - register directly -->
+                        <form action="/Event/Register" method="post">
+                            <input type="hidden" name="eventId" value="@Model.Id" />
+                            <div class="text-center">
+                                <button type="submit" class="create-btn">
+                                    <i class="bi bi-person-plus"></i> Register — Free
+                                </button>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <!-- Paid event - add to cart -->
+                        <form action="/ShoppingCart/AddToCart" method="post">
+                            <input type="hidden" name="eventId" value="@Model.Id" />
+                            <div class="text-center">
+                                <button type="submit" class="create-btn">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart — $@Model.EntryFee
+                                </button>
+                            </div>
+                        </form>
+                    }
                 }
                 else if (registration.Status == Runrs.Models.RegistrationStatus.Confirmed)
                 {
@@ -96,9 +111,11 @@
                         <span class="badge" style="background-color:#28a745; color:white; padding: 8px 15px;">
                             <i class="bi bi-check-circle"></i> Registered
                         </span>
-                        <form asp-controller="Event" asp-action="CancelRegistration" method="post">
+                        <form action="/Event/CancelRegistration" method="post">
                             <input type="hidden" name="eventId" value="@Model.Id" />
-                            <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i> Cancel Registration</button>
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="bi bi-x-circle"></i> Cancel Registration
+                            </button>
                         </form>
                     </div>
                 }

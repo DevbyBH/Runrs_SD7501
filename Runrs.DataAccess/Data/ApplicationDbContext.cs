@@ -21,6 +21,7 @@ namespace Runrs.DataAccess.Data
         public DbSet<RunEvent> RunEvents { get; set; } // <----- DbSet for RunEvent (Byron 16/05/2026)
         public DbSet<EventRegistration> EventRegistrations { get; set; } // <----- DbSet for EventRegistration (Byron 16/05/2026)
         public DbSet<Announcement> Announcements { get; set; } // <----- DbSet for Announcements (Byron 17/05/2026)
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; } // <----- DbSet for ShoppingCart (Byron 17/05/2026)
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -74,6 +75,19 @@ namespace Runrs.DataAccess.Data
                 .WithMany()
                 .HasForeignKey(a => a.ClubId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ShoppingCart>()
+                .HasOne(s => s.User)
+                .WithMany()
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ShoppingCart>()
+                .HasOne(s => s.Event)
+                .WithMany()
+                .HasForeignKey(s => s.EventId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             // --------------------------------------------------------------------------------------------------------------------------------------------
 
             // Byron 10/04/2026 - Seed Data for Test User

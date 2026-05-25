@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Runrs.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class FreshDatabaseForProfilePicture : Migration
+    public partial class FreshUpdateForStripePayments : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -198,6 +198,31 @@ namespace Runrs.DataAccess.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EventId = table.Column<int>(type: "int", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_RunEvents_EventId",
+                        column: x => x.EventId,
+                        principalTable: "RunEvents",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Bio", "DateOfBirth", "Email", "FirstName", "JoinedAt", "LastName", "PasswordHash", "ProfileImageUrl", "Role", "Username" },
@@ -277,6 +302,16 @@ namespace Runrs.DataAccess.Migrations
                 name: "IX_RunEvents_ClubId",
                 table: "RunEvents",
                 column: "ClubId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_EventId",
+                table: "ShoppingCarts",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_UserId",
+                table: "ShoppingCarts",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -293,6 +328,9 @@ namespace Runrs.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Memberships");
+
+            migrationBuilder.DropTable(
+                name: "ShoppingCarts");
 
             migrationBuilder.DropTable(
                 name: "RunEvents");

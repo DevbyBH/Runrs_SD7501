@@ -3,6 +3,7 @@ using Runrs.DataAccess.Repository.IRepository;
 using Runrs.DataAccess.Repository;
 using Runrs.Models;
 using Runrs.DataAccess.Data;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>(); /
 
 builder.Services.AddSession(); // <------ Byron 10/04/2026 - Registered session services for Mo's LoginController
 builder.Services.AddHttpContextAccessor(); // <------ Byron 10/04/2026 - Registered HttpContextAccessor services for Mo's LoginController
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe")); // <------ Byron 16/05/2026 - Registered StripeSettings configuration for dependency injection in the PaymentController
 
 var app = builder.Build();
 
@@ -34,6 +36,7 @@ if (!app.Environment.IsDevelopment())
 app.UseSession(); // <------ Byron 10/04/2026 - Added session "middleware" for Mo's LoginController
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllerRoute(

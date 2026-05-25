@@ -16,6 +16,7 @@ namespace Runrs.DataAccess.Repository.IRepository
         IEventRepository Event { get; } // <----- Added IEventRepository to UnitOfWork (Byron 16/05/2026)
         IEventRegistrationRepository EventRegistration { get; } // <----- Added IEventRegistrationRepository to UnitOfWork (Byron 16/05/2026)
         IAnnouncementRepository Announcement { get; } // <----- Added IAnnouncementRepository to UnitOfWork (Byron 24/05/2026)
+        IShoppingCartRepository ShoppingCart { get; } // <----- Added IShoppingCartRepository to UnitOfWork (Byron 25/05/2026)
         void Save();
     }
 }

@@ -18,6 +18,7 @@ namespace Runrs.DataAccess.Repository
         public IEventRepository Event { get; private set; } // <----- Added IEventRepository property to UnitOfWork (Byron 16/05/2026)
         public IEventRegistrationRepository EventRegistration { get; private set; } // <----- Added IEventRegistrationRepository property to UnitOfWork (Byron 16/05/2026)
         public IAnnouncementRepository Announcement { get; private set; } // <----- Added IAnnouncementRepository property to UnitOfWork (Byron 24/05/2026)
+        public IShoppingCartRepository ShoppingCart { get; private set; } // <----- Added IShoppingCartRepository property to UnitOfWork (Byron 25/05/2026)
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -29,6 +30,7 @@ namespace Runrs.DataAccess.Repository
             Event = new EventRepository(_db);
             EventRegistration = new EventRegistrationRepository(_db);
             Announcement = new AnnouncementRepository(_db);
+            ShoppingCart = new ShoppingCartRepository(_db);
         }
 
         public void Save()
