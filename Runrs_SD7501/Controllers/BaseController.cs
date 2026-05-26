@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Runrs.Models;
 
 namespace Runrs_SD7501.Controllers
 {
@@ -8,9 +7,12 @@ namespace Runrs_SD7501.Controllers
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (HttpContext.Session.GetInt32("UserId") == null) //<-- Byron 17/04/2026 - Edited to allow for proper session login (So clubs can be created with correct user id)
+            if (HttpContext.Session.GetInt32("UserId") == null)
             {
-                context.Result = RedirectToAction("Index", "Login");
+                context.Result = new RedirectToActionResult(
+                    "Index",
+                    "Login",
+                    null);
             }
 
             base.OnActionExecuting(context);

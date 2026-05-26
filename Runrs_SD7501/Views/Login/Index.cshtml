@@ -64,10 +64,10 @@
             {
                 @Html.AntiForgeryToken()
 
-                if (ViewBag.Message != null)
+                @if (TempData["Error"] != null)
                 {
                     <div class="error-box">
-                        @ViewBag.Message
+                        @TempData["Error"]
                     </div>
                 }
 
