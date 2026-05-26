@@ -69,10 +69,8 @@
             <div class="cover-top-bar">
                 @if (Model.OwnerId == userId)
                 {
-                        <div class="d-flex gap-2 align-items-center">
-                            <span class="owner-badge">Club Owner <i class="bi bi-star-fill" style="color: gold;"></i></span>
-                            <a asp-action="ManageRequests" asp-route-id="@Model.Id" class="manage-join-btn">Manage Join Requests</a>
-                        </div>
+                    <span class="owner-badge">Club Owner <i class="bi bi-star-fill" style="color: gold;"></i></span>
+                    <a asp-action="ManageRequests" asp-route-id="@Model.Id" class="manage-join-btn"><i class="bi bi-hourglass-split"></i></a>
                 }
                 else if (membership == null)
                 {
@@ -83,7 +81,13 @@
                 }
                 else if (membership.Status == Runrs.Models.MembershipStatus.Pending)
                 {
-                        <span class="badge fs-6" style="background-color:#ffc107; color:black; padding: 10px 20px;">Pending Approval</span>
+                        <div class="d-flex gap-2 align-items-center">
+                            <span class="pending-badge">Pending Approval</span>
+                            <form asp-action="CancelRequest" asp-route-id="@Model.Id" method="post">
+                                            @Html.AntiForgeryToken()
+                                    <button type="submit" class="cancel-join-btn"><i class="bi bi-x-lg"></i></button>
+                            </form>
+                        </div>
                 }
                 else if (membership.Status == Runrs.Models.MembershipStatus.Approved)
                 {

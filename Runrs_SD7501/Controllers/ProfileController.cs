@@ -148,5 +148,100 @@ namespace Runrs_SD7501.Controllers
                 "Details",
                 new { id });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadProfilePicture(int id, IFormFile? profileImage)
+        {
+            int currentUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            if (currentUserId != id)
+                return Unauthorized();
+
+            var user = _unitOfWork.User.Get(u => u.Id == id);
+            if (user == null)
+                return NotFound();
+
+            if (profileImage != null && profileImage.Length > 0)
+            {
+                try
+                {
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+                    var extension = Path.GetExtension(profileImage.FileName).ToLowerInvariant();
+                    if (!allowedExtensions.Contains(extension))
+                    {
+                        TempData["Error"] = "Invalid file type. Allowed: JPG, PNG, GIF, WEBP";
+                        return RedirectToAction("Details", new { id });
+                    }
+                    if (profileImage.Length > 5 * 1024 * 1024)
+                    {
+                        TempData["Error"] = "File size must be less than 5MB";
+                        return RedirectToAction("Details", new { id });
+                    }
+                    if (!string.IsNullOrEmpty(user.ProfileImageUrl) &&
+                        !user.ProfileImageUrl.Contains("default-avatar"))
+                    {
+                        var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
+                            user.ProfileImageUrl.TrimStart('/'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+                    var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "profile-pictures");
+
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await profileImage.CopyToAsync(fileStream);
+                    }
+
+                    user.ProfileImageUrl = $"/uploads/profile-pictures/{uniqueFileName}";
+
+                    _unitOfWork.User.Update(user);
+                    _unitOfWork.Save();
+
+                    TempData["Success"] = "Profile picture updated successfully!";
+                }
+                catch (Exception ex)
+                {
+                    TempData["Error"] = $"Error uploading image: {ex.Message}";
+                }
+            }
+
+            return RedirectToAction("Details", new { id });
+        }
+
+        [HttpPost]
+        public IActionResult RemoveProfilePicture(int id)
+        {
+            int currentUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            if (currentUserId != id)
+                return Unauthorized();
+
+            var user = _unitOfWork.User.Get(u => u.Id == id);
+            if (user == null)
+                return NotFound();
+            if (!string.IsNullOrEmpty(user.ProfileImageUrl))
+            {
+                var imagePath = Path.Combine(_webHostEnvironment.WebRootPath,
+                    user.ProfileImageUrl.TrimStart('/'));
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
+            user.ProfileImageUrl = null;
+            _unitOfWork.User.Update(user);
+            _unitOfWork.Save();
+            TempData["Success"] = "Profile picture removed successfully!";
+            return RedirectToAction("Details", new { id });
+        }
     }
 }

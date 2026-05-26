@@ -14,8 +14,8 @@ namespace Runrs.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage ="Announcement Content Required")]
-        [MaxLength(1000)]
+        [Required(ErrorMessage = "Announcement content is required")]
+        [Column(TypeName = "nvarchar(max)")]
         [DisplayName("Announcement")]
         public string Content { get; set; }
 

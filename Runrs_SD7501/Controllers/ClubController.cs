@@ -222,6 +222,29 @@ namespace Runrs_SD7501.Controllers
 
         // -----------------------------------------------------------------//
 
+
+        // ----------------------- Cancel Join Request Action ----------------------- //
+
+        [HttpPost]
+        public IActionResult CancelRequest(int id)
+        {
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            var membership = _unitOfWork.Membership.Get(m =>
+                m.UserId == userId && m.ClubId == id && m.Status == MembershipStatus.Pending);
+
+            if (membership == null)
+                return NotFound();
+
+            _unitOfWork.Membership.Remove(membership);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "Join request cancelled.";
+            return RedirectToAction("Details", new { id });
+        }
+        // -------------------------------------------------------------------------- //
+
+
         // -----------------------  Details Club Action ----------------------- //
 
         public IActionResult Details(int id)

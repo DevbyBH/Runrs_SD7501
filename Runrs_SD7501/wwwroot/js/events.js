@@ -45,9 +45,9 @@ function confirmDeleteAnnouncement(announcementId) {
         text: "This action cannot be undone!",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#FF7614",
+        confirmButtonColor: "#A12A67",
         cancelButtonColor: "#444",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Confirm Delete!",
         cancelButtonText: "Cancel",
         background: "#1a1a1a",
         color: "#ffffff"

@@ -109,7 +109,7 @@ public class HomeController : BaseController
 
                         Date = f.CreatedAt,
 
-                        Type = "warning",
+                        Type = "request",
 
                         Url = Url.Action(
                             "Details",
@@ -128,7 +128,7 @@ public class HomeController : BaseController
 
                         Date = f.CreatedAt,
 
-                        Type = "warning",
+                        Type = "request",
 
                         Url = Url.Action(
                             "Details",

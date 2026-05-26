@@ -133,32 +133,6 @@
                                     <a asp-controller="Club" asp-action="Details" asp-route-id="@club.Id"class="btn card-btn">
                                         View Details
                                     </a>
-
-                                    <!-- Membership Logic -->
-                            @if (club.OwnerId == userId)
-                                    {
-                                        <span class="badge bg-secondary">Owner</span>
-                                    }
-                                    else if (membership == null)
-                                    {
-                                        <form asp-controller="Club" asp-action="Join" asp-route-id="@club.Id" method="post">
-                                            @Html.AntiForgeryToken()
-                                            <button type="submit" class="btn btn-sm btn-success">Join</button>
-                                        </form>
-                                    }
-                                    else if (membership.Status == Runrs.Models.MembershipStatus.Pending)
-                                    {
-                                        <span class="badge bg-warning text-dark">Pending</span>
-                                    }
-                                    else if (membership.Status == Runrs.Models.MembershipStatus.Approved)
-                                    {
-                                        <span class="badge bg-success">Member</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-danger">Rejected</span>
-                                    }
-
                                 </div>
 
                             </div>

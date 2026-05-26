@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace Runrs.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class FreshUpdate : Migration
+    public partial class FreshUpdateNoSeedData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -221,36 +219,6 @@ namespace Runrs.DataAccess.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Bio", "DateOfBirth", "Email", "FirstName", "JoinedAt", "LastName", "PasswordHash", "ProfileImageUrl", "Role", "Username" },
-                values: new object[,]
-                {
-                    { 1, null, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test@gmail.com", "Test", new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", "Test123", null, 2, "testuser" },
-                    { 2, null, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test2@gmail.com", "Test2", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "User2", "Test123", null, 1, "testuser2" },
-                    { 3, null, new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test@gmail.com", "Test3", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "User3", "Test123", null, 0, "testuser3" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Clubs",
-                columns: new[] { "Id", "ClubDescription", "ClubLocation", "ClubName", "CreatedAt", "Difficulty", "Distance", "ImageUrl", "IsPrivate", "OwnerId", "Type" },
-                values: new object[,]
-                {
-                    { 1, "Join us every Wednesday & Saturday for a 10km run along Petone Esplanade/Beach", "Petone, Wellington", "Hutt Valley Run Club", new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 1, "https://wordpress.nzrunning.co.nz/wp-content/uploads/2025/04/445cover.jpg", false, 1, 0 },
-                    { 2, "Wanting a challenge? Join our run club that regularly does the famous 'Bays Route', a 30km scenic route along some of the most beautiful bays Wellington has to offer.", "Wellington CBD, Wellington", "Bay Runners", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 2, "https://www.changefitness.co.nz/wp-content/uploads/feb78d35-680f-4f15-81c1-1e7a0183f311.jpg", false, 2, 3 },
-                    { 3, "Join our social run club based in Porirua which is open to all levels of fitness. We meet every Saturday at the Porirua pools to complete a 5km run and socialise over coffee after. ", "Porirua, Wellington", "Social Runners WLG", new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 1, "https://cdn.eventfinda.co.nz/uploads/events/transformed/1771695-766708-34.jpg", false, 3, 2 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "RunEvents",
-                columns: new[] { "Id", "ClubId", "CreatedAt", "Distance", "EntryFee", "EventDate", "EventDescription", "EventLocation", "EventTitle", "ImageUrl", "MaxParticipants" },
-                values: new object[,]
-                {
-                    { 1, 1, new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 10.0, 0m, new DateTime(2026, 11, 15, 9, 0, 0, 0, DateTimeKind.Unspecified), "Join us for a run along Petone Esplanade. This event will be an introductory event for any new members wanting to come and feel out the club!", "Petone Esplanade, Wellington", "Petone Run For Fun", null, 20 },
-                    { 2, 2, new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 30.0, 20m, new DateTime(2026, 11, 22, 8, 0, 0, 0, DateTimeKind.Unspecified), "The annual BAYS ROUTE MARATHON is coming up. Join us to raise money for local charities in Wellington.", "Wellington Waterfront, Wellington", "Bays Route Marathon", null, 50 },
-                    { 3, 3, new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 5.0, 0m, new DateTime(2026, 6, 6, 9, 0, 0, 0, DateTimeKind.Unspecified), "Our weekly Saturday 5km social run followed by coffee.", "Porirua Pools, Porirua", "Porirua 5km Social Run", null, 50 }
                 });
 
             migrationBuilder.CreateIndex(

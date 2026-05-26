@@ -12,8 +12,8 @@ using Runrs.DataAccess.Data;
 namespace Runrs.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260525100224_FreshUpdate")]
-    partial class FreshUpdate
+    [Migration("20260526090626_IncreaseAnnouncementContentLength")]
+    partial class IncreaseAnnouncementContentLength
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,8 +38,7 @@ namespace Runrs.DataAccess.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -105,50 +104,6 @@ namespace Runrs.DataAccess.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Clubs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ClubDescription = "Join us every Wednesday & Saturday for a 10km run along Petone Esplanade/Beach",
-                            ClubLocation = "Petone, Wellington",
-                            ClubName = "Hutt Valley Run Club",
-                            CreatedAt = new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Difficulty = 1,
-                            Distance = 1,
-                            ImageUrl = "https://wordpress.nzrunning.co.nz/wp-content/uploads/2025/04/445cover.jpg",
-                            IsPrivate = false,
-                            OwnerId = 1,
-                            Type = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ClubDescription = "Wanting a challenge? Join our run club that regularly does the famous 'Bays Route', a 30km scenic route along some of the most beautiful bays Wellington has to offer.",
-                            ClubLocation = "Wellington CBD, Wellington",
-                            ClubName = "Bay Runners",
-                            CreatedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Difficulty = 2,
-                            Distance = 2,
-                            ImageUrl = "https://www.changefitness.co.nz/wp-content/uploads/feb78d35-680f-4f15-81c1-1e7a0183f311.jpg",
-                            IsPrivate = false,
-                            OwnerId = 2,
-                            Type = 3
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ClubDescription = "Join our social run club based in Porirua which is open to all levels of fitness. We meet every Saturday at the Porirua pools to complete a 5km run and socialise over coffee after. ",
-                            ClubLocation = "Porirua, Wellington",
-                            ClubName = "Social Runners WLG",
-                            CreatedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Difficulty = 0,
-                            Distance = 1,
-                            ImageUrl = "https://cdn.eventfinda.co.nz/uploads/events/transformed/1771695-766708-34.jpg",
-                            IsPrivate = false,
-                            OwnerId = 3,
-                            Type = 2
-                        });
                 });
 
             modelBuilder.Entity("Runrs.Models.EventRegistration", b =>
@@ -297,47 +252,6 @@ namespace Runrs.DataAccess.Migrations
                     b.HasIndex("ClubId");
 
                     b.ToTable("RunEvents");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ClubId = 1,
-                            CreatedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Distance = 10.0,
-                            EntryFee = 0m,
-                            EventDate = new DateTime(2026, 11, 15, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventDescription = "Join us for a run along Petone Esplanade. This event will be an introductory event for any new members wanting to come and feel out the club!",
-                            EventLocation = "Petone Esplanade, Wellington",
-                            EventTitle = "Petone Run For Fun",
-                            MaxParticipants = 20
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ClubId = 2,
-                            CreatedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Distance = 30.0,
-                            EntryFee = 20m,
-                            EventDate = new DateTime(2026, 11, 22, 8, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventDescription = "The annual BAYS ROUTE MARATHON is coming up. Join us to raise money for local charities in Wellington.",
-                            EventLocation = "Wellington Waterfront, Wellington",
-                            EventTitle = "Bays Route Marathon",
-                            MaxParticipants = 50
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ClubId = 3,
-                            CreatedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Distance = 5.0,
-                            EntryFee = 0m,
-                            EventDate = new DateTime(2026, 6, 6, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventDescription = "Our weekly Saturday 5km social run followed by coffee.",
-                            EventLocation = "Porirua Pools, Porirua",
-                            EventTitle = "Porirua 5km Social Run",
-                            MaxParticipants = 50
-                        });
                 });
 
             modelBuilder.Entity("Runrs.Models.ShoppingCart", b =>
@@ -418,44 +332,6 @@ namespace Runrs.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DateOfBirth = new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Test@gmail.com",
-                            FirstName = "Test",
-                            JoinedAt = new DateTime(2026, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastName = "User",
-                            PasswordHash = "Test123",
-                            Role = 2,
-                            Username = "testuser"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DateOfBirth = new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Test2@gmail.com",
-                            FirstName = "Test2",
-                            JoinedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastName = "User2",
-                            PasswordHash = "Test123",
-                            Role = 1,
-                            Username = "testuser2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DateOfBirth = new DateTime(1999, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Test@gmail.com",
-                            FirstName = "Test3",
-                            JoinedAt = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastName = "User3",
-                            PasswordHash = "Test123",
-                            Role = 0,
-                            Username = "testuser3"
-                        });
                 });
 
             modelBuilder.Entity("Runrs.Models.Announcement", b =>
