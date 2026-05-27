@@ -6,71 +6,115 @@
     ViewData["BodyClass"] = "home-page";
 }
 
-<div class="search-container">
+<body>
+    <svg class="background-svg" preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
+        <defs>
+            <style>
+                @@keyframes rotate {
+                    0% {
+                        transform: rotate(0deg);
+                    }
 
-    <h1 class="search-header">Pending Join Requests</h1>
-    <p class="text-white text-center fw-bold">
-        @club?.ClubName • Total Requests: @Model.Count
-    </p>
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
 
-    @if (!Model.Any())
-    {
-        <p class="text-white text-center fw-bold">No pending requests.</p>
-    }
-    else
-    {
-        <div class="row">
-            @foreach (var request in Model)
-            {
-                <div class="col-md-4 mb-4">
-                    <div class="club-card">
+                .out-top {
+                    animation: rotate 40s linear infinite;
+                    transform-origin: 13px 25px;
+                }
 
-                        <!-- Placeholder (same style as search cards) -->
-                        <div class="club-card-img-placeholder"> <i class="bi bi-person"></i></div>
+                .in-top {
+                    animation: rotate 20s linear infinite;
+                    transform-origin: 13px 25px;
+                }
 
-                        <div class="club-card-body">
+                .out-bottom {
+                    animation: rotate 50s linear infinite;
+                    transform-origin: 84px 93px;
+                }
 
-                            <!-- Username -->
-                            <h3 class="club-card-title">
-                                @request.User?.Username
-                            </h3>
+                .in-bottom {
+                    animation: rotate 30s linear infinite;
+                    transform-origin: 84px 93px;
+                }
+            </style>
+        </defs>
+        <path fill="#833AB4" class="out-top" d="M37-5C25.1-14.7,5.7-19.1-9.2-10-28.5,1.8-32.7,31.1-19.8,49c15.5,21.5,52.6,22,67.2,2.3C59.4,35,53.7,8.5,37-5Z" />
+        <path fill="#2a1344" class="in-top" d="M20.6,4.1C11.6,1.5-1.9,2.5-8,11.2-16.3,23.1-8.2,45.6,7.4,50S42.1,38.9,41,24.5C40.2,14.1,29.4,6.6,20.6,4.1Z" />
+        <path fill="#833AB4" class="out-bottom" d="M105.9,48.6c-12.4-8.2-29.3-4.8-39.4.8-23.4,12.8-37.7,51.9-19.1,74.1s63.9,15.3,76-5.6c7.6-13.3,1.8-31.1-2.3-43.8C117.6,63.3,114.7,54.3,105.9,48.6Z" />
+        <path fill="#2a1344" class="in-bottom" d="M102,67.1c-9.6-6.1-22-3.1-29.5,2-15.4,10.7-19.6,37.5-7.6,47.8s35.9,3.9,44.5-12.5C115.5,92.6,113.9,74.6,102,67.1Z" />
+    </svg>
 
-                            <!-- Full Name -->
-                            <p class="club-card-description">
-                                @request.User?.FirstName @request.User?.LastName
-                            </p>
+    <div class="search-container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="search-header mb-0">Pending Join Requests</h1>
+            <a asp-controller="Club" asp-action="Details" asp-route-id="@club?.Id" class="btn card-btn" style="width:auto; padding:8px 20px;">
+                <i class="bi bi-arrow-left me-2"></i> Back to Club
+            </a>
+        </div>
 
-                            <!-- Request Info -->
-                            <p class="club-card-location">
-                                <i class="bi bi-calendar-event"></i>
-                                Requested: @request.JoinedAt.ToString("dd/MM/yyyy")
-                            </p>
+        <p class="text-white text-center mb-4" style="font-family:'Rajdhani',sans-serif; font-size:16px; color:rgba(255,255,255,0.6);">
+            <span class="pending-badge">@Model.Count Pending</span>
+        </p>
 
-                            <div class="club-card-footer mb-2">
-                                <span class="club-badge bg-warning text-dark">Pending</span>
+        @if (!Model.Any())
+        {
+            <div class="cart-empty">
+                <i class="bi bi-inbox"></i>
+                <h3>No Pending Requests</h3>
+                <p>All membership requests have been handled.</p>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var request in Model)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="request-card">
+                            <!-- Profile Image -->
+                            <div class="request-card-top">
+                                @if (!string.IsNullOrEmpty(request.User?.ProfileImageUrl))
+                                {
+                                    <img src="@request.User.ProfileImageUrl" alt="@request.User.Username" class="request-user-image" />
+                                }
+                                else
+                                {
+                                    <div class="request-user-placeholder">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+                                }
+                                <span class="request-status-badge">Pending</span>
                             </div>
 
-                            <!-- ACTION BUTTONS -->
-                            <div class="d-flex justify-content-between mt-3">
+                            <div class="request-card-body">
+                                <h4 class="request-username">@request.User?.Username</h4>
+                                <p class="request-fullname">@request.User?.FirstName @request.User?.LastName</p>
 
+                                <p class="request-date">
+                                    <i class="bi bi-clock-history"></i> Requested: @request.JoinedAt.ToString("dd/MM/yyyy")
+                                </p>
+                            </div>
+
+                            <div class="request-card-actions">
                                 <form asp-action="ApproveRequest" method="post">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="membershipId" value="@request.Id" />
-                                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                    <button type="submit" class="request-approve-btn">Approve</button>
                                 </form>
 
                                 <form asp-action="RejectRequest" method="post">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="membershipId" value="@request.Id" />
-                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                    <button type="submit" class="request-reject-btn">Reject</button>
                                 </form>
-
                             </div>
-
                         </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
-</div>
+                }
+            </div>
+        }
+    </div>
+</body>

@@ -75,8 +75,6 @@
                     </div>
                 </div>
 
-                <hr style="border-color: rgba(255,255,255,0.2);" />
-
                 <!-- Registration Status -->
                 @if (registration == null)
                 {
@@ -101,7 +99,7 @@
                             <input type="hidden" name="eventId" value="@Model.Id" />
                             <div class="text-center">
                                 <button type="submit" class="create-btn">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart — $@Model.EntryFee
+                                    <i class="bi bi-cart-plus"></i> Add to Cart
                                 </button>
                             </div>
                         </form>
@@ -148,10 +146,9 @@
             <div class="modal-footer event-modal-footer">
                 @if (Model.Club?.OwnerId == userId)
                 {
-                    <a asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i> Edit</a>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDeleteEvent(@Model.Id)"><i class="bi bi-trash3-fill"></i> Delete</button>
+                    <a asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id" class="edit-event-btn"><i class="bi bi-pencil-fill"></i></a>
+                    <button type="button" class="delete-event-btn" onclick="confirmDeleteEvent(@Model.Id)"><i class="bi bi-trash3-fill"></i></button>
                 }
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

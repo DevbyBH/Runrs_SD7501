@@ -80,16 +80,12 @@
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="eventType" id="freeEvent"
                             @(Model.EntryFee == 0 ? "checked" : "") onchange="toggleEntryFee()">
-                            <label class="form-check-label text-white" for="freeEvent">
-                                <i class="bi bi-gift"></i> Free Event
-                            </label>
+                            <label class="form-check-label text-white" for="freeEvent">Free Event</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="eventType" id="paidEvent"
                             @(Model.EntryFee > 0 ? "checked" : "") onchange="toggleEntryFee()">
-                            <label class="form-check-label text-white" for="paidEvent">
-                                <i class="bi bi-cash"></i> Paid Event
-                            </label>
+                            <label class="form-check-label text-white" for="paidEvent">Paid Event</label>
                         </div>
                     </div>
                 </div>

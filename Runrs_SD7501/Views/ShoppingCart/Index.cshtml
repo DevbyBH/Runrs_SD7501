@@ -48,85 +48,89 @@
     </svg>
 
     <div class="container mt-4">
-        <div class="crud-form shadow border-0 mt-4">
-            <div class="crud-card-header-box ml-0 py-3">
-                <div class="crud-card-header">
-                    <h2 class="crud-header-text py-2">
-                        <i class="bi bi-cart-fill"></i> My Cart
-                    </h2>
-                    <p class="text-white">Review your event registrations before checkout</p>
-                </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="search-header mb-0"><i class="bi bi-cart-fill"></i> My Cart</h1>
+            @if (Model != null && Model.Any())
+            {
+                <span class="cart-count-badge">@Model.Count item@(Model.Count > 1 ? "s" : "")</span>
+            }
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="cart-empty">
+                <i class="bi bi-cart-x"></i>
+                <h3>Your cart is empty</h3>
+                <p>Find an event to register for!</p>
+                <a asp-controller="Search" asp-action="Index" class="dashboard-btn-custom" style="display:inline-flex; align-items:center; justify-content:center; text-decoration:none;">
+                    <i class="bi bi-search me-2"></i> Browse Clubs
+                </a>
             </div>
-
-            <div class="dashboard-card-body p-4">
-
-                @if (Model == null || !Model.Any())
-                {
-                    <p class="text-white text-center mt-3">
-                        Your cart is empty.
-                        <a asp-controller="Search" asp-action="Index" class="text-warning">
-                            Browse clubs
-                        </a>
-                        to find events.
-                    </p>
-                }
-                else
-                {
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-lg-8">
                     @foreach (var item in Model)
                     {
-                        <div class="cart-item mb-3">
-                            <div class="cart-item-details">
-                                <h5 class="text-white">@item.Event?.EventTitle</h5>
-                                <p class="text-muted mb-1">
-                                    <i class="bi bi-building"></i>
-                                    @item.Event?.Club?.ClubName
-                                </p>
-                                <p class="text-muted mb-1">
-                                    <i class="bi bi-calendar-event"></i>
-                                    @item.Event?.EventDate.ToString("dd MMM yyyy h:mm tt")
-                                </p>
-                                <p class="text-muted">
-                                    <i class="bi bi-geo-alt-fill"></i>
-                                    @item.Event?.EventLocation
-                                </p>
+                        <div class="cart-item-card">
+                            <div class="cart-item-image">
+                                @if (!string.IsNullOrEmpty(item.Event?.ImageUrl))
+                                {
+                                    <img src="@item.Event.ImageUrl" alt="@item.Event.EventTitle" />
+                                }
+                                else
+                                {
+                                    <div class="cart-item-image-placeholder">
+                                        <i class="bi bi-calendar-event"></i>
+                                    </div>
+                                }
                             </div>
-                            <div class="cart-item-price">
-                                <h5 style="color: #FF7614;">
-                                    $@item.Event?.EntryFee NZD
-                                </h5>
+                            <div class="cart-item-info">
+                                <h5>@item.Event?.EventTitle</h5>
+                                <p class="cart-item-club">@item.Event?.Club?.ClubName</p>
+                                <p class="cart-item-meta"><i class="bi bi-calendar-event"></i> @item.Event?.EventDate.ToString("dd MMM yyyy h:mm tt")</p>
+                                <p class="cart-item-meta"><i class="bi bi-geo-alt-fill"></i> @item.Event?.EventLocation</p>
+                            </div>
+                            <div class="cart-item-price-section">
+                                <span class="cart-item-price">$@item.Event?.EntryFee</span>
                                 <form action="/ShoppingCart/Remove" method="post">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="cartId" value="@item.Id" />
-                                    <button type="submit" class="btn btn-danger btn-sm mt-2">
-                                        <i class="bi bi-trash3-fill"></i> Remove
-                                    </button>
+                                    <button type="submit" class="cart-remove-btn"><i class="bi bi-trash3"></i></button>
                                 </form>
                             </div>
                         </div>
-                        <hr style="border-color: rgba(255,255,255,0.1);" />
                     }
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart-summary-card">
+                        <h4 class="cart-summary-title">Order Summary</h4>
+                        <hr style="border-color: rgba(255,255,255,0.1);" />
 
-                    <!-- Total -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <h4 class="text-white">Total</h4>
-                        <h4 style="color: #FF7614;">$@total NZD</h4>
-                    </div>
+                        <div class="cart-summary-row">
+                            <span>Subtotal</span>
+                            <span>$@total.ToString("0.00")</span>
+                        </div>
+                        <hr style="border-color: rgba(255,255,255,0.1);" />
+                        <div class="cart-summary-row cart-summary-total">
+                            <span>Total</span>
+                            <span>$@total.ToString("0.00") NZD</span>
+                        </div>
 
-                    <!-- Checkout Button -->
-                    <div class="d-flex gap-3 mt-4">
-                        <form action="/ShoppingCart/Checkout" method="post">
+                        <form action="/ShoppingCart/Checkout" method="post" class="mt-4">
                             @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-custom px-4">
-                                <i class="bi bi-credit-card"></i> Proceed to Checkout
+                            <button type="submit" class="cart-checkout-btn">
+                                <i class="bi bi-lock-fill me-2"></i> Proceed to Checkout
                             </button>
                         </form>
-                        <a asp-controller="Search" asp-action="Index"
-                           class="btn btn-secondary px-4">
+
+                        <a asp-controller="Search" asp-action="Index" class="cart-continue-link">
                             <i class="bi bi-arrow-left"></i> Continue Browsing
                         </a>
                     </div>
-                }
+                </div>
             </div>
-        </div>
+        }
     </div>
 </body>

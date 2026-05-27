@@ -279,50 +279,84 @@
         }
         else
         {
-            <div id="eventsCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    @for (int i = 0; i < events.Count; i++)
-                    {
-                        <button type="button" data-bs-target="#eventsCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-label="Event @(i + 1)"></button>
-                    }
-                </div>
-                <div class="carousel-inner">
+            <div class="event-carousel-wrapper">
+                <div class="event-carousel-track" id="eventCarouselTrack">
                     @for (int i = 0; i < events.Count; i++)
                     {
                         var ev = events[i];
-                        <div class="carousel-item @(i == 0 ? "active" : "")">
-                            <div class="event-carousel-card">
+                        <div class="event-carousel-card-wrapper @(i == 0 ? "active" : i == 1 ? "next" : i == events.Count - 1 ? "prev" : "")" data-index="@i">
+                            <div class="event-carousel-card" style="background-image: @(!string.IsNullOrEmpty(ev.ImageUrl) ? $"linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.9) 100%), url('{ev.ImageUrl}')" : "linear-gradient(135deg, #833AB4 0%, #2a1344 60%, #000000 100%)");">
                                 <div class="event-carousel-body">
-                                    <h4 class="event-carousel-title">@ev.EventTitle</h4>
-                                    <div class="carousel-side-by-side">
-                                        <p class="carousel-info-card"><i class="bi bi-calendar-event"></i> @ev.EventDate.ToString("dd MMM yyyy h:mm tt")</p>
-                                        <p class="carousel-info-card"><i class="bi bi-geo-alt-fill"></i> @ev.EventLocation</p>
-                                    </div>
-                                    <p class="event-carousel-desc">@ev.EventDescription</p>
-                                    <div class="d-flex gap-2 flex-wrap mt-3">
-                                        <div class="event-carousel-badge">
-                                            <span class="club-badge"><i class="bi bi-signpost-2"></i> @ev.Distance km</span>
-                                            <span class="club-badge"><i class="bi bi-people-fill"></i> @ev.MaxParticipants spots</span>
-                                            <span class="club-badge">@(ev.EntryFee == 0 ? "Free" : $"${ev.EntryFee}")</span>
+                                    <div class="event-carousel-top">
+                                        <div class="carousel-side-by-side">
+                                            <p class="carousel-info-card"><i class="bi bi-calendar-event"></i> @ev.EventDate.ToString("dd MMM yyyy")</p>
+                                            <p class="carousel-info-card"><i class="bi bi-geo-alt-fill"></i> @ev.EventLocation</p>
                                         </div>
                                     </div>
-                                    <button class="dashboard-btn-custom view-event-btn" style="margin-top: 20px;" data-event-id="@ev.Id">View Event</button>
+                                    <div class="event-carousel-bottom">
+                                        <h4 class="event-carousel-title">@ev.EventTitle</h4>
+                                        <p class="event-carousel-desc">@ev.EventDescription</p>
+                                        <div class="event-carousel-badge">
+                                            <span class="event-club-badge">@(ev.EntryFee == 0 ? "Free" : $"${ev.EntryFee}")</span>
+                                            <span class="event-club-badge"><i class="bi bi-people-fill"></i> @ev.MaxParticipants spots</span>
+                                        </div>
+                                        <button class="event-view-btn view-event-btn" data-event-id="@ev.Id">View Event</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     }
                 </div>
+
                 @if (events.Count > 1)
                 {
-                    <button class="carousel-control-prev" type="button" data-bs-target="#eventsCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#eventsCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
+                    <button class="event-carousel-prev" onclick="moveCarousel(-1)"><i class="bi bi-chevron-left"></i></button>
+                    <button class="event-carousel-next" onclick="moveCarousel(1)"><i class="bi bi-chevron-right"></i></button>
                 }
+
+                <div class="event-carousel-dots">
+                    @for (int i = 0; i < events.Count; i++)
+                    {
+                        <span class="event-dot @(i == 0 ? "active" : "")" onclick="goToSlide(@i)"></span>
+                    }
+                </div>
             </div>
         }
     </div>
     <div id="eventModalContainer"></div>
+
+    <script>
+        let currentIndex = 0;
+        const totalSlides = @events.Count;
+
+        function updateCarousel() {
+            const wrappers = document.querySelectorAll('.event-carousel-card-wrapper');
+
+            wrappers.forEach((wrapper, i) => {
+                wrapper.classList.remove('active', 'prev', 'next');
+
+                if (i === currentIndex) {
+                    wrapper.classList.add('active');
+                } else if (i === (currentIndex - 1 + totalSlides) % totalSlides) {
+                    wrapper.classList.add('prev');
+                } else if (i === (currentIndex + 1) % totalSlides) {
+                    wrapper.classList.add('next');
+                }
+            });
+
+            document.querySelectorAll('.event-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentIndex);
+            });
+        }
+
+        function moveCarousel(direction) {
+            currentIndex = (currentIndex + direction + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+    </script>
 </body>
