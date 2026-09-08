@@ -591,11 +591,11 @@ member-btn {
 .login-body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto; 
     font-family: Arial, sans-serif;
-    background-size: 600% 600%;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh; 
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -623,8 +623,8 @@ member-btn {
     -webkit-backdrop-filter: blur(16.9px);
     padding: 40px;
     width: 60vw;
-    height: 100vh;
-    overflow-y: hidden;
+    min-height: 100vh; 
+    overflow-y: auto; 
     box-sizing: border-box;
     text-align: center;
 }
@@ -646,12 +646,11 @@ member-btn {
 }
 
 .login-input {
-    width: 18vw;
+    width: 100%; 
+    max-width: 350px; 
     height: 6vh;
     outline: none;
     border: 2px solid transparent;
-    border-radius: 16px;
-    -webkit-backdrop-filter: blur(5px);
     border-radius: 30px;
     padding-left: 15px;
     letter-spacing: 0.8px;
@@ -677,7 +676,7 @@ member-btn {
     color: #FFF;
     letter-spacing: 1px;
     width: 100%;
-    max-width: 18vw;
+    max-width: 350px;
     margin-left: auto;
     margin-right: auto;
     font-family: 'Inter', sans-serif;
@@ -690,9 +689,10 @@ member-btn {
     display: block;
     margin-top: -20px;
     margin-bottom: 15px;
-    padding-left: 5vw;
     font-weight: bold;
-    justify-content: center;
+    max-width: 350px; 
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .field-validation-error-row {
@@ -710,7 +710,8 @@ member-btn {
 .btn-login {
     background-color: #ff479b;
     color: white;
-    width: 15vw;
+    width: 100%; 
+    max-width: 300px; 
     height: 6vh;
     padding: 10px;
     border: 1px solid transparent;
@@ -728,7 +729,8 @@ member-btn {
 .btn-register {
     background-color: #ff479b;
     color: white;
-    width: 13vw;
+    width: 100%; 
+    max-width: 250px; 
     height: 6vh;
     padding: 10px;
     border: 1px solid transparent;
@@ -3203,4 +3205,640 @@ member-btn {
 .request-reject-btn:hover {
     background: #931919;
     color: #fff;
+}
+
+/*---------------------- Login Page Responsive - Byron 27/05/2026 ---------------------------*/
+
+/* Extra large screens */
+@media (max-width: 1600px) {
+    .login-main-icon {
+        width: 350px;
+        height: 350px;
+        padding-left: 130px;
+    }
+
+    .login-middle-panel h1 {
+        font-size: 220px;
+    }
+
+    .stat-number {
+        font-size: 70px;
+    }
+}
+
+/* Large screens */
+@media (max-width: 1400px) {
+    .login-card {
+        width: 50vw;
+    }
+
+    .login-main-icon {
+        width: 280px;
+        height: 280px;
+        padding-left: 100px;
+    }
+
+    .login-middle-panel h1 {
+        font-size: 180px;
+    }
+
+    .login-right-panel {
+        width: 28%;
+        padding-right: 5vw;
+    }
+
+    .stat-number {
+        font-size: 55px;
+    }
+
+    .stat-label {
+        font-size: 15px;
+    }
+}
+
+/* Medium-large screens */
+@media (max-width: 1200px) {
+    .login-card {
+        width: 45vw;
+        padding: 30px;
+    }
+
+    .login-middle-panel {
+        padding-left: 5vw;
+    }
+
+        .login-middle-panel h1 {
+            font-size: 140px;
+            letter-spacing: 0.4rem;
+        }
+
+    .login-main-icon {
+        width: 220px;
+        height: 220px;
+        padding-left: 50px;
+    }
+
+    .login-right-panel {
+        padding-right: 3vw;
+        width: 25%;
+    }
+
+    .stat-number {
+        font-size: 45px;
+    }
+
+    .stat-label {
+        font-size: 14px;
+    }
+
+    .stat-item {
+        margin-bottom: 30px;
+    }
+}
+
+/* Tablets landscape / small laptops */
+@media (max-width: 992px) {
+    .login-main-container {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .login-middle-panel {
+        display: none !important;
+    }
+
+    .login-right-panel {
+        display: none !important;
+    }
+
+    .login-card {
+        width: 100vw;
+        min-height: 100vh;
+        padding: 40px 30px;
+    }
+
+    .login-header {
+        margin-top: 60px;
+        font-size: 50px;
+        margin-bottom: 30px;
+    }
+
+    .login-input {
+        width: 70vw;
+        max-width: 400px;
+    }
+
+    .login-label {
+        max-width: 400px;
+    }
+
+    .btn-login {
+        width: 50vw;
+        max-width: 280px;
+    }
+
+    .btn-register {
+        width: 45vw;
+        max-width: 250px;
+    }
+
+    .link-seperator {
+        width: 60%;
+    }
+}
+
+/* Tablets portrait */
+@media (max-width: 768px) {
+    .login-card {
+        padding: 30px 20px;
+    }
+
+    .login-header {
+        font-size: 42px;
+        margin-top: 50px;
+        margin-bottom: 25px;
+    }
+
+    .login-input {
+        width: 80vw;
+        max-width: 380px;
+        height: 5.5vh;
+        font-size: 15px;
+        margin-bottom: 28px;
+    }
+
+    .login-label {
+        font-size: 13px;
+        max-width: 380px;
+    }
+
+    .btn-login {
+        width: 55vw;
+        max-width: 260px;
+        font-size: 16px;
+    }
+
+    .btn-register {
+        width: 48vw;
+        max-width: 230px;
+        font-size: 16px;
+    }
+
+    .social-link {
+        width: 75px;
+        height: 75px;
+    }
+
+    .social-icon {
+        width: 42px;
+        height: 42px;
+    }
+}
+
+/* Large phones */
+@media (max-width: 576px) {
+    .login-card {
+        padding: 25px 15px;
+    }
+
+    .login-header {
+        font-size: 38px;
+        margin-top: 40px;
+        margin-bottom: 20px;
+    }
+
+    .login-input {
+        width: 88vw;
+        height: 48px;
+        font-size: 14px;
+        margin-bottom: 22px;
+    }
+
+    .login-label {
+        font-size: 12px;
+    }
+
+    .field-validation-error {
+        font-size: 0.7em;
+        margin-top: -16px;
+        margin-bottom: 10px;
+    }
+
+    .btn-login {
+        width: 65vw;
+        font-size: 15px;
+        height: 46px;
+    }
+
+    .btn-register {
+        width: 58vw;
+        font-size: 15px;
+        height: 46px;
+    }
+
+    .link-seperator {
+        width: 75%;
+        margin: 20px auto;
+    }
+
+    .login-links-text {
+        font-size: 14px;
+    }
+
+    .social-link {
+        width: 60px;
+        height: 60px;
+    }
+
+    .social-icon {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* Small phones */
+@media (max-width: 400px) {
+    .login-card {
+        padding: 20px 12px;
+    }
+
+    .login-header {
+        font-size: 32px;
+        margin-top: 30px;
+        margin-bottom: 18px;
+    }
+
+    .login-input {
+        width: 92vw;
+        height: 44px;
+        font-size: 13px;
+        margin-bottom: 18px;
+        padding-left: 12px;
+    }
+
+    .login-label {
+        font-size: 11px;
+        max-width: 92vw;
+    }
+
+    .btn-login {
+        width: 75vw;
+        font-size: 14px;
+        height: 42px;
+    }
+
+    .btn-register {
+        width: 68vw;
+        font-size: 14px;
+        height: 42px;
+    }
+
+    .link-seperator {
+        width: 85%;
+        margin: 18px auto;
+    }
+
+    .social-link {
+        width: 55px;
+        height: 55px;
+    }
+
+    .social-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .login-links-text {
+        font-size: 13px;
+    }
+
+    .login-links ul {
+        gap: 10px;
+    }
+
+    .error-box {
+        padding: 8px;
+        font-size: 13px;
+    }
+}
+
+/* Extra small / very old phones */
+@media (max-width: 320px) {
+    .login-card {
+        padding: 15px 10px;
+    }
+
+    .login-header {
+        font-size: 28px;
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+
+    .login-input {
+        width: 95vw;
+        height: 40px;
+        font-size: 12px;
+        margin-bottom: 15px;
+    }
+
+    .login-label {
+        font-size: 10px;
+    }
+
+    .btn-login,
+    .btn-register {
+        width: 80vw;
+        font-size: 13px;
+        height: 40px;
+    }
+
+    .social-link {
+        width: 48px;
+        height: 48px;
+    }
+
+    .social-icon {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/*---------------------- Registration Page Responsive - Byron 27/05/2026 ---------------------------*/
+
+@media (max-width: 1600px) {
+    .register-card {
+        width: 50vw;
+    }
+    
+    .register-input {
+        width: 100%;
+        max-width: 350px;
+    }
+    
+    .register-label {
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 1400px) {
+    .register-card {
+        width: 50vw;
+        padding: 30px;
+    }
+    
+    .register-header {
+        font-size: 38px;
+    }
+    
+    .register-name-row {
+        width: 75%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (max-width: 1200px) {
+    .register-card {
+        width: 45vw;
+        padding: 25px;
+    }
+    
+    .register-header {
+        font-size: 34px;
+    }
+    
+    .register-name-row {
+        width: 80%;
+        gap: 20px;
+    }
+    
+    .btn-register-submit {
+        width: 50%;
+        max-width: 280px;
+    }
+    
+    .btn-back-login {
+        width: 40%;
+        max-width: 220px;
+    }
+}
+
+@media (max-width: 992px) {
+    .login-main-container {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .login-middle-panel {
+        display: none !important;
+    }
+    
+    .login-right-panel {
+        display: none !important;
+    }
+    
+    .register-card {
+        width: 100vw;
+        min-height: 100vh;
+        padding: 40px 30px;
+        overflow-y: auto;
+    }
+    
+    .register-header {
+        font-size: 40px;
+        margin-top: 40px;
+    }
+    
+    .register-input {
+        width: 70vw;
+        max-width: 400px;
+    }
+    
+    .register-label {
+        max-width: 400px;
+    }
+    
+    .register-name-row {
+        width: 70vw;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        gap: 15px;
+    }
+    
+    .btn-register-submit {
+        width: 50vw;
+        max-width: 280px;
+    }
+    
+    .btn-back-login {
+        width: 40vw;
+        max-width: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    .register-card {
+        padding: 30px 20px;
+    }
+    
+    .register-header {
+        font-size: 36px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+    
+    .register-input {
+        width: 80vw;
+        max-width: 380px;
+        height: 44px;
+        font-size: 14px;
+        margin-bottom: 22px;
+    }
+    
+    .register-label {
+        font-size: 12px;
+        max-width: 380px;
+    }
+    
+    .register-name-row {
+        width: 80vw;
+        max-width: 380px;
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .register-name-field .register-row-label {
+        padding-left: 0;
+        font-size: 12px;
+    }
+    
+    .btn-register-submit {
+        width: 55vw;
+        max-width: 260px;
+        font-size: 15px;
+        height: 46px;
+    }
+    
+    .btn-back-login {
+        width: 45vw;
+        max-width: 220px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 576px) {
+    .register-card {
+        padding: 25px 15px;
+    }
+    
+    .register-header {
+        font-size: 32px;
+        margin-top: 25px;
+    }
+    
+    .register-input {
+        width: 88vw;
+        height: 42px;
+        font-size: 13px;
+        margin-bottom: 18px;
+    }
+    
+    .register-label {
+        font-size: 11px;
+    }
+    
+    .register-name-row {
+        width: 88vw;
+    }
+    
+    .field-validation-error {
+        font-size: 0.7em;
+        margin-top: -14px;
+        margin-bottom: 8px;
+    }
+    
+    .field-validation-error-row {
+        font-size: 0.7em;
+        margin-top: -14px;
+        margin-bottom: 8px;
+    }
+    
+    .btn-register-submit {
+        width: 65vw;
+        font-size: 14px;
+        height: 44px;
+    }
+    
+    .btn-back-login {
+        width: 55vw;
+        font-size: 13px;
+        height: 38px;
+    }
+}
+
+@media (max-width: 400px) {
+    .register-card {
+        padding: 20px 12px;
+    }
+    
+    .register-header {
+        font-size: 28px;
+        margin-top: 20px;
+        margin-bottom: 12px;
+    }
+    
+    .register-input {
+        width: 92vw;
+        height: 40px;
+        font-size: 12px;
+        margin-bottom: 15px;
+    }
+    
+    .register-label {
+        font-size: 10px;
+    }
+    
+    .register-name-row {
+        width: 92vw;
+    }
+    
+    .btn-register-submit {
+        width: 75vw;
+        font-size: 14px;
+        height: 42px;
+    }
+    
+    .btn-back-login {
+        width: 65vw;
+        font-size: 12px;
+        height: 36px;
+    }
+}
+
+@media (max-width: 320px) {
+    .register-card {
+        padding: 15px 10px;
+    }
+    
+    .register-header {
+        font-size: 24px;
+        margin-top: 15px;
+    }
+    
+    .register-input {
+        width: 95vw;
+        height: 38px;
+        font-size: 11px;
+        margin-bottom: 12px;
+    }
+    
+    .btn-register-submit,
+    .btn-back-login {
+        width: 80vw;
+        font-size: 13px;
+        height: 38px;
+    }
 }

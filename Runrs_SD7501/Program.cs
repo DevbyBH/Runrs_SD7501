@@ -12,7 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews(options => {
     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
 });
-builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection"),
+    sqlServerOptionsAction: sqlOptions =>
+    {
+        sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(30),
+            errorNumbersToAdd: null);
+    }));
 builder.Services.AddScoped<IClubRepository, ClubRepository>(); // <------ Byron 18/04/2026 - Registered the IClubRepository and ClubRepository services for dependency injection in the ClubController
 builder.Services.AddScoped<IUserRepository, UserRepository>(); // <------ Byron 18/04/2026 - Registered the IUserRepository and UserRepository services for dependency injection in the LoginController
 builder.Services.AddScoped<IMembershipRepository, MembershipRepository>(); // <------ Byron 18/04/2026 - Registered the IMembership and MembershipRepository services for dependency injection in the ClubController (for future use)

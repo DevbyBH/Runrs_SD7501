@@ -79,7 +79,7 @@
                 @Html.ValidationMessageFor(a => a.Username, "", new { @class = "field-validation-error" })
 
                 <div class="login-label">
-                    @Html.LabelFor(a => a.PasswordHash):
+                    <label for="PasswordHash">Password:</label>
                 </div>
 
                 @Html.PasswordFor(a => a.PasswordHash, new { @class = "login-input"})
