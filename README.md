@@ -22,7 +22,8 @@ Screenshot — upload an image to /assets and reference it here,
 or drag-and-drop directly into the README editor on GitHub.com.
 -->
 <p align="center">
-  <img src="./assets/dashboard.png" alt="Runrs dashboard" width="700"/>
+  <img width="1088" height="846" alt="Screenshot 2026-07-08 010251" src="https://github.com/user-attachments/assets/ffb3f16c-a548-4963-bd9b-79e26591fa89" />
+  <img width="800" height="600" alt="Screenshot 2026-07-08 004133" src="https://github.com/user-attachments/assets/7792ee67-818e-4fdd-80f0-066f6c5b91fc" />
 </p>
 
 ---
